@@ -5,10 +5,25 @@ using System.Linq;
 using Property;
 using Property.Windows;
 
-using Siberia.PrintFormTool.Entities;
+using ImageUsageSample.Entities;
+using System.Windows.Media.Imaging;
+using System.Drawing;
+using System.Windows;
 
-namespace Siberia.PrintFormTool
+namespace ImageUsageSample
 {
+    public static class BitmapConversion
+    {
+        public static BitmapSource BitmapToBitmapSource(this Image source)
+        {
+            return System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+            (source as Bitmap).GetHbitmap(),
+            IntPtr.Zero,
+            Int32Rect.Empty,
+            BitmapSizeOptions.FromEmptyOptions());
+        }
+    }
+
     public class MainWindowViewModel
     {
         public MainWindowViewModel()
@@ -29,12 +44,12 @@ namespace Siberia.PrintFormTool
             localSelectedTextArea = Reloadable<KeyValuePair<TextAreaEnum, string>>.On().Each().Input()
                 .Create(localTextAreas.Value.First());
 
-            localRectangles = Reloadable<Dictionary<TextAreaEnum, Rectangle>>.On().Each().Call(x =>
+            localRectangles = Reloadable<Dictionary<TextAreaEnum, SelectionRectangle>>.On().Each().Call(x =>
                 {
-                    x[localSelectedTextArea.Value.Key] = new Rectangle(localHeight.Value, localWidth.Value, localTop.Value, localLeft.Value);
+                    x[localSelectedTextArea.Value.Key] = new SelectionRectangle(localHeight.Value, localWidth.Value, localTop.Value, localLeft.Value);
                     return x;
                 })
-                .Create(new Dictionary<TextAreaEnum, Rectangle>() { { localTextAreas.Value.First().Key, new Rectangle(100, 100, 100, 100) } });
+                .Create(new Dictionary<TextAreaEnum, SelectionRectangle>() { { localTextAreas.Value.First().Key, new SelectionRectangle(100, 100, 100, 100) } });
 
             localSelectedTextArea.OnChanged(() =>
             {
@@ -49,9 +64,11 @@ namespace Siberia.PrintFormTool
             localWidth.OnChanged(() => localRectangles);
             localTop.OnChanged(() => localRectangles);
             localLeft.OnChanged(() => localRectangles);
+
+            ImageSource = Reloadable<BitmapSource>.On().First().Get(_ => Bitmap.FromFile("art.jpg").BitmapToBitmapSource()).Create();
         }
 
-        private void SetBox(Rectangle rectangle)
+        private void SetBox(SelectionRectangle rectangle)
         {
             localHeight.Input = rectangle.Height;
             localWidth.Input = rectangle.Width;
@@ -71,7 +88,9 @@ namespace Siberia.PrintFormTool
 
         private readonly IInputProperty<KeyValuePair<TextAreaEnum, string>> localSelectedTextArea;
 
-        private readonly ICallProperty<Dictionary<TextAreaEnum, Rectangle>> localRectangles;
+        private readonly ICallProperty<Dictionary<TextAreaEnum, SelectionRectangle>> localRectangles;
+
+        public IProperty<BitmapSource> ImageSource { get; private set; }
 
         public IInputProperty<int> Height
         {

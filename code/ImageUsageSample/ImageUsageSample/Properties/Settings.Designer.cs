@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Siberia.PrintFormTool.Properties {
+namespace ImageUsageSample.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

@@ -1,10 +1,10 @@
-﻿namespace Siberia.PrintFormTool.Entities
+﻿namespace ImageUsageSample.Entities
 {
-    public struct Rectangle
+    public struct SelectionRectangle
     {
         public int Height, Width, Top, Left;
 
-        public Rectangle(int height, int width, int top, int left)
+        public SelectionRectangle(int height, int width, int top, int left)
         {
             Height = height;
             Width = width;

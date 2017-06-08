@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace Siberia.PrintFormTool.Toolset
+namespace ImageUsageSample.Toolset
 {
     public class DelegateCommand : ICommand
     {

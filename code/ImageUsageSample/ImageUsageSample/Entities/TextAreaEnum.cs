@@ -1,4 +1,4 @@
-﻿namespace Siberia.PrintFormTool.Entities
+﻿namespace ImageUsageSample.Entities
 {
     public enum TextAreaEnum
     {

@@ -70,6 +70,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -88,7 +89,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Toolset\DelegateCommand.cs" />
-    <Compile Include="Entities\Rectangle.cs" />
+    <Compile Include="Entities\SelectionRectangle.cs" />
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="Toolset\ResizeThumb.cs" />
     <Compile Include="Entities\TextAreaEnum.cs" />
@@ -141,7 +142,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="art.jpg" />
+    <Content Include="art.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
