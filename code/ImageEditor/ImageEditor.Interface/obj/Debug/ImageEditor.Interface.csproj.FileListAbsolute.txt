@@ -1,0 +1,12 @@
+D:\projects\study\code\ImageEditor\ImageEditor.Interface\bin\Debug\ImageEditor.Interface.dll
+D:\projects\study\code\ImageEditor\ImageEditor.Interface\bin\Debug\ImageEditor.Interface.pdb
+D:\projects\study\code\ImageEditor\ImageEditor.Interface\bin\Debug\Property.Callbacks.dll
+D:\projects\study\code\ImageEditor\ImageEditor.Interface\bin\Debug\Property.Chains.dll
+D:\projects\study\code\ImageEditor\ImageEditor.Interface\bin\Debug\Property.Core.dll
+D:\projects\study\code\ImageEditor\ImageEditor.Interface\bin\Debug\Property.Windows.dll
+D:\projects\study\code\ImageEditor\ImageEditor.Interface\bin\Debug\Property.Callbacks.xml
+D:\projects\study\code\ImageEditor\ImageEditor.Interface\bin\Debug\Property.Chains.xml
+D:\projects\study\code\ImageEditor\ImageEditor.Interface\bin\Debug\Property.Core.xml
+D:\projects\study\code\ImageEditor\ImageEditor.Interface\bin\Debug\Property.Windows.xml
+D:\projects\study\code\ImageEditor\ImageEditor.Interface\obj\Debug\ImageEditor.Interface.dll
+D:\projects\study\code\ImageEditor\ImageEditor.Interface\obj\Debug\ImageEditor.Interface.pdb

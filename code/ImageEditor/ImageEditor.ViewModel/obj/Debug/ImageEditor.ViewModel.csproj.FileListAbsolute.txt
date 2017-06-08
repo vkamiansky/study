@@ -1,0 +1,9 @@
+D:\projects\study\code\ImageEditor\ImageEditor.ViewModel\bin\Debug\ImageEditor.ViewModel.dll
+D:\projects\study\code\ImageEditor\ImageEditor.ViewModel\bin\Debug\ImageEditor.ViewModel.pdb
+D:\projects\study\code\ImageEditor\ImageEditor.ViewModel\bin\Debug\ImageEditor.Interface.dll
+D:\projects\study\code\ImageEditor\ImageEditor.ViewModel\bin\Debug\Property.Core.dll
+D:\projects\study\code\ImageEditor\ImageEditor.ViewModel\bin\Debug\ImageEditor.Interface.pdb
+D:\projects\study\code\ImageEditor\ImageEditor.ViewModel\bin\Debug\Property.Core.xml
+D:\projects\study\code\ImageEditor\ImageEditor.ViewModel\obj\Debug\ImageEditor.ViewModel.csprojResolveAssemblyReference.cache
+D:\projects\study\code\ImageEditor\ImageEditor.ViewModel\obj\Debug\ImageEditor.ViewModel.dll
+D:\projects\study\code\ImageEditor\ImageEditor.ViewModel\obj\Debug\ImageEditor.ViewModel.pdb
