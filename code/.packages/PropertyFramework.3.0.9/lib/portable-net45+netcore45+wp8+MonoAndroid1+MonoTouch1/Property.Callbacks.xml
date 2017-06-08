@@ -1,0 +1,156 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Property.Callbacks</name>
+    </assembly>
+    <members>
+        <member name="T:Property.WorkerPrototypeExtensionsCallbacks">
+            <summary>
+            Contains words that extend the description
+            of the callbacks-based property value loading process.
+            </summary>
+        </member>
+        <member name="M:Property.WorkerPrototypeExtensionsCallbacks.Catch``1(Property.IWorkerPrototype{``0},System.Action{System.Exception},System.Boolean)">
+            <summary>
+            ... diverting control to the specified handler if any exceptions are thrown ...
+            </summary>
+            <param name="handler">Tell me what to do if an error occurs.</param>
+            <param name="testMode">Tell me if I have to ignore this word.</param>
+        </member>
+        <member name="M:Property.WorkerPrototypeExtensionsCallbacks.Retry``1(Property.IWorkerPrototype{``0},System.Int32,System.Boolean)">
+            <summary>
+            ... trying the specified number of times before throwing an exception ...
+            </summary>
+            <param name="retryCount">Tell me how many tries you give me to to get a value.</param>
+            <param name="testMode">Tell me if I have to ignore this word.</param>
+        </member>
+        <member name="M:Property.WorkerPrototypeExtensionsCallbacks.Each``1(Property.IWorkerPrototype{``0})">
+            <summary>
+                <para>... (each time) ...</para>
+                <para>( ! ) Don't forget to dispose of what you create with this word.</para>
+            </summary>
+        </member>
+        <member name="M:Property.WorkerPrototypeExtensionsCallbacks.First``1(Property.IWorkerPrototype{``0})">
+            <summary>
+                <para>... first time ...</para>
+                <para>( ! ) Don't forget to dispose of what you create with this word.</para>
+            </summary>
+        </member>
+        <member name="M:Property.WorkerPrototypeExtensionsCallbacks.Odd``1(Property.IWorkerPrototype{``0})">
+            <summary>
+                <para>... every odd time ...</para>
+                <para>( ! ) Don't forget to dispose of what you create with this word.</para>
+            </summary>
+        </member>
+        <member name="M:Property.WorkerPrototypeExtensionsCallbacks.Conditional``1(Property.IWorkerPrototype{``0},System.Func{System.Boolean})">
+            <summary>
+                <para>... if the specified condition is met (when) ...</para>
+                <para>( ! ) Don't forget to dispose of what you create with this word.</para>
+            </summary>
+            <param name="condition">Tell me how to decide if the reload should happen.</param>
+        </member>
+        <member name="M:Property.WorkerPrototypeExtensionsCallbacks.Conditional``2(Property.IWorkerPrototype{``0},System.Func{``1,``1},System.Func{``1,System.Boolean})">
+            <summary>
+                <para>... if the discriminator state meets the specified condition (when) ...</para>
+                <para>( ! ) Don't forget to dispose of what you create with this word.</para>
+            </summary>
+            <param name="getState">Tell me how the state should be produced
+            based on its previous value.</param>
+            <param name="condition">Tell me how to use the state to decide if
+            the reload should happen.</param>
+        </member>
+        <member name="T:Property.Windows.FunctionWorkerPrototypeExtensionsCallbacksWindows">
+            <summary>
+            Contains words that extend the description
+            of the callbacks-based property value loading process.
+            </summary>
+        </member>
+        <member name="M:Property.Windows.FunctionWorkerPrototypeExtensionsCallbacksWindows.Timeout``1(Property.IWorkerPrototype{``0},System.TimeSpan,System.Boolean)">
+            <summary>
+                <para>... throwing an exception if getting a new value takes longer than the specified time ...</para>
+                <para>( ! ) Don't forget to dispose of what you create with this word.</para>
+            </summary>
+            <param name="dueTime">Tell me how long I should wait for the value to come.</param>
+            <param name="testMode">Tell me if I have to ignore this word.</param>
+        </member>
+        <member name="M:Property.Windows.FunctionWorkerPrototypeExtensionsCallbacksWindows.Delayed``1(Property.IWorkerPrototype{``0},System.TimeSpan,System.Boolean)">
+            <summary>
+                <para>... if not overruled by another call in the specified period of time (when) ...</para>
+                <para>( ! ) Don't forget to dispose of what you create with this word.</para>
+            </summary>
+            <param name="dueTime">Tell me how much time I should wait for another
+            call before letting this one pass.</param>
+            <param name="testMode">Tell me if I have to ignore this word.</param>
+        </member>
+        <member name="T:Property.ReloadableExtensionsCallbacks">
+            <summary>
+            Contains words that can come immediately after the opening
+            of a property description.
+            </summary>
+        </member>
+        <member name="M:Property.ReloadableExtensionsCallbacks.Worker``1(Property.Reloadable{``0},System.Boolean)">
+            <summary>
+                <para>... on a worker thread ...</para>
+                <para>( ! ) Don't forget to dispose of what you create with this word.</para>
+                <para>New values will be loaded on a worker thread and applied on the UI thread.</para>
+            </summary>
+            <param name="testMode">Tell me if I have to switch to single-threaded mode.</param>
+        </member>
+        <member name="T:Property.Windows.ReloadableExtensionsCallbacksWindows">
+            <summary>
+            Contains words that can come immediately after the opening
+            of a property description.
+            </summary>
+        </member>
+        <member name="M:Property.Windows.ReloadableExtensionsCallbacksWindows.Delayed``1(Property.Reloadable{``0},System.TimeSpan,System.Boolean)">
+            <summary>
+                <para>... synchronously if not overruled by another call in the specified period of time (when) ...</para>
+                <para>( ! ) Don't forget to dispose of what you create with this word.</para>
+            </summary>
+            <param name="dueTime">Tell me how much time I should wait for another
+            call before letting this one pass.</param>
+            <param name="testMode">Tell me if I have to ignore this word.</param>
+        </member>
+        <member name="T:Property.Windows.ReloaderPrototypeExtensionsCallbacksWindows">
+            <summary>
+            Contains words that extend the description
+            of a property's reload process.
+            </summary>
+        </member>
+        <member name="M:Property.Windows.ReloaderPrototypeExtensionsCallbacksWindows.Delayed``1(Property.IReloaderPrototype{``0},System.TimeSpan,System.Boolean)">
+            <summary>
+                <para>... if not overruled by another call in the specified period of time (when) ...</para>
+                <para>( ! ) Don't forget to dispose of what you create with this word.</para>
+            </summary>
+            <param name="dueTime">Tell me how much time I should wait for another
+            call before letting this one pass.</param>
+            <param name="testMode">Tell me if I have to ignore this word.</param>
+        </member>
+        <member name="T:Property.StringsCallbacks">
+            <summary>
+            A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Property.StringsCallbacks.ResourceManager">
+            <summary>
+            Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Property.StringsCallbacks.Culture">
+            <summary>
+            Overrides the current thread's CurrentUICulture property for all
+            resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Property.StringsCallbacks.CANT_OBTAIN_TIMER">
+            <summary>
+            Looks up a localized string similar to Instance creation method of a timer prototype returned null. Null values are not supported for timer instances..
+            </summary>
+        </member>
+        <member name="P:Property.StringsCallbacks.CANT_OBTAIN_WORKER">
+            <summary>
+            Looks up a localized string similar to Instance creation method of a worker prototype returned null. Null values are not supported for worker instances..
+            </summary>
+        </member>
+    </members>
+</doc>

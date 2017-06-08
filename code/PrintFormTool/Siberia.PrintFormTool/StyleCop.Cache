@@ -1,0 +1,177 @@
+<stylecopresultscache>
+  <version>11</version>
+  <sourcecode name="AssemblyInfoCommon.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>06/02/2015 14:52:50</timestamp>
+      <milliseconds>878</milliseconds>
+    </settings>
+    <timestamp>06/30/2015 10:00:18</timestamp>
+    <milliseconds>598</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name=".NETFramework,Version=v4.5.AssemblyAttributes.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>06/02/2015 14:52:50</timestamp>
+      <milliseconds>878</milliseconds>
+    </settings>
+    <timestamp>06/02/2015 15:09:08</timestamp>
+    <milliseconds>129</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>06/02/2015 14:52:50</timestamp>
+      <milliseconds>878</milliseconds>
+    </settings>
+    <timestamp>06/29/2015 20:36:09</timestamp>
+    <milliseconds>269</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>06/02/2015 14:52:50</timestamp>
+      <milliseconds>878</milliseconds>
+    </settings>
+    <timestamp>06/29/2015 20:36:09</timestamp>
+    <milliseconds>270</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>06/02/2015 14:52:50</timestamp>
+      <milliseconds>878</milliseconds>
+    </settings>
+    <timestamp>06/29/2015 20:36:09</timestamp>
+    <milliseconds>267</milliseconds>
+    <violations />
+  </sourcecode>
+  <project key="-1034461500">
+    <configuration>DEBUG;TRACE</configuration>
+  </project>
+  <sourcecode name="Rectangle.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>06/02/2015 14:52:50</timestamp>
+      <milliseconds>878</milliseconds>
+    </settings>
+    <timestamp>06/30/2015 22:15:33</timestamp>
+    <milliseconds>819</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="MainWindowViewModel.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>06/02/2015 14:52:50</timestamp>
+      <milliseconds>878</milliseconds>
+    </settings>
+    <timestamp>06/30/2015 22:15:33</timestamp>
+    <milliseconds>830</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="ResizeThumb.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>06/02/2015 14:52:50</timestamp>
+      <milliseconds>878</milliseconds>
+    </settings>
+    <timestamp>06/30/2015 22:15:33</timestamp>
+    <milliseconds>882</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="DelegateCommand.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>06/02/2015 14:52:50</timestamp>
+      <milliseconds>878</milliseconds>
+    </settings>
+    <timestamp>06/30/2015 22:15:33</timestamp>
+    <milliseconds>874</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="MoveThumb.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>06/02/2015 14:52:50</timestamp>
+      <milliseconds>878</milliseconds>
+    </settings>
+    <timestamp>06/30/2015 22:15:33</timestamp>
+    <milliseconds>877</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="TextAreaEnum.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>06/02/2015 14:52:50</timestamp>
+      <milliseconds>878</milliseconds>
+    </settings>
+    <timestamp>06/30/2015 22:15:33</timestamp>
+    <milliseconds>822</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="AssemblyInfo.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>06/02/2015 14:52:50</timestamp>
+      <milliseconds>878</milliseconds>
+    </settings>
+    <timestamp>06/30/2015 22:15:33</timestamp>
+    <milliseconds>834</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="Resources.Designer.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>06/02/2015 14:52:50</timestamp>
+      <milliseconds>878</milliseconds>
+    </settings>
+    <timestamp>06/30/2015 22:15:33</timestamp>
+    <milliseconds>836</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="GeneratedInternalTypeHelper.g.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>06/02/2015 14:52:50</timestamp>
+      <milliseconds>878</milliseconds>
+    </settings>
+    <timestamp>06/30/2015 22:19:31</timestamp>
+    <milliseconds>798</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="MainWindow.g.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>06/02/2015 14:52:50</timestamp>
+      <milliseconds>878</milliseconds>
+    </settings>
+    <timestamp>06/30/2015 22:19:31</timestamp>
+    <milliseconds>116</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="Settings.Designer.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>06/02/2015 14:52:50</timestamp>
+      <milliseconds>878</milliseconds>
+    </settings>
+    <timestamp>06/30/2015 22:15:33</timestamp>
+    <milliseconds>860</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="App.g.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>06/02/2015 14:52:50</timestamp>
+      <milliseconds>878</milliseconds>
+    </settings>
+    <timestamp>06/30/2015 22:19:31</timestamp>
+    <milliseconds>26</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="App.xaml.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>06/02/2015 14:52:50</timestamp>
+      <milliseconds>878</milliseconds>
+    </settings>
+    <timestamp>06/30/2015 22:15:33</timestamp>
+    <milliseconds>815</milliseconds>
+    <violations />
+  </sourcecode>
+  <sourcecode name="MainWindow.xaml.cs" parser="StyleCop.CSharp.CsParser">
+    <settings>
+      <timestamp>06/02/2015 14:52:50</timestamp>
+      <milliseconds>878</milliseconds>
+    </settings>
+    <timestamp>06/30/2015 22:15:33</timestamp>
+    <milliseconds>828</milliseconds>
+    <violations />
+  </sourcecode>
+</stylecopresultscache>
