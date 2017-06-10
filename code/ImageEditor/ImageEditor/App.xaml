@@ -5,6 +5,12 @@
              xmlns:local="clr-namespace:ImageEditor"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <integration:CompositionRoot x:Key="CompositionRoot"/>
+        <ResourceDictionary>
+            <integration:CompositionRoot x:Key="CompositionRoot"/>
+            <ResourceDictionary.MergedDictionaries >
+                <ResourceDictionary Source="res/colors.xaml"/>
+                <ResourceDictionary Source="res/menu_item_style.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="Property.Callbacks, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\PropertyFramework.3.0.9\lib\net45\Property.Callbacks.dll</HintPath>
     </Reference>
@@ -44,6 +45,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -52,9 +54,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ViewModel\IEditorViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\AppState.cs" />
     <Compile Include="ViewModel\AppStateAction.cs" />
+    <Compile Include="ViewModel\AppStateDataKey.cs" />
     <Compile Include="ViewModel\IAppStateViewModel.cs" />
     <Compile Include="ViewModel\IMainViewModel.cs" />
   </ItemGroup>
