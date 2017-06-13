@@ -10,37 +10,15 @@
             <SolidColorBrush x:Key="DividerBrush" Color="{DynamicResource DividerColor}"/>
             <SolidColorBrush x:Key="WorkSpaceBgBrush" Color="{DynamicResource WorkSpaceBackground}"/>
             <Image x:Key="close" Source="res/close_icon.png"/>
-            <Style x:Key="MenuStyle" TargetType="{x:Type Menu}">
-                <Setter Property="OverridesDefaultStyle"
-          Value="True" />
-                <Setter Property="SnapsToDevicePixels"
-          Value="True" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Menu}">
-                            <Border x:Name="MainMenu" BorderThickness="0">
-                                <Border.Background>
-                                    <SolidColorBrush Color="{DynamicResource MenuBackgroundColor}"/>
-                                </Border.Background>
-                                <StackPanel ClipToBounds="True"
-                      Orientation="Horizontal"
-                      IsItemsHost="True" />
-                            </Border>
-                        </ControlTemplate>
-
-                    </Setter.Value>
-                </Setter>
-            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20" />
             <RowDefinition Height="30" />
             <RowDefinition Height="*" />
-
         </Grid.RowDefinitions>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="30" />
             <ColumnDefinition Width="*" />
@@ -52,32 +30,14 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
-
-            <Menu Style="{StaticResource MenuStyle}" Grid.Column="0" Margin="0,0,0,0">
-
-                <MenuItem Header="_File" Template="{DynamicResource MenuItemControlTemplate1}">
-                    <MenuItem Header="_New…"/>
-                    <MenuItem Header="_Open…"/>
-                    <Separator />
-                    <MenuItem Header="_Close"/>
-                    <MenuItem Header="_Save"/>
-                    <MenuItem Header="_Save As…"/>
-                    <Separator />
-                    <MenuItem Header="_Exit"/>
-                </MenuItem>
-                <MenuItem Header="Filter" Template="{DynamicResource MenuItemControlTemplate1}">
-                    <MenuItem Header="Brightness"/>
-                    <MenuItem Header="Contrast"/>
-                </MenuItem>
-            </Menu>
-
-            <Image Grid.Column="1" Source="res/close_icon.png" Width="12" Height="12" Stretch="Fill" Margin="0,0,6,0">
-
-            </Image>
-
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Rectangle Fill="{StaticResource DividerBrush}" Height="1"/>
         </Grid>
 
-        <Grid Grid.Row="1" Grid.ColumnSpan="3" Margin="0,0,0,0" Background="{StaticResource BgBrush}">
+        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1" Margin="0,0,0,0" Background="{StaticResource BgBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="auto" />
@@ -89,19 +49,7 @@
             <Rectangle Fill="{StaticResource DividerBrush}" Height="1"/>
         </Grid>
 
-        <Grid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1" Margin="0,0,0,0" Background="{StaticResource BgBrush}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="auto" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Rectangle Fill="{StaticResource DividerBrush}" Height="1"/>
-        </Grid>
-
-        <Grid Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="1" Margin="0,0,0,0" Background="{StaticResource WorkSpaceBgBrush}">
+        <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1" Margin="0,0,0,0" Background="{StaticResource WorkSpaceBgBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="auto" />
@@ -118,7 +66,7 @@
             <Rectangle Grid.Row="2" Fill="{StaticResource BgBrush}" Height="10"/>
         </Grid>
 
-        <Grid Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="1" Margin="0,0,0,0" Background="{StaticResource BgBrush}">
+        <Grid Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="1" Margin="0,0,0,0" Background="{StaticResource BgBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="auto" />

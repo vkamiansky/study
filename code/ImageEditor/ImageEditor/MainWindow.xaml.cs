@@ -23,6 +23,16 @@ namespace ImageEditor
         public MainWindow()
         {
             InitializeComponent();
+            DragSpace.PreviewMouseDown += DragSpace_MouseDown;
+        }
+
+        private void DragSpace_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                DragMove();
+                DragSpace.Focus();
+            }
         }
     }
 }

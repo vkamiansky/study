@@ -8,6 +8,6 @@ namespace ImageEditor.Interface.ViewModel
 {
     public enum AppState
     {
-        ImageSource
+        EditorView
     }
 }

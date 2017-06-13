@@ -12,7 +12,6 @@ using System.Windows;
 
 namespace ImageEditor.ViewModel
 {
-
     public static class BitmapConversion
     {
         public static BitmapSource BitmapToBitmapSource(this Image source)

@@ -9,6 +9,7 @@
         Height="350" Width="525"
         WindowState="Normal" 
         ResizeMode="CanResize"
+        
         DataContext="{StaticResource CompositionRoot}">
        
     <!-- WindowStyle="None"-->
@@ -23,19 +24,84 @@
         <DataTemplate x:Key="EditorView" DataType="i:IEditorViewModel">
             <local:Editor/>
         </DataTemplate>
+        
+        <Style x:Key="MenuStyle" TargetType="{x:Type Menu}">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="SnapsToDevicePixels" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Menu}">
+                        <Border x:Name="MainMenu" BorderThickness="0">
+                            <Border.Background>
+                                <SolidColorBrush Color="{DynamicResource MenuBackgroundColor}"/>
+                            </Border.Background>
+                            <StackPanel ClipToBounds="True"
+                  Orientation="Horizontal"
+                  IsItemsHost="True" />
+                        </Border>
+                    </ControlTemplate>
+
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <SolidColorBrush x:Key="BgBrush" Color="{DynamicResource MenuBackgroundColor}"/>
     </Window.Resources>
 
-    <ContentControl DataContext="{Binding MainViewModel}" Background="White" BorderThickness="0" IsTabStop="False" Focusable="False">
-        <ContentControl.Style>
-            <Style TargetType="ContentControl">
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding AppState.State.Value}" Value="EditorView">
-                        <Setter Property="ContentTemplate" Value="{StaticResource EditorView}" />
-                        <Setter Property="Content" Value="{Binding EditorView.Value}"/>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </ContentControl.Style>
-    </ContentControl>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,0" Background="{StaticResource BgBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+
+            <Menu Name="MainMenu" Foreground="White" Style="{StaticResource MenuStyle}" Grid.Column="0" Margin="0,0,0,0">
+                <MenuItem Name="FirstMenuItem" Header="_File" Template="{DynamicResource MenuItemControlTemplate1}">
+                    <MenuItem Foreground="Black" Header="_New…"/>
+                    <MenuItem Foreground="Black" Header="_Open…"/>
+                    <Separator/>
+                    <MenuItem Foreground="Black" Header="_Close"/>
+                    <MenuItem Foreground="Black" Header="_Save"/>
+                    <MenuItem Foreground="Black" Header="_Save As…"/>
+                    <Separator/>
+                    <MenuItem Foreground="Black" Header="_Exit"/>
+                </MenuItem>
+                
+                <MenuItem Header="Filter" Template="{DynamicResource MenuItemControlTemplate1}">
+                    <MenuItem Foreground="Black" Header="Brightness"/>
+                    <MenuItem Foreground="Black" Header="Contrast"/>
+                </MenuItem>
+            </Menu>
+
+            <Menu Style="{StaticResource MenuStyle}" Name="DragSpace" Grid.Column="1" Margin="0,0,0,0">
+                
+            </Menu>
+            <Image HorizontalAlignment="Right" Grid.Column="2" Source="res/close_icon.png" Width="12" Height="12" Stretch="Fill" Margin="0,0,6,0">
+
+            </Image>
+
+        </Grid>
+
+        <ContentControl Grid.Row="1" DataContext="{Binding MainViewModel}" Background="White" BorderThickness="0" IsTabStop="False" Focusable="False">
+            <ContentControl.Style>
+                <Style TargetType="ContentControl">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding AppState.State.Value}" Value="EditorView">
+                            <Setter Property="ContentTemplate" Value="{StaticResource EditorView}" />
+                            <Setter Property="Content" Value="{Binding Editor.Value}"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ContentControl.Style>
+        </ContentControl>
+    </Grid>
+
+
 </Window>
     
