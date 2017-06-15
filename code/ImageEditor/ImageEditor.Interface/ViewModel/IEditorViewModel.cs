@@ -11,5 +11,7 @@ namespace ImageEditor.Interface
     public interface IEditorViewModel
     {
         IProperty<ImageSource> ImageSource { get; }
+
+        IInputProperty<string> ImagePath { get; }
     }
 }

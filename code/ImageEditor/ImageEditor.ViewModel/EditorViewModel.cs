@@ -9,28 +9,32 @@ using System.Windows.Media;
 using System.Drawing;
 using System.Windows.Media.Imaging;
 using System.Windows;
+using ImageEditor.ViewModel.model;
+using ImageConverter = ImageEditor.ViewModel.model.ImageConverter;
 
 namespace ImageEditor.ViewModel
 {
-    public static class BitmapConversion
-    {
-        public static BitmapSource BitmapToBitmapSource(this Image source)
-        {
-            return System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-            (source as Bitmap).GetHbitmap(),
-            IntPtr.Zero,
-            Int32Rect.Empty,
-            BitmapSizeOptions.FromEmptyOptions());
-        }
-    }
-
     public class EditorViewModel : IEditorViewModel
     {
-        public IProperty<ImageSource> ImageSource { get; private set; }
+        public IProperty<ImageSource> ImageSource => _imageSource;
+        public IInputProperty<string> ImagePath { get; }
+
+        private readonly ICallProperty<ImageSource> _imageSource;
+        private Canvas _canvas;
+        private readonly ImageConverter _converter = new ImageConverter();
 
         public EditorViewModel()
         {
-            ImageSource = Reloadable<ImageSource>.On().First().Get(_ => Bitmap.FromFile("jake.jpg").BitmapToBitmapSource()).Create();
+            _imageSource = Reloadable<ImageSource>.On().Each()
+                .Call(_ => _converter.ConvertToBitmapSource(_canvas)).Create();
+
+            //Bitmap.FromFile(ImagePath.Value).BitmapToBitmapSource()
+            ImagePath = Reloadable<string>.On().Each().Input().Create();
+            ImagePath.OnChanged(() =>
+            {
+                _canvas = _converter.ConvertToCanvas(new Bitmap(ImagePath.Value));
+                _imageSource.Go();
+            });
         }
     }
 }

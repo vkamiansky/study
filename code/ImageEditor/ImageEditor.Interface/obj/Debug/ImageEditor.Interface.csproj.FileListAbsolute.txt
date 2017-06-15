@@ -35,3 +35,4 @@ C:\Users\GZaripov\Projects\C#\study-master\code\ImageEditor\ImageEditor.Interfac
 C:\Users\GZaripov\Projects\C#\study-master\code\ImageEditor\ImageEditor.Interface\bin\Debug\Property.Windows.xml
 C:\Users\GZaripov\Projects\C#\study-master\code\ImageEditor\ImageEditor.Interface\obj\Debug\ImageEditor.Interface.dll
 C:\Users\GZaripov\Projects\C#\study-master\code\ImageEditor\ImageEditor.Interface\obj\Debug\ImageEditor.Interface.pdb
+C:\Users\GZaripov\Projects\C#\study-master\code\ImageEditor\ImageEditor.Interface\obj\Debug\ImageEditor.Interface.csprojResolveAssemblyReference.cache
