@@ -10,6 +10,7 @@
             <ResourceDictionary.MergedDictionaries >
                 <ResourceDictionary Source="res/colors.xaml"/>
                 <ResourceDictionary Source="res/menu_item_style.xaml"/>
+                <ResourceDictionary Source="res/menu.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

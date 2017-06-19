@@ -13,5 +13,9 @@ namespace ImageEditor.Interface
         IProperty<ImageSource> ImageSource { get; }
 
         IInputProperty<string> ImagePath { get; }
+
+        IInputProperty<int> MouseWheelDelta { get; }
+
+        IInputProperty<Tuple<int, int>> Shift { get; }
     }
 }

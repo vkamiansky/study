@@ -3,6 +3,7 @@
                     xmlns:local="clr-namespace:ImageEditor">
     <Color x:Key="MenuBackgroundColor">#ff535353</Color>
     <Color x:Key="MenuItemHoverBackgroundColor">#ff474747</Color>
+    <Color x:Key="TextBoxBg">#ff454545</Color>
     <Color x:Key="WorkSpaceBackground">#282828</Color>
     <Color x:Key="MenuItemPressedBackgroundColor">#383838</Color>
     <Color x:Key="DividerColor">#383838</Color>

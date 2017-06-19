@@ -25,6 +25,13 @@ namespace ImageEditor
         {
             InitializeComponent();
             DragSpace.PreviewMouseDown += DragSpace_MouseDown;
+            CloseButton.MouseLeftButtonUp += (sender, args) => Close();
+            MouseDown += MainWindow_MouseDown;
+        }
+
+        private void MainWindow_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Keyboard.ClearFocus();
         }
 
         private void DragSpace_MouseDown(object sender, MouseButtonEventArgs e)
@@ -34,11 +41,6 @@ namespace ImageEditor
                 DragMove();
                 DragSpace.Focus();
             }
-        }
-
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-           
         }
     }
 }

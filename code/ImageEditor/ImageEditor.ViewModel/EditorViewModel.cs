@@ -11,6 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows;
 using ImageEditor.ViewModel.model;
 using ImageConverter = ImageEditor.ViewModel.model.ImageConverter;
+using Size = System.Windows.Size;
 
 namespace ImageEditor.ViewModel
 {
@@ -18,6 +19,8 @@ namespace ImageEditor.ViewModel
     {
         public IProperty<ImageSource> ImageSource => _imageSource;
         public IInputProperty<string> ImagePath { get; }
+        public IInputProperty<int> MouseWheelDelta { get; }
+        public IInputProperty<Tuple<int, int>> Shift { get; }
 
         private readonly ICallProperty<ImageSource> _imageSource;
         private Canvas _canvas;
@@ -28,7 +31,22 @@ namespace ImageEditor.ViewModel
             _imageSource = Reloadable<ImageSource>.On().Each()
                 .Call(_ => _converter.ConvertToBitmapSource(_canvas)).Create();
 
-            //Bitmap.FromFile(ImagePath.Value).BitmapToBitmapSource()
+            Shift = Reloadable<Tuple<int, int>>.On().Each().Input().Create();
+
+            Shift.OnChanged(() =>
+            {
+                _canvas.OnMoved(Shift.Value.Item1, Shift.Value.Item2);
+                _imageSource.Go();
+            });
+
+            MouseWheelDelta = Reloadable<int>.On().Each().Input().Create();
+
+            MouseWheelDelta.OnChanged(() =>
+            {
+                _canvas.OnSizeChanged(MouseWheelDelta.Value);
+                _imageSource.Go();
+            });
+
             ImagePath = Reloadable<string>.On().Each().Input().Create();
             ImagePath.OnChanged(() =>
             {

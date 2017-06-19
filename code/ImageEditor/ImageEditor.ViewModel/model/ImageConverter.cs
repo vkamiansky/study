@@ -50,9 +50,9 @@ namespace ImageEditor.ViewModel.model
 
         public BitmapSource ConvertToBitmapSource(Canvas canvas)
         {
-            int resultLength = canvas.Length;
 
             float[] raw = canvas.GetRaw();
+            int resultLength = raw.Length;
             byte[] byteRaw = new byte[resultLength];
 
             for (int i = 0; i < resultLength; i++)

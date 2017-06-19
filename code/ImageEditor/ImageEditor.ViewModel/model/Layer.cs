@@ -9,13 +9,19 @@ namespace ImageEditor.ViewModel.model
 {
     public class Layer
     {
-        private int X;
-        private int Y;
+        public int X { get; set; }
+        public int Y { get; set; }
+        public bool IsSelected { get; set; }
 
-        private int Width;
-        private int Height;
+        public int Width { get; }
+        public int Height { get; }
 
-        public float[] raw { get; }
+        private float opacity;
+
+        public float[] raw { get; set; }
+        public float[] cachedRaw { get; set; }
+        public int ScaledWidth { get; set; }
+        public int ScaledHeight { get; set; }
 
         public Layer(int x, int y, int width, int height)
         {
