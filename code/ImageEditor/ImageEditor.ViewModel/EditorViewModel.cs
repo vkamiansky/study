@@ -21,13 +21,34 @@ namespace ImageEditor.ViewModel
         public IInputProperty<string> ImagePath { get; }
         public IInputProperty<int> MouseWheelDelta { get; }
         public IInputProperty<Tuple<int, int>> Shift { get; }
+        public IInputProperty<string> ImageScale { get; }
+
 
         private readonly ICallProperty<ImageSource> _imageSource;
+
         private Canvas _canvas;
         private readonly ImageConverter _converter = new ImageConverter();
 
         public EditorViewModel()
         {
+            ImageScale = Reloadable<string>.On().Each().Input().Create();
+
+            ImageScale.Input = "100%";
+
+            ImageScale.OnChanged(() =>
+            {
+                string s = ImageScale.Value;
+                float scale = -1f;
+                float.TryParse(s.Remove(s.Length - 1).Replace(",", "."), out scale);
+                if (scale <= 1 || scale >= 3200) return;
+
+                scale /= 100;
+
+                _canvas.Scale = scale;
+
+                _imageSource.Go();
+            });
+
             _imageSource = Reloadable<ImageSource>.On().Each()
                 .Call(_ => _converter.ConvertToBitmapSource(_canvas)).Create();
 
@@ -44,6 +65,7 @@ namespace ImageEditor.ViewModel
             MouseWheelDelta.OnChanged(() =>
             {
                 _canvas.OnSizeChanged(MouseWheelDelta.Value);
+                ImageScale.Input = _canvas.Scale * 100 + "%";
                 _imageSource.Go();
             });
 

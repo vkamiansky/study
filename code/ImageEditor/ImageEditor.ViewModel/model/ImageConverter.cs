@@ -67,8 +67,12 @@ namespace ImageEditor.ViewModel.model
 
             Marshal.Copy(byteRaw, 0, data.Scan0, resultLength);
             bmp.UnlockBits(data);
-            
-            return BitmapToBitmapSource(bmp);
+
+            BitmapSource source = BitmapToBitmapSource(bmp);
+
+            bmp.Dispose();
+
+            return source;
         }
 
         public BitmapSource BitmapToBitmapSource(Image source)

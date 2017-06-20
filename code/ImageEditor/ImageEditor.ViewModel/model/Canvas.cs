@@ -15,6 +15,16 @@ namespace ImageEditor.ViewModel.model
         public int Width { get; set; }
         public int Length { get; set; }
 
+        public float Scale
+        {
+            get => _scale;
+            set
+            {
+                _isDirty = true;
+                _scale = value;
+            }
+        }
+
         private readonly int _width;
         private readonly int _height;
         private readonly int _length;

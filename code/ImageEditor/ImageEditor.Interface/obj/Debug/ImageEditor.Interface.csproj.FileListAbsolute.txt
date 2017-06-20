@@ -36,3 +36,16 @@ C:\Users\GZaripov\Projects\C#\study-master\code\ImageEditor\ImageEditor.Interfac
 C:\Users\GZaripov\Projects\C#\study-master\code\ImageEditor\ImageEditor.Interface\obj\Debug\ImageEditor.Interface.dll
 C:\Users\GZaripov\Projects\C#\study-master\code\ImageEditor\ImageEditor.Interface\obj\Debug\ImageEditor.Interface.pdb
 C:\Users\GZaripov\Projects\C#\study-master\code\ImageEditor\ImageEditor.Interface\obj\Debug\ImageEditor.Interface.csprojResolveAssemblyReference.cache
+C:\Users\GZaripov\Projects\C#\study\code\ImageEditor\ImageEditor.Interface\bin\Debug\ImageEditor.Interface.dll
+C:\Users\GZaripov\Projects\C#\study\code\ImageEditor\ImageEditor.Interface\bin\Debug\ImageEditor.Interface.pdb
+C:\Users\GZaripov\Projects\C#\study\code\ImageEditor\ImageEditor.Interface\bin\Debug\Property.Callbacks.dll
+C:\Users\GZaripov\Projects\C#\study\code\ImageEditor\ImageEditor.Interface\bin\Debug\Property.Chains.dll
+C:\Users\GZaripov\Projects\C#\study\code\ImageEditor\ImageEditor.Interface\bin\Debug\Property.Core.dll
+C:\Users\GZaripov\Projects\C#\study\code\ImageEditor\ImageEditor.Interface\bin\Debug\Property.Windows.dll
+C:\Users\GZaripov\Projects\C#\study\code\ImageEditor\ImageEditor.Interface\bin\Debug\Property.Callbacks.xml
+C:\Users\GZaripov\Projects\C#\study\code\ImageEditor\ImageEditor.Interface\bin\Debug\Property.Chains.xml
+C:\Users\GZaripov\Projects\C#\study\code\ImageEditor\ImageEditor.Interface\bin\Debug\Property.Core.xml
+C:\Users\GZaripov\Projects\C#\study\code\ImageEditor\ImageEditor.Interface\bin\Debug\Property.Windows.xml
+C:\Users\GZaripov\Projects\C#\study\code\ImageEditor\ImageEditor.Interface\obj\Debug\ImageEditor.Interface.csprojResolveAssemblyReference.cache
+C:\Users\GZaripov\Projects\C#\study\code\ImageEditor\ImageEditor.Interface\obj\Debug\ImageEditor.Interface.dll
+C:\Users\GZaripov\Projects\C#\study\code\ImageEditor\ImageEditor.Interface\obj\Debug\ImageEditor.Interface.pdb

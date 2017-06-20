@@ -81,8 +81,8 @@
 
             <Rectangle Grid.Row="0" Fill="{StaticResource DividerBrush}" Height="1" Margin="0,0,0,9.4" Grid.RowSpan="2" />
 
-            <!--  -->
-            <Image Width="200" Height="200" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="Canvas"
+            <!-- Width="200" Height="200" -->
+            <Image  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="Canvas"
                    Grid.Column="0" Grid.Row="1" Source="{Binding ImageSource.Value}" Stretch="None"
                    Margin="0,0.2,0,0.6" Grid.RowSpan="2">
                 <i:Interaction.Triggers>
@@ -101,10 +101,10 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
-                <TextBox BorderThickness="0" FontSize="9" VerticalAlignment="Center" HorizontalAlignment="Left"
+                <TextBox Name="ScaleTextBox"  BorderThickness="0" FontSize="9" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding ImageScale.Input, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
                          Width="Auto" MinWidth="10" Background="{StaticResource TextBoxBgBrush}" Foreground="#AFFFFFFF"
                          BorderBrush="#00ABADB3">
-                    100%
+                
                 </TextBox>
             </Grid>
 
