@@ -57,8 +57,8 @@ namespace ImageEditor.ViewModel.model
             Console.WriteLine("Start raw");
             sw.Start();
 
-            Height = (int) (_height * _scale);
-            Width = (int) (_width * _scale);
+            Height = (int) ((_height-1) * _scale);
+            Width = (int) ((_width-1) * _scale);
             Length = Height * Width * ChannelsCount;
 
             var result = GenerateBackground();
@@ -74,7 +74,7 @@ namespace ImageEditor.ViewModel.model
                 }
 
                 compose(layer.cachedRaw, layer.ScaledWidth, layer.ScaledHeight,
-                    result, Width, Height, layer.X, layer.Y);
+                    result, Width, Height, (int) (layer.X * _scale), (int) (layer.Y * _scale));
             }
 
             _isDirty = false;
