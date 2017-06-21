@@ -11,6 +11,8 @@
             <SolidColorBrush x:Key="BgBrush" Color="{DynamicResource MenuBackgroundColor}" />
             <SolidColorBrush x:Key="DividerBrush" Color="{DynamicResource DividerColor}" />
             <SolidColorBrush x:Key="WorkSpaceBgBrush" Color="{DynamicResource WorkSpaceBackground}" />
+            <SolidColorBrush x:Key="MenuItemPressedBrush" Color="{DynamicResource MenuItemPressedBackgroundColor}" />
+            <SolidColorBrush x:Key="MenuItemHoverBrush" Color="{DynamicResource MenuItemHoverBackgroundColor}" />
             <SolidColorBrush x:Key="TextBoxBgBrush" Color="{DynamicResource TextBoxBg}" />
             <Image x:Key="close" Source="res/close_icon.png" />
         </ResourceDictionary>
@@ -43,27 +45,64 @@
         <Grid Grid.Row="1" Grid.Column="0" Margin="0,0,0,0" Background="{StaticResource BgBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="auto" />
+
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="1" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Rectangle Fill="{StaticResource DividerBrush}" Height="1" />
-            <Menu Foreground="White" Style="{DynamicResource MenuStyle}" Grid.Row="1" VerticalAlignment="Top"
-                  HorizontalAlignment="Center" Margin="0,10,0,0">
-                <Menu.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <VirtualizingStackPanel Orientation="Vertical" />
-                    </ItemsPanelTemplate>
-                </Menu.ItemsPanel>
-                <MenuItem Height="25" Width="25" Template="{DynamicResource MenuItemControlTemplate1}">
+
+            <Grid Name="ToolMenuGrid" Grid.Column="0" Grid.Row="1" Margin="0, 10, 0, 0">
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Loaded">
+                        <action:ToolMenuSetupAction ToolMenu="{Binding ElementName=ToolMenuGrid}"
+                                                    MenuPressed="{StaticResource MenuItemPressedBrush}"
+                                                    MenuNotPressed="{StaticResource BgBrush}"
+                                                    MenuHover="{StaticResource MenuItemHoverBrush}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <MenuItem Name="MenuItem1" Grid.Row="0" Height="25" Width="25"
+                          Template="{DynamicResource MenuItemControlTemplate1}">
                     <MenuItem.Icon>
                         <Image Margin="0,0,0,0" Width="15" Height="15" Source="res/icons/move_icon.png"
                                Stretch="UniformToFill" />
                     </MenuItem.Icon>
                 </MenuItem>
-            </Menu>
+
+                <MenuItem Name="MenuItem2" Grid.Row="1" Height="25" Width="25"
+                          Template="{DynamicResource MenuItemControlTemplate1}">
+                    <MenuItem.Icon>
+                        <Image Margin="0,0,0,0" Width="15" Height="15" Source="res/icons/select_icon.png"
+                               Stretch="UniformToFill" />
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem Name="MenuItem3" Grid.Row="2" Height="25" Width="25"
+                          Template="{DynamicResource MenuItemControlTemplate1}">
+                    <MenuItem.Icon>
+                        <Image Margin="0,0,0,0" Source="res/icons/brush_icon.png"
+                               Stretch="Fill" />
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem Name="MenuItem4" Grid.Row="3" Height="25" Width="25"
+                          Template="{DynamicResource MenuItemControlTemplate1}">
+                    <MenuItem.Icon>
+                        <Image Margin="0,0,0,0" Height="15" Source="res/icons/eraser_icon.png"
+                               Stretch="Fill" />
+                    </MenuItem.Icon>
+                </MenuItem>
+            </Grid>
         </Grid>
 
         <Grid Name="GridOne" Grid.Row="1" Grid.Column="1" Margin="0,0,0,0"
@@ -82,7 +121,7 @@
             <Rectangle Grid.Row="0" Fill="{StaticResource DividerBrush}" Height="1" Margin="0,0,0,9.4" Grid.RowSpan="2" />
 
             <!-- Width="200" Height="200" -->
-            <Image  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="Canvas"
+            <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="Canvas"
                    Grid.Column="0" Grid.Row="1" Source="{Binding ImageSource.Value}" Stretch="None"
                    Margin="0,0.2,0,0.6" Grid.RowSpan="2">
                 <i:Interaction.Triggers>
@@ -101,13 +140,12 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
-                <TextBox Name="ScaleTextBox"  BorderThickness="0" FontSize="9" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding ImageScale.Input, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+                <TextBox Name="ScaleTextBox" BorderThickness="0" FontSize="9" VerticalAlignment="Center"
+                         HorizontalAlignment="Left"
+                         Text="{Binding ImageScale.Input, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
                          Width="Auto" MinWidth="10" Background="{StaticResource TextBoxBgBrush}" Foreground="#AFFFFFFF"
-                         BorderBrush="#00ABADB3">
-                
-                </TextBox>
+                         BorderBrush="#00ABADB3" />
             </Grid>
-
 
         </Grid>
 

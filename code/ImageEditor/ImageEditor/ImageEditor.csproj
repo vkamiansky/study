@@ -93,6 +93,7 @@
     <Compile Include="action\MouseDownAction.cs" />
     <Compile Include="action\MouseWheelAction.cs" />
     <Compile Include="action\OpenFileDialogAction.cs" />
+    <Compile Include="action\ToolMenuSetupAction.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -169,8 +170,10 @@
     <Content Include="jake.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="res\icons\eraser_icon.png" />
+    <Resource Include="res\icons\select_icon.png" />
     <Resource Include="res\icons\move_icon.png" />
-    <Content Include="res\icons\move_icon.svg" />
+    <Resource Include="res\icons\brush_icon.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

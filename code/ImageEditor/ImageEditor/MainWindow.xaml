@@ -46,7 +46,7 @@
 
             <Menu Name="MainMenu" Foreground="White" Style="{DynamicResource MenuStyle}" Grid.Column="0"
                   Margin="0,0,0,0">
-                <MenuItem Name="FirstMenuItem" Header="_File" Template="{DynamicResource MenuItemControlTemplate1}">
+                <MenuItem Name="FirstMenuItem" Header="_File" Template="{DynamicResource MenuItemControlTemplate2}">
                     <MenuItem Foreground="Black" Header="_New…" />
                     <MenuItem Foreground="Black" Header="_Open…">
                         <i:Interaction.Triggers>
@@ -63,7 +63,7 @@
                     <MenuItem Foreground="Black" Header="_Exit" />
                 </MenuItem>
 
-                <MenuItem Header="Filter" Template="{DynamicResource MenuItemControlTemplate1}">
+                <MenuItem Header="Filter" Template="{DynamicResource MenuItemControlTemplate2}">
                     <MenuItem Foreground="Black" Header="Brightness" />
                     <MenuItem Foreground="Black" Header="Contrast" />
                 </MenuItem>

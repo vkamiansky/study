@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Drawing;
 using System.Windows.Media.Imaging;
 using System.Windows;
+using ImageEditor.Interface.ViewModel;
 using ImageEditor.ViewModel.model;
 using ImageConverter = ImageEditor.ViewModel.model.ImageConverter;
 using Size = System.Windows.Size;
@@ -22,7 +23,7 @@ namespace ImageEditor.ViewModel
         public IInputProperty<int> MouseWheelDelta { get; }
         public IInputProperty<Tuple<int, int>> Shift { get; }
         public IInputProperty<string> ImageScale { get; }
-
+        public IProperty<ToolMenuItem> ToolMenu { get; }
 
         private readonly ICallProperty<ImageSource> _imageSource;
 

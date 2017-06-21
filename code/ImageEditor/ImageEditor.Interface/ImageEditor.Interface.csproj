@@ -61,6 +61,7 @@
     <Compile Include="ViewModel\AppStateDataKey.cs" />
     <Compile Include="ViewModel\IAppStateViewModel.cs" />
     <Compile Include="ViewModel\IMainViewModel.cs" />
+    <Compile Include="ViewModel\ToolMenuItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

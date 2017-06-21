@@ -20,7 +20,6 @@ C:\Projects\C#\Photozhop\study\code\ImageEditor\ImageEditor.Interface\bin\Debug\
 C:\Projects\C#\Photozhop\study\code\ImageEditor\ImageEditor.Interface\bin\Debug\Property.Chains.xml
 C:\Projects\C#\Photozhop\study\code\ImageEditor\ImageEditor.Interface\bin\Debug\Property.Core.xml
 C:\Projects\C#\Photozhop\study\code\ImageEditor\ImageEditor.Interface\bin\Debug\Property.Windows.xml
-C:\Projects\C#\Photozhop\study\code\ImageEditor\ImageEditor.Interface\obj\Debug\ImageEditor.Interface.csprojResolveAssemblyReference.cache
 C:\Projects\C#\Photozhop\study\code\ImageEditor\ImageEditor.Interface\obj\Debug\ImageEditor.Interface.dll
 C:\Projects\C#\Photozhop\study\code\ImageEditor\ImageEditor.Interface\obj\Debug\ImageEditor.Interface.pdb
 C:\Users\GZaripov\Projects\C#\study-master\code\ImageEditor\ImageEditor.Interface\bin\Debug\ImageEditor.Interface.dll
