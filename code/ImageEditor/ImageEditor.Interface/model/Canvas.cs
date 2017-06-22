@@ -29,7 +29,7 @@ namespace ImageEditor.ViewModel.model
         private readonly int _height;
         private readonly int _length;
         private float[] raw;
-        private List<Layer> layers;
+        public List<Layer> Layers { get; }
         private float _scale = 1f;
         private bool _isDirty = true;
 
@@ -43,43 +43,40 @@ namespace ImageEditor.ViewModel.model
             _length = width * height * ChannelsCount;
 
             raw = GenerateBackground();
-            layers = new List<Layer>();
+            Layers = new List<Layer>();
             var layer = new Layer(0, 0, width, height, imgRaw);
             layer.IsSelected = true;
-            layers.Add(layer);
+            Layers.Add(layer);
         }
-
 
         public float[] GetRaw()
         {
             Stopwatch sw = new Stopwatch();
-            
+
             Console.WriteLine("Start raw");
             sw.Start();
 
-            Height = (int) ((_height-1) * _scale);
-            Width = (int) ((_width-1) * _scale);
+            Height = (int) ((_height - 1) * _scale);
+            Width = (int) ((_width - 1) * _scale);
             Length = Height * Width * ChannelsCount;
 
             var result = GenerateBackground();
 
-            foreach (var layer in layers)
+            foreach (var layer in Layers)
             {
-                if (_isDirty)
-                {
-                    layer.ScaledWidth = (int) (layer.Width * _scale);
-                    layer.ScaledHeight = (int) (layer.Height * _scale);
-                    layer.cachedRaw = ApplyScale(layer.raw, layer.Width, layer.Height, layer.ScaledWidth,
-                        layer.ScaledHeight);
-                }
+                if (!layer.IsSelected) continue;
+
+                layer.ScaledWidth = (int) (layer.Width * _scale);
+                layer.ScaledHeight = (int) (layer.Height * _scale);
+                layer.cachedRaw = ApplyScale(layer.raw, layer.Width, layer.Height, layer.ScaledWidth,
+                    layer.ScaledHeight);
+
 
                 compose(layer.cachedRaw, layer.ScaledWidth, layer.ScaledHeight,
-                    result, Width, Height, (int) (layer.X * _scale), (int) (layer.Y * _scale));
+                    result, Width, Height, (int) (layer.X), (int) (layer.Y), 0, 0, layer.Opacity);
             }
 
-            _isDirty = false;
 
-     
             sw.Stop();
             Console.WriteLine("stop:" + sw.ElapsedMilliseconds);
 
@@ -129,7 +126,15 @@ namespace ImageEditor.ViewModel.model
                     }
                 }
             }
-            return rawArr;
+            return Clone(rawArr);
+        }
+
+        public void OnLayersChanged(Action action)
+        {
+            foreach (var layer in Layers)
+            {
+                layer.OnChanged = action;
+            }
         }
 
         private float[] Clone(float[] arr)
@@ -261,6 +266,7 @@ namespace ImageEditor.ViewModel.model
         public void OnMoved(int dx, int dy)
         {
             var selectedLayer = GetSelectedLayer();
+            if (selectedLayer == null) return;
             selectedLayer.X += dx;
             selectedLayer.Y += dy;
 
@@ -269,13 +275,75 @@ namespace ImageEditor.ViewModel.model
 
         private Layer GetSelectedLayer()
         {
-            foreach (var layer in layers)
+            foreach (var layer in Layers)
             {
                 if (layer.IsSelected)
                     return layer;
             }
 
-            return layers[0];
+            return null;
+        }
+
+        public void Draw(int x, int y, int size, float opacity, Color color)
+        {
+            var selectedLayer = GetSelectedLayer();
+            if (selectedLayer == null) return;
+
+            color = Color.Red;
+
+            size = (int) (size / Scale + 0.5);
+            x = (int) (x / Scale + 0.5);
+            y = (int) (y / Scale + 0.5);
+
+            float[] col = NormalizeColor(color);
+
+            int x1 = x - size;
+            int y1 = y - size;
+
+            float d, d2;
+
+            var h = size * 2;
+            var w = size * 2;
+
+            float[] brush = new float[h * w * ChannelsCount];
+
+            for (int i = 0; i < h; i++)
+            {
+                for (int j = 0; j < w; j++)
+                {
+                    d2 = dist2(j, i, size, size);
+                    if (d2 < size * size)
+                    {
+                        d = (float) Math.Sqrt(d2);
+                        int index = (i * w + j) * ChannelsCount;
+                        brush[index + 0] = col[0];
+                        brush[index + 1] = col[1];
+                        brush[index + 2] = col[2];
+                        brush[index + 3] = col[3] * (1 - d / size);
+                    }
+                }
+            }
+
+            compose(brush, w, h, selectedLayer.raw, selectedLayer.Width, selectedLayer.Height, x1, y1, 0, 0, opacity);
+        }
+
+        float[] NormalizeColor(Color color)
+        {
+            float[] colors = new float[4];
+            colors[0] = color.B * ColorNormalizeRatio;
+            colors[1] = color.G * ColorNormalizeRatio;
+            colors[2] = color.R * ColorNormalizeRatio;
+            colors[3] = color.A * ColorNormalizeRatio;
+            return colors;
+        }
+
+        float dist2(float x1, float y1, float x2, float y2)
+        {
+            return (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
+        }
+
+        public void Erase(int x, int y, int size, float opacity)
+        {
         }
     }
 }

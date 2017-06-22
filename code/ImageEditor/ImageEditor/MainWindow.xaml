@@ -12,7 +12,7 @@
         WindowState="Normal"
         ResizeMode="CanResize"
         WindowStyle="None"
-      
+
         DataContext="{StaticResource CompositionRoot}">
 
     <!-- WindowStyle="None"-->
@@ -51,7 +51,8 @@
                     <MenuItem Foreground="Black" Header="_Open…">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
-                                <action:OpenFileDialogAction FilePath="{Binding MainViewModel.Editor.Value.ImagePath.Input, Mode=TwoWay}" />
+                                <action:OpenFileDialogAction
+                                    FilePath="{Binding MainViewModel.Editor.Value.ImagePath.Input, Mode=TwoWay}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </MenuItem>
@@ -71,12 +72,15 @@
 
             <Menu Style="{DynamicResource MenuStyle}" Name="DragSpace" Grid.Column="1" Margin="0,0,0,0" />
 
-                <MenuItem HorizontalAlignment="Center" Grid.Column="2" Template="{DynamicResource MenuItemControlTemplate1}" Margin="0" HorizontalContentAlignment="Right">
+            <MenuItem HorizontalAlignment="Center" Grid.Column="2"
+                      Template="{DynamicResource MenuItemControlTemplate1}" Margin="0"
+                      HorizontalContentAlignment="Right">
                 <MenuItem.Icon>
-                    <Image Name="CloseButton"  Source="res/close_icon.png" Width="10" Height="10" Stretch="UniformToFill" HorizontalAlignment="Center" />
+                    <Image Name="CloseButton" Source="res/close_icon.png" Width="10" Height="10"
+                           Stretch="UniformToFill" HorizontalAlignment="Center" />
                 </MenuItem.Icon>
             </MenuItem>
-      
+
         </Grid>
 
         <ContentControl Grid.Row="1" DataContext="{Binding MainViewModel}" Background="White" BorderThickness="0"

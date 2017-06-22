@@ -2,11 +2,14 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
+using ImageEditor.Interface.ViewModel;
 
 namespace ImageEditor.action
 {
     public class MouseDownAction : TriggerAction<FrameworkElement>
     {
+        private const double RoundCorrection = .5;
+
         public Tuple<int, int> Shift
         {
             get => (Tuple<int, int>) GetValue(ShiftProperty);
@@ -19,6 +22,16 @@ namespace ImageEditor.action
             set => SetValue(GetPosElementProperty, value);
         }
 
+        public ToolMenuItem ToolMenu
+        {
+            get => (ToolMenuItem) GetValue(ToolMenuProperty);
+            set => SetValue(ToolMenuProperty, value);
+        }
+
+        public static readonly DependencyProperty ToolMenuProperty
+            = DependencyProperty.Register("ToolMenu", typeof(ToolMenuItem), typeof(MouseDownAction),
+                new PropertyMetadata(default(ToolMenuItem)));
+
         public static readonly DependencyProperty ShiftProperty
             = DependencyProperty.Register("Shift", typeof(Tuple<int, int>), typeof(MouseDownAction),
                 new PropertyMetadata(default(Tuple<int, int>)));
@@ -27,11 +40,9 @@ namespace ImageEditor.action
             = DependencyProperty.Register("GetPosElement", typeof(IInputElement), typeof(MouseDownAction),
                 new PropertyMetadata(default(IInputElement)));
 
-        private double _mouseX;
-        private double _mouseY;
+        private int _x;
+        private int _y;
 
-        private double _dx;
-        private double _dy;
 
         protected override void Invoke(object parameter)
         {
@@ -40,20 +51,24 @@ namespace ImageEditor.action
 
             var point = e.GetPosition(GetPosElement);
 
+            int x = (int) (point.X + RoundCorrection);
+            int y = (int) (point.Y + RoundCorrection);
+
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                _dx += point.X - _mouseX;
-                _dy += point.Y - _mouseY;
-
-                if (_dx >= 1 || _dy >= 1 || _dx <= -1 || _dy <= -1)
+                if (ToolMenu != ToolMenuItem.Move)
                 {
-                    Shift = new Tuple<int, int>((int) _dx, (int) _dy);
-                    _dx = 0f;
-                    _dy = 0f;
+                    Shift = new Tuple<int, int>(x, y);
+                }
+                else
+                {
+                    if (x != _x || y != _y)
+                        Shift = new Tuple<int, int>(x - _x, y - _y);
                 }
             }
-            _mouseX = point.X;
-            _mouseY = point.Y;
+
+            _x = x;
+            _y = y;
         }
     }
 }

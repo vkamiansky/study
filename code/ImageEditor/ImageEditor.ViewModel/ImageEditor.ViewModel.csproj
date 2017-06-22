@@ -59,10 +59,6 @@
     <Compile Include="AppStateViewModel.cs" />
     <Compile Include="EditorViewModel.cs" />
     <Compile Include="MainViewModel.cs" />
-    <Compile Include="model\Canvas.cs" />
-    <Compile Include="model\Constants.cs" />
-    <Compile Include="model\ImageConverter.cs" />
-    <Compile Include="model\Layer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

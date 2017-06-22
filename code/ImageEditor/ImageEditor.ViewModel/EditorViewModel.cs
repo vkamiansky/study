@@ -11,6 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows;
 using ImageEditor.Interface.ViewModel;
 using ImageEditor.ViewModel.model;
+using Color = System.Windows.Media.Color;
 using ImageConverter = ImageEditor.ViewModel.model.ImageConverter;
 using Size = System.Windows.Size;
 
@@ -19,13 +20,18 @@ namespace ImageEditor.ViewModel
     public class EditorViewModel : IEditorViewModel
     {
         public IProperty<ImageSource> ImageSource => _imageSource;
+        public IProperty<List<Layer>> Layers => _layers;
         public IInputProperty<string> ImagePath { get; }
         public IInputProperty<int> MouseWheelDelta { get; }
         public IInputProperty<Tuple<int, int>> Shift { get; }
         public IInputProperty<string> ImageScale { get; }
-        public IProperty<ToolMenuItem> ToolMenu { get; }
+        public IInputProperty<ToolMenuItem> ToolMenu { get; }
+        public IInputProperty<int> ToolSize { get; }
+        public IInputProperty<float> ToolOpacity { get; }
+        public IInputProperty<System.Drawing.Color> ToolColor { get; }
 
         private readonly ICallProperty<ImageSource> _imageSource;
+        private readonly ICallProperty<List<Layer>> _layers;
 
         private Canvas _canvas;
         private readonly ImageConverter _converter = new ImageConverter();
@@ -57,7 +63,23 @@ namespace ImageEditor.ViewModel
 
             Shift.OnChanged(() =>
             {
-                _canvas.OnMoved(Shift.Value.Item1, Shift.Value.Item2);
+
+                switch (ToolMenu.Value)
+                {
+                    case ToolMenuItem.Move:
+                        _canvas.OnMoved(Shift.Value.Item1, Shift.Value.Item2);
+                        break;
+
+                    case ToolMenuItem.Brush:
+                        _canvas.Draw(Shift.Value.Item1, Shift.Value.Item2, ToolSize.Value, ToolOpacity.Value,
+                            ToolColor.Value);
+                        break;
+
+                    case ToolMenuItem.Erase:
+                        _canvas.Erase(Shift.Value.Item1, Shift.Value.Item2, ToolSize.Value, ToolOpacity.Value);
+                        break;
+                }
+
                 _imageSource.Go();
             });
 
@@ -74,8 +96,19 @@ namespace ImageEditor.ViewModel
             ImagePath.OnChanged(() =>
             {
                 _canvas = _converter.ConvertToCanvas(new Bitmap(ImagePath.Value));
+                _canvas.OnLayersChanged(() => _imageSource.Go());
+                _layers.Go();
                 _imageSource.Go();
             });
+
+            _layers = Reloadable<List<Layer>>.On().Each()
+                .Call(_ => _canvas.Layers).Create();
+
+            ToolMenu = Reloadable<ToolMenuItem>.On().Each().Input().Create();
+
+            ToolSize = Reloadable<int>.On().Each().Input().Create();
+            ToolOpacity = Reloadable<float>.On().Each().Input().Create();
+            ToolColor = Reloadable<System.Drawing.Color>.On().Each().Input().Create();
         }
     }
 }

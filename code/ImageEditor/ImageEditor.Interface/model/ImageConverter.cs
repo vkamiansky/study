@@ -70,8 +70,9 @@ namespace ImageEditor.ViewModel.model
 
             BitmapSource source = BitmapToBitmapSource(bmp);
 
-            bmp.Dispose();
+            source.Freeze();
 
+            bmp.Dispose();
             return source;
         }
 

@@ -28,14 +28,13 @@ namespace ImageEditor.action
 
         public ToolMenuItem ToolMenuItem
         {
-            get => (ToolMenuItem)GetValue(GetPosElementProperty);
-            set => SetValue(GetPosElementProperty, value);
+            get => (ToolMenuItem)GetValue(ToolMenuItemProperty);
+            set => SetValue(ToolMenuItemProperty, value);
         }
 
-        public static readonly DependencyProperty GetPosElementProperty
+        public static readonly DependencyProperty ToolMenuItemProperty
             = DependencyProperty.Register("ToolMenuItem", typeof(ToolMenuItem), typeof(ToolMenuSetupAction),
                 new PropertyMetadata(default(ToolMenuItem)));
-
 
 
         public SolidColorBrush MenuPressed
@@ -80,10 +79,6 @@ namespace ImageEditor.action
         {
             _items = new List<MenuItem>(ToolMenu.Children.Count);
 
-            //_menuPressed = (SolidColorBrush)FindResource("MenuItemPressedBrush");
-            //MenuNotPressed = (SolidColorBrush)FindResource("BgBrush");
-            // MenuHover = (SolidColorBrush)FindResource("MenuItemHoverBrush");
-
             foreach (var toolMenuChild in ToolMenu.Children)
             {
                 if (!(toolMenuChild is MenuItem)) continue;
@@ -94,11 +89,27 @@ namespace ImageEditor.action
                 menuItem.MouseLeave += MenuItem_MouseLeave;
                 _items.Add(menuItem);
             }
+            MenuItem_Click(_items[0], null);
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             MenuItem item = (MenuItem)sender;
+            switch (_items.IndexOf(item))
+            {
+                case 0:
+                    ToolMenuItem = ToolMenuItem.Move;
+                    break;
+                case 1:
+                    ToolMenuItem = ToolMenuItem.Select;
+                    break;
+                case 2:
+                    ToolMenuItem = ToolMenuItem.Brush;
+                    break;
+                case 3:
+                    ToolMenuItem = ToolMenuItem.Erase;
+                    break;
+            }
             foreach (var menuItem in _items)
             {
                 menuItem.Background = item.Equals(menuItem) ? MenuPressed : MenuNotPressed;

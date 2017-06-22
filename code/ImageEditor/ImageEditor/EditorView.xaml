@@ -5,7 +5,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:action="clr-namespace:ImageEditor.action"
+             xmlns:ncore="http://schemas.ncore.com/wpf/xaml/colorbox"
              mc:Ignorable="d">
+
     <UserControl.Resources>
         <ResourceDictionary>
             <SolidColorBrush x:Key="BgBrush" Color="{DynamicResource MenuBackgroundColor}" />
@@ -15,6 +17,24 @@
             <SolidColorBrush x:Key="MenuItemHoverBrush" Color="{DynamicResource MenuItemHoverBackgroundColor}" />
             <SolidColorBrush x:Key="TextBoxBgBrush" Color="{DynamicResource TextBoxBg}" />
             <Image x:Key="close" Source="res/close_icon.png" />
+            <DataTemplate x:Key="ItemTemplate">
+                <Grid Height="80">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="20" />
+                    </Grid.RowDefinitions>
+
+                    <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding IsSelected}"
+                              HorizontalAlignment="Center" />
+                    <TextBox Grid.Column="1" Grid.Row="0" Height="15" Text="{Binding Name}" />
+                    <Slider Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Minimum="0" Maximum="1"
+                            TickFrequency="0.01" Value="{Binding Opacity}" />
+                </Grid>
+            </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -30,16 +50,49 @@
             <ColumnDefinition Width="100" />
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="0" Grid.ColumnSpan="3" Margin="0,0,0,0" Background="{StaticResource BgBrush}">
+        <Grid Grid.Row="0" Grid.Column="0" Background="{StaticResource BgBrush}" />
+
+        <Grid Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,0,0,0" Background="{StaticResource BgBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="1" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Rectangle Fill="{StaticResource DividerBrush}" Height="1" />
+            <StackPanel Margin="10, 0, 10, 0" Grid.Row="1" Name="Toolbar" Orientation="Horizontal"
+                        VerticalAlignment="Center">
+
+
+                <Label FontSize="8" Foreground="White">Size:</Label>
+
+                <Slider AutoToolTipPlacement="TopLeft" Height="10" Width="50" HorizontalAlignment="Left"
+                        VerticalAlignment="Center" Foreground="{DynamicResource MenuItemPressedBrush}"
+                        BorderBrush="{DynamicResource MenuItemPressedBrush}" Minimum="1" Maximum="100"
+                        TickFrequency="1"
+                        Value="{Binding ToolSize.Input, Mode=TwoWay}">
+                    <Slider.LayoutTransform>
+                        <ScaleTransform ScaleY="0.2" CenterX="5" CenterY="5" />
+                    </Slider.LayoutTransform>
+                </Slider>
+
+                <Label FontSize="8" Foreground="White">Opacity: </Label>
+
+                <Slider AutoToolTipPlacement="TopLeft" Height="10" Width="50" HorizontalAlignment="Left"
+                        VerticalAlignment="Center" Foreground="{DynamicResource MenuItemPressedBrush}"
+                        BorderBrush="{DynamicResource MenuItemPressedBrush}"
+                        Minimum="0" Maximum="1" TickFrequency="0.01" Value="{Binding ToolOpacity.Input, Mode=TwoWay}">
+                    <Slider.LayoutTransform>
+                        <ScaleTransform ScaleY="0.2" CenterX="5" CenterY="5" />
+                    </Slider.LayoutTransform>
+                </Slider>
+
+                <Label FontSize="8" Foreground="White">Color:</Label>
+
+                <!--<ncore:ColorBox x:Name="CB" />-->
+
+            </StackPanel>
         </Grid>
 
         <Grid Grid.Row="1" Grid.Column="0" Margin="0,0,0,0" Background="{StaticResource BgBrush}">
@@ -60,7 +113,8 @@
                         <action:ToolMenuSetupAction ToolMenu="{Binding ElementName=ToolMenuGrid}"
                                                     MenuPressed="{StaticResource MenuItemPressedBrush}"
                                                     MenuNotPressed="{StaticResource BgBrush}"
-                                                    MenuHover="{StaticResource MenuItemHoverBrush}" />
+                                                    MenuHover="{StaticResource MenuItemHoverBrush}"
+                                                    ToolMenuItem="{Binding ToolMenu.Input, Mode=TwoWay}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <Grid.RowDefinitions>
@@ -121,7 +175,7 @@
             <Rectangle Grid.Row="0" Fill="{StaticResource DividerBrush}" Height="1" Margin="0,0,0,9.4" Grid.RowSpan="2" />
 
             <!-- Width="200" Height="200" -->
-            <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="Canvas"
+            <Image Width="200" Height="200" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="Canvas"
                    Grid.Column="0" Grid.Row="1" Source="{Binding ImageSource.Value}" Stretch="None"
                    Margin="0,0.2,0,0.6" Grid.RowSpan="2">
                 <i:Interaction.Triggers>
@@ -130,7 +184,13 @@
                     </i:EventTrigger>
                     <i:EventTrigger EventName="MouseMove">
                         <action:MouseDownAction Shift="{Binding Shift.Input, Mode=TwoWay}"
-                                                GetPosElement="{Binding Canvas}" />
+                                                ToolMenu="{Binding ToolMenu.Input, Mode=TwoWay}"
+                                                GetPosElement="{Binding ElementName=Canvas}" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="PreviewMouseDown">
+                        <action:MouseClickAction Shift="{Binding Shift.Input, Mode=TwoWay}"
+                                                 ToolMenu="{Binding ToolMenu.Input, Mode=TwoWay}"
+                                                 GetPosElement="{Binding ElementName=Canvas}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
 
@@ -152,13 +212,18 @@
         <Grid Grid.Row="1" Grid.Column="2" Margin="0,0,0,0" Background="{StaticResource BgBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auTo" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="1" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Rectangle Fill="{StaticResource DividerBrush}" Height="1" />
+
+            <ListBox Grid.Row="1" x:Name="ListBox" ItemTemplate="{StaticResource ItemTemplate}"
+                     ItemsSource="{Binding Layers.Value}"
+                     IsSynchronizedWithCurrentItem="True" Background="{StaticResource BgBrush}" />
+
+            <Rectangle Grid.ColumnSpan="2" Grid.Row="0" Fill="{StaticResource DividerBrush}" Height="1" />
         </Grid>
 
     </Grid>

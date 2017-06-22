@@ -20,7 +20,6 @@ namespace ImageEditor.action
             = DependencyProperty.Register("Window", typeof(Window), typeof(CloseFoemAction),
                 new PropertyMetadata(default(Window)));
 
-
         protected override void Invoke(object parameter)
         {
            Window.Close();

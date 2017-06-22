@@ -51,6 +51,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ColorBox, Version=1.1.0.0, Culture=neutral, PublicKeyToken=f971124b2576acfc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ColorBox.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Expression.Blend.Sdk.WPF.1.0.1\lib\net45\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
@@ -89,7 +93,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="action\ChooseColorAction.cs" />
     <Compile Include="action\CloseFoemAction.cs" />
+    <Compile Include="action\MouseClickAction.cs" />
     <Compile Include="action\MouseDownAction.cs" />
     <Compile Include="action\MouseWheelAction.cs" />
     <Compile Include="action\OpenFileDialogAction.cs" />
@@ -100,6 +106,7 @@
     </Compile>
     <Compile Include="EditorView.xaml.cs">
       <DependentUpon>EditorView.xaml</DependentUpon>
+      <CustomToolNamespace>ncore</CustomToolNamespace>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

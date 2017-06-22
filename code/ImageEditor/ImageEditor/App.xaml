@@ -3,15 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:integration="clr-namespace:ImageEditor.Integration;assembly=ImageEditor.Integration"
              xmlns:local="clr-namespace:ImageEditor"
-             StartupUri="MainWindow.xaml">
+             StartupUri="MainWindow.xaml"
+             >
     <Application.Resources>
         <ResourceDictionary>
             <integration:CompositionRoot x:Key="CompositionRoot"/>
+            <SolidColorBrush x:Key="SystemControlForegroundAccentBrush" Color="White" />
             <ResourceDictionary.MergedDictionaries >
                 <ResourceDictionary Source="res/colors.xaml"/>
                 <ResourceDictionary Source="res/menu_item_style.xaml"/>
                 <ResourceDictionary Source="res/menu.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        </ResourceDictionary> 
     </Application.Resources>
 </Application>

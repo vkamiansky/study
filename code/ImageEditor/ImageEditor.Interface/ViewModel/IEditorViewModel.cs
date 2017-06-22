@@ -1,11 +1,10 @@
 ﻿using Property;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using System.Windows.Media;
 using ImageEditor.Interface.ViewModel;
+using ImageEditor.ViewModel.model;
 
 namespace ImageEditor.Interface
 {
@@ -13,7 +12,9 @@ namespace ImageEditor.Interface
     {
         IProperty<ImageSource> ImageSource { get; }
 
-        IProperty<ToolMenuItem> ToolMenu { get; }
+        IProperty<List<Layer>> Layers { get; }
+
+        IInputProperty<ToolMenuItem> ToolMenu { get; }
 
         IInputProperty<string> ImagePath { get; }
 
@@ -22,5 +23,11 @@ namespace ImageEditor.Interface
         IInputProperty<int> MouseWheelDelta { get; }
 
         IInputProperty<Tuple<int, int>> Shift { get; }
+
+        IInputProperty<int> ToolSize { get; }
+
+        IInputProperty<float> ToolOpacity { get; }
+
+        IInputProperty<System.Drawing.Color> ToolColor { get; }
     }
 }
