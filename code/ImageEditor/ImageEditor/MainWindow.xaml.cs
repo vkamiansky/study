@@ -24,7 +24,6 @@ namespace ImageEditor
         {
             InitializeComponent();
             DragSpace.PreviewMouseDown += DragSpace_MouseDown;
-            CloseButton.MouseLeftButtonUp += (sender, args) => Close();
             MouseDown += MainWindow_MouseDown;
         }
 

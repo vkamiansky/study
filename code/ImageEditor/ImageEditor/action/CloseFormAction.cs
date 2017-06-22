@@ -8,7 +8,7 @@ using System.Windows.Interactivity;
 
 namespace ImageEditor.action
 {
-    public class CloseFoemAction : TriggerAction<FrameworkElement>
+    public class CloseFormAction : TriggerAction<FrameworkElement>
     {
         public Window Window
         {
@@ -17,7 +17,7 @@ namespace ImageEditor.action
         }
 
         public static readonly DependencyProperty WindowProperty
-            = DependencyProperty.Register("Window", typeof(Window), typeof(CloseFoemAction),
+            = DependencyProperty.Register("Window", typeof(Window), typeof(CloseFormAction),
                 new PropertyMetadata(default(Window)));
 
         protected override void Invoke(object parameter)

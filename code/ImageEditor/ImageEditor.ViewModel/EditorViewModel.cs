@@ -11,6 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows;
 using ImageEditor.Interface.ViewModel;
 using ImageEditor.ViewModel.model;
+using Brushes = System.Drawing.Brushes;
 using Color = System.Windows.Media.Color;
 using ImageConverter = ImageEditor.ViewModel.model.ImageConverter;
 using Size = System.Windows.Size;
@@ -19,6 +20,9 @@ namespace ImageEditor.ViewModel
 {
     public class EditorViewModel : IEditorViewModel
     {
+        private const float DefaultOpacity = 1f;
+        private const int DefaultSize = 6;
+
         public IProperty<ImageSource> ImageSource => _imageSource;
         public IProperty<List<Layer>> Layers => _layers;
         public IInputProperty<string> ImagePath { get; }
@@ -28,7 +32,7 @@ namespace ImageEditor.ViewModel
         public IInputProperty<ToolMenuItem> ToolMenu { get; }
         public IInputProperty<int> ToolSize { get; }
         public IInputProperty<float> ToolOpacity { get; }
-        public IInputProperty<System.Drawing.Color> ToolColor { get; }
+        public IInputProperty<SolidColorBrush> ToolBrush { get; }
 
         private readonly ICallProperty<ImageSource> _imageSource;
         private readonly ICallProperty<List<Layer>> _layers;
@@ -61,9 +65,12 @@ namespace ImageEditor.ViewModel
 
             Shift = Reloadable<Tuple<int, int>>.On().Each().Input().Create();
 
+            ToolBrush = Reloadable<SolidColorBrush>.On().Each().Input().Create();
+
+            ToolBrush.Input = new SolidColorBrush(Colors.Crimson);
+
             Shift.OnChanged(() =>
             {
-
                 switch (ToolMenu.Value)
                 {
                     case ToolMenuItem.Move:
@@ -72,7 +79,7 @@ namespace ImageEditor.ViewModel
 
                     case ToolMenuItem.Brush:
                         _canvas.Draw(Shift.Value.Item1, Shift.Value.Item2, ToolSize.Value, ToolOpacity.Value,
-                            ToolColor.Value);
+                            ToolBrush.Value.Color);
                         break;
 
                     case ToolMenuItem.Erase:
@@ -108,7 +115,9 @@ namespace ImageEditor.ViewModel
 
             ToolSize = Reloadable<int>.On().Each().Input().Create();
             ToolOpacity = Reloadable<float>.On().Each().Input().Create();
-            ToolColor = Reloadable<System.Drawing.Color>.On().Each().Input().Create();
+
+            ToolSize.Input = DefaultSize;
+            ToolOpacity.Input = DefaultOpacity;
         }
     }
 }

@@ -12,7 +12,7 @@
         WindowState="Normal"
         ResizeMode="CanResize"
         WindowStyle="None"
-
+        Name="MainViewWindow"
         DataContext="{StaticResource CompositionRoot}">
 
     <!-- WindowStyle="None"-->
@@ -61,7 +61,13 @@
                     <MenuItem Foreground="Black" Header="_Save" />
                     <MenuItem Foreground="Black" Header="_Save As…" />
                     <Separator />
-                    <MenuItem Foreground="Black" Header="_Exit" />
+                    <MenuItem Foreground="Black" Header="_Exit" >
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <action:CloseFormAction Window="{Binding ElementName=MainViewWindow}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
                 </MenuItem>
 
                 <MenuItem Header="Filter" Template="{DynamicResource MenuItemControlTemplate2}">
@@ -79,8 +85,12 @@
                     <Image Name="CloseButton" Source="res/close_icon.png" Width="10" Height="10"
                            Stretch="UniformToFill" HorizontalAlignment="Center" />
                 </MenuItem.Icon>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <action:CloseFormAction Window="{Binding ElementName=MainViewWindow}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
             </MenuItem>
-
         </Grid>
 
         <ContentControl Grid.Row="1" DataContext="{Binding MainViewModel}" Background="White" BorderThickness="0"
@@ -97,6 +107,5 @@
             </ContentControl.Style>
         </ContentControl>
     </Grid>
-
 
 </Window>

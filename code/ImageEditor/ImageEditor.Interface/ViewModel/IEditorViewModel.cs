@@ -28,6 +28,6 @@ namespace ImageEditor.Interface
 
         IInputProperty<float> ToolOpacity { get; }
 
-        IInputProperty<System.Drawing.Color> ToolColor { get; }
+        IInputProperty<SolidColorBrush> ToolBrush { get; }
     }
 }

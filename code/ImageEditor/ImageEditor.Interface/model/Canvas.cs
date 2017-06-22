@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using static ImageEditor.ViewModel.model.Constants;
 
 namespace ImageEditor.ViewModel.model
@@ -289,9 +289,6 @@ namespace ImageEditor.ViewModel.model
             var selectedLayer = GetSelectedLayer();
             if (selectedLayer == null) return;
 
-            color = Color.Red;
-
-            size = (int) (size / Scale + 0.5);
             x = (int) (x / Scale + 0.5);
             y = (int) (y / Scale + 0.5);
 
@@ -324,7 +321,8 @@ namespace ImageEditor.ViewModel.model
                 }
             }
 
-            compose(brush, w, h, selectedLayer.raw, selectedLayer.Width, selectedLayer.Height, x1, y1, 0, 0, opacity);
+            compose(brush, w, h, selectedLayer.raw,
+                selectedLayer.Width, selectedLayer.Height, x1, y1, 0, 0, opacity);
         }
 
         float[] NormalizeColor(Color color)
@@ -344,6 +342,42 @@ namespace ImageEditor.ViewModel.model
 
         public void Erase(int x, int y, int size, float opacity)
         {
+            var selectedLayer = GetSelectedLayer();
+            if (selectedLayer == null) return;
+
+            x = (int) (x / Scale + 0.5);
+            y = (int) (y / Scale + 0.5);
+
+            int x1 = x - size;
+            int y1 = y - size;
+
+            var h = size * 2;
+            var w = size * 2;
+
+            float d, d2;
+
+            int x2 = y1 + h;
+            int y2 = x1 + w;
+
+            if (y1 < 0) y1 = 0;
+            if (x1 < 0) x1 = 0;
+
+            if (x2 > selectedLayer.Width) x2 = selectedLayer.Width;
+            if (y2 > selectedLayer.Height) y2 = selectedLayer.Height;
+
+            for (int j = y1; j < x2; j++)
+            {
+                for (int i = x1; i < y2; i++)
+                {
+                    d2 = dist2(i, j, x, y);
+                    if (d2 < size * size)
+                    {
+                        d = (float) Math.Sqrt(d2);
+                        int index = (j * selectedLayer.Width + i) * ChannelsCount;
+                        selectedLayer.raw[index + 3] *=  d / size * opacity + 0.001f;
+                    }
+                }
+            }
         }
     }
 }
