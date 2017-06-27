@@ -1,0 +1,41 @@
+﻿{
+    "repository": "[name]",
+    "user": "[username]",
+    "reviewers": [ "[username]" ],
+    "filename_marker_labels": [
+        { "marker": "ApiControllers", "label": "api" },
+        { "marker": "Appointment", "label": "appointments" },
+        { "marker": "Siberia.Database/Migrations/", "label": "db" },
+        { "marker": "Drug", "label": "drugs" },
+        { "marker": "Export", "label": "export" },
+        { "marker": "FeeEstimate", "label": "fee estimates" },
+        { "marker": "Genie", "label": "Genie" },
+        { "marker": "Invoice", "label": "invoices" },
+        { "marker": "Letter", "label": "letters" },
+        { "marker": "Sources/MigrationTool/", "label": "migration tool" },
+        { "marker": "OnGFertility", "label": "o&g fertility" },
+        { "marker": "PatientPortal", "label": "patient portal" },
+        { "marker": "Recall", "label": "recalls" },
+        { "marker": "Referral", "label": "referrals" },
+        { "marker": "Report", "label": "reports" },
+        { "marker": "Shexie", "label": "Shexie" },
+        { "marker": "Siberia.Web", "label": "web" },
+        { "marker": "Zedmed", "label": "Zedmed" }
+    ],
+    "iteration_labels": [
+        { "threshold": 3, "label": ">3 iter" },
+        { "threshold": 5, "label": ">5 iter" },
+        { "threshold": 10, "label": ">10 iter" }
+    ],
+    "gap_labels": [
+        { "threshold": 3, "label": ">3 days gap" },
+        { "threshold": 5, "label": ">5 days gap" }
+    ],
+    "gap_delay_exclusion_labels": [ "external block", "question" ],
+    "delay_labels": [
+        { "threshold": 3, "label": ">3 days delay" },
+        { "threshold": 5, "label": ">5 days delay" },
+        { "threshold": 10, "label": ">10 days delay" }
+    ],
+    "conflict_label": "conflict"
+}
