@@ -11,7 +11,7 @@ namespace ImageEditor.Integration
     {
         private IMainViewModel _MainViewModel;
 
-        public IMainViewModel MainViewModel1
+        public IMainViewModel MainViewModel
         {
             get
             {

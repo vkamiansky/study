@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Property;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,5 +10,7 @@ namespace ImageEditor.Interface.ViewModel
     public interface IMainViewModel
     {
         IAppStateViewModel AppState { get; }
+
+        IProperty<IEditorViewModel> Editor { get; }
     }
 }

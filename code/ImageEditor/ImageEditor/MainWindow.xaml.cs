@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ImageEditor
 {
@@ -23,6 +23,22 @@ namespace ImageEditor
         public MainWindow()
         {
             InitializeComponent();
+            DragSpace.PreviewMouseDown += DragSpace_MouseDown;
+            MouseDown += MainWindow_MouseDown;
+        }
+
+        private void MainWindow_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Keyboard.ClearFocus();
+        }
+
+        private void DragSpace_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                DragMove();
+                DragSpace.Focus();
+            }
         }
     }
 }

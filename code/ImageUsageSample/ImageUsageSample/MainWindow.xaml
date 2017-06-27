@@ -5,11 +5,8 @@
         Title="Print Form Tool"
         Height="550" Width="750" DataContext="{StaticResource MainWindowViewModel}">
   <Window.Resources>
-    <ResourceDictionary>
-      <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="Styles.xaml" />
-      </ResourceDictionary.MergedDictionaries>
-    </ResourceDictionary>
+        <ResourceDictionary>
+        </ResourceDictionary>
   </Window.Resources>
   <Grid>
     <Grid.RowDefinitions>
@@ -24,7 +21,7 @@
                       Width="{Binding Path=Width.Input, Mode=TwoWay}"
                       Canvas.Top="{Binding Path=Top.Input, Mode=TwoWay}"
                       Canvas.Left="{Binding Path=Left.Input, Mode=TwoWay}"
-                      Template="{StaticResource DesignerItemTemplate}">
+                      >
       </ContentControl>
     </Canvas>
     <ComboBox Grid.Row="0"

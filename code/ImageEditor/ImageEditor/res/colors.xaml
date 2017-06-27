@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:ImageEditor">
+    <Color x:Key="MenuBackgroundColor">#ff535353</Color>
+    <SolidColorBrush x:Key="BackgroundBrush">#ff535353</SolidColorBrush>
+    <Color x:Key="MenuItemHoverBackgroundColor">#ff474747</Color>
+    <Color x:Key="TextBoxBg">#ff454545</Color>
+    <Color x:Key="WorkSpaceBackground">#282828</Color>
+    <Color x:Key="MenuItemPressedBackgroundColor">#383838</Color>
+    <Color x:Key="DividerColor">#383838</Color>
+    <Color x:Key="MenuItemBorderColor">#ff636363</Color>
+</ResourceDictionary> 
