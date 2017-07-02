@@ -8,7 +8,7 @@ module CompositeToolset =
     | Value of 'a
     | Composite of LazyList<Composite<'a>>
 
-    let to_composite obj =
+    let toComposite obj =
         match obj with
         | Nil -> raise(FatalError "Empty data sequence will not lead to a meaningful Composite instance.")
         | Cons(x, Nil) -> Value x
@@ -18,7 +18,7 @@ module CompositeToolset =
         match scn with
         | [] -> obj
         | f :: scn_tail -> match obj with
-                           | Value x -> ana scn_tail (to_composite(f x))
+                           | Value x -> ana scn_tail (toComposite(f x))
                            | Composite x -> Composite(LazyList.map (ana scn) x)
 
     let l obj =
@@ -31,11 +31,11 @@ module CompositeToolset =
         | x -> LazyList.cons obj x
 
     let flat obj =
-        let rec flat_inner o =
+        let rec flatInner o =
             match o with
-            | Composite x -> LazyList.collect flat_inner x
+            | Composite x -> LazyList.collect flatInner x
             | Value x -> l x
 
         match obj with
         | Value x -> obj
-        | Composite x -> Composite (LazyList.map (fun y -> Composite(LazyList.map Value (flat_inner y)) ) x)
+        | Composite x -> Composite (LazyList.map (fun y -> Composite(LazyList.map Value (flatInner y)) ) x)
