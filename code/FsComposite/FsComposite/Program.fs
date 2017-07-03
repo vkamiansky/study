@@ -28,33 +28,58 @@ module Program =
        | A -> l B
        | x -> l x
 
-    let rec produceTupleSmart t o f =
-        match t with
-        |(None, _) | (_, None) -> match o with
-                                  | Nil -> t
-                                  | Cons(h, tail) -> produceTupleSmart (f h t) tail f
-        | _ -> t
+    let rec fold2 acc f_update_acc lst =
+        match acc with
+        |(None, _) | (_, None) -> match lst with
+                                  | Nil -> acc
+                                  | Cons(h, tail) -> fold2 (f_update_acc h acc) f_update_acc tail
+        | _ -> acc
 
-//    let transformABSmart obj =
+    let find_2_and_transform f_is_1 f_is_2 f_transform lst =
+        let f h t =
+            match f_is_1 h, f_is_2 h, t with
+            | _, true, (a, None) -> (a, Some h)
+            | true, _, (None, b) -> (Some h, b)
+            | _ -> t
+        match fold2 (None, None) f lst with
+        | x -> f_transform x
+
+    let find_2_and_transform_strict f_is_1 f_is_2 f_transform lst =
+        let f_transform_strict = function | (Some x1, Some x2) -> l(f_transform (x1, x2)) | _ ->  LazyList.empty
+        find_2_and_transform f_is_1 f_is_2 f_transform_strict lst
+
+    let transformABSmart2 obj =
+        let f1 = function | A -> true | _ -> false
+        let f2 = function | B -> true | _ -> false
+        let f = function | (Some a, Some b) -> l C | (None, Some b) -> l C | _ -> LazyList.empty
+        find_2_and_transform f1 f2 f obj
+
+    let transformABSmart2Strict obj =
+        let f1 = function | A -> true | _ -> false
+        let f2 = function | B -> true | _ -> false
+        let f = fun (a, b) -> C
+        find_2_and_transform_strict f1 f2 f obj
+
+    let transformABSmart obj =
+        let f h t =
+            match h, t with
+            | B, (a, None) -> (a, Some B)
+            | A, (None, b) -> (Some A, b)
+            | _ -> t
+        match fold2 (None, None) f obj with
+        | (None, _) | (_, None) -> LazyList.empty
+        | (a, b) -> l [C]
+
+//    let transform2TypesSmart (v1, v2) transformFunc obj =
 //        let f h t =
 //            match h, t with
-//            | B, (a, _) -> (a, Some B)
-//            | A, (_, b) -> (Some A, b)
+//            | v1, (a, _) -> (Some v1, a)
+//            | v2, (_, b) -> (b, Some v2)
 //            | _ -> t
 //        match produceTupleSmart (None, None) obj f with
 //        | (None, _) | (_, None) -> LazyList.empty
-//        | (a, b) -> l [C]
-
-    let transform2TypesSmart (v1, v2) transformFunc obj =
-        let f h t =
-            match h, t with
-            | v1, (a, _) -> (Some v1, a)
-            | v2, (_, b) -> (b, Some v2)
-            | _ -> t
-        match produceTupleSmart (None, None) obj f with
-        | (None, _) | (_, None) -> LazyList.empty
-        | (a, b) when a = v1 && b = v2 -> transformFunc (a, b)
-        | (a, b) when a = v2 && b = v1 -> transformFunc (b, a)
+//        | (v1, v2) ->
+//        | (a, b) when a = v2 && b = v1 -> transformFunc (b, a)
             
 
     [<EntryPoint>]
@@ -69,7 +94,7 @@ module Program =
         let whatWeSearch = (Some A, Some B)
         let howToTransform = AB_to_C
 
-        let ccc = transform2TypesSmart whatWeSearch howToTransform whereWeSearch |> Array.ofSeq
+        //let ccc = transform2TypesSmart whatWeSearch howToTransform whereWeSearch |> Array.ofSeq
 //
 //        let f = ana [ v transform ] (Composite ([Value A; Value A]|> LazyList.ofList))
 //        
