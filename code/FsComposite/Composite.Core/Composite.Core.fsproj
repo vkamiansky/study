@@ -54,6 +54,7 @@
     <Compile Include="AssemblyInfo.fs" />
     <Content Include="packages.config" />
     <Compile Include="Composite.fs" />
+    <Compile Include="Processing.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ExtCore">

@@ -1,6 +1,7 @@
 ﻿namespace Composite.Simple
 
 open Composite.Core.Composite
+open Composite.Core.Processing
 
 module Data =
     
