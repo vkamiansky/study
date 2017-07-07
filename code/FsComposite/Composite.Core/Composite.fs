@@ -24,7 +24,9 @@ module Composite =
     
     let rec flat o =
         match o with
-        | Composite x -> LazyList.collect flat x
+        | Composite x -> match x with
+                         | Cons(h, Nil) -> LazyList.map ( fun x1 -> flat h) x
+                         | Cons(h, tail) -> LazyList.map ( fun x1 -> flat x1) x
         | Value x -> l x
 
     let rec ana scn obj =

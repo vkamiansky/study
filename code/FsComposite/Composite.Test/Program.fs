@@ -26,7 +26,8 @@ module Program =
 
         expanded |> toConsole
 
-        let folded = cata [ transformABStrict; transformABStrict ] expanded
+        //let folded = cata [ transformABStrict; transformABStrict ] expanded
+        let folded = cata [ transformABCStrict ] expanded
 
         Console.ReadKey |> ignore
         
