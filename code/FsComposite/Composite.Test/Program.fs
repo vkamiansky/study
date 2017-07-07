@@ -28,6 +28,7 @@ module Program =
 
         //let folded = cata [ transformABStrict; transformABStrict ] expanded
         let folded = cata [ transformABCStrict ] expanded
+//        let folded = cata [transformSingle [transform_A; transform_B]] expanded
 
         Console.ReadKey |> ignore
         

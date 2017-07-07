@@ -20,6 +20,19 @@ module Data =
 
     //how to fold
 
+    let transform_A obj =
+        match obj with
+        | A -> [B; D] |> LazyList.ofList
+        | _ -> LazyList.empty
+        
+    let transform_B obj =
+        match obj with
+        | B -> [A; C] |> LazyList.ofList
+        | _ -> LazyList.empty
+
+    let  transformSingle scn obj =
+        LazyList.collect (applyScnToElement scn LazyList.empty) obj
+
     let transformAB obj =
         let f1 = function | A -> true | _ -> false
         let f2 = function | B -> true | _ -> false
