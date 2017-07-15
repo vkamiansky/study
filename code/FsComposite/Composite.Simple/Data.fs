@@ -13,48 +13,38 @@ module Data =
 
     //how to expand
 
-    let expand obj =
+    let expandSimple obj =
         match obj with
-        | A -> [B; C] |> LazyList.ofList
-        | x -> l x
+        | A -> ll B
+        | x -> ll x
 
     //how to fold
 
-    let transform_A obj =
-        match obj with
-        | A -> [B; D] |> LazyList.ofList
-        | _ -> LazyList.empty
-        
-    let transform_B obj =
-        match obj with
-        | B -> [A; C] |> LazyList.ofList
-        | _ -> LazyList.empty
-
-    let  transformSingle scn obj =
-        LazyList.collect (applyScnToElement scn LazyList.empty) obj
-
-    let transformAB obj =
+    let find_and_transform_AB () =
         let f1 = function | A -> true | _ -> false
         let f2 = function | B -> true | _ -> false
-        let f = function | (Some a, Some b) -> l C | (None, Some b) -> l C | _ -> LazyList.empty
-        find_2_and_transform f1 f2 f obj
+        let transform lst = 
+            match lst with
+            | [A; B] -> ll C 
+            | _ -> LazyList.empty
+        (([f1; f2] |> LazyList.ofList), List.empty, transform)
 
-    let transformABStrict obj =
-        let f1 = function | A -> true | _ -> false
-        let f2 = function | B -> true | _ -> false
-        let f = fun (a, b) -> C
-        find_2_and_transform_strict f1 f2 f obj
+    let find_and_transform_BC () =
+        let f3 = function | B -> true | _ -> false
+        let f4 = function | C -> true | _ -> false
+        let transform = function 
+                        | [B; C] -> ll D
+                        | _ -> LazyList.empty
+        (([f3; f4] |> LazyList.ofList), List.empty, transform)
 
-    let transformABC obj =
-        let f1 = function | A -> true | _ -> false
-        let f2 = function | B -> true | _ -> false
-        let f3 = function | C -> true | _ -> false
-        let f = function | (Some a, Some b, Some c) -> l D | (None, Some a, Some b) -> l D | _ -> LazyList.empty
-        find_3_and_transform f1 f2 f3 f obj
-
-    let transformABCStrict obj =
-        let f1 = function | A -> true | _ -> false
-        let f2 = function | B -> true | _ -> false
-        let f3 = function | C -> true | _ -> false
-        let f = fun (a, b, c) -> D
-        find_3_and_transform_strict f1 f2 f3 f obj
+//    let transform_AB obj =
+//        let f1 = function | A -> true | _ -> false
+//        let f2 = function | B -> true | _ -> false
+//        let f = function | (Some a, Some b) -> l C | (None, Some b) -> l C | _ -> LazyList.empty
+//        find_2_and_transform f1 f2 f obj
+//
+//    let transform_AB_strict obj =
+//        let f1 = function | A -> true | _ -> false
+//        let f2 = function | B -> true | _ -> false
+//        let f = fun (a, b) -> D
+//        find_2_and_transform_strict f1 f2 f obj

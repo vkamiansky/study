@@ -1,8 +1,10 @@
 ﻿namespace Composite.Test
 
 open System
-open Composite.Simple.Data
+
 open Composite.Core.Composite
+open Composite.Core.Processing
+open Composite.Simple.Data
 
 module Program =
 
@@ -20,16 +22,17 @@ module Program =
     [<EntryPoint>]
     let main argv =
 
-        //let ccc = transform2TypesSmart whatWeSearch howToTransform whereWeSearch |> Array.ofSeq
-//
-        let expanded = ana [ v expand ] (Composite ([Value A; Value A]|> LazyList.ofList))
+//        let folded = cata [ transformABStrict; transformABStrict ] expanded
 
-        expanded |> toConsole
-
-        //let folded = cata [ transformABStrict; transformABStrict ] expanded
-        let folded = cata [ transformABCStrict ] expanded
-//        let folded = cata [transformSingle [transform_A; transform_B]] expanded
-
+        let inputSimple = Composite ([Value A; Value B; Value C] |> LazyList.ofList)
+//        let expanded = ana [v (expandGithub_step1 client); v (expandGithub_step2 client)] input
+        let expanded = ana [v expandSimple] inputSimple
+        let collapseScn = [find_and_transform_AB (); find_and_transform_BC ()] |> LazyList.ofList
+        let collapsed = fill_accs_in_scn collapseScn (expanded |> flat)
+        let transformed = collapsed |> LazyList.map (fun x ->
+                                           match x with
+                                           | (Nil, res, f_transform) -> f_transform res)
+//                                           | (a, res, f_transform) -> // here we can apply non strict transformation
         Console.ReadKey |> ignore
         
         0 // return an integer exit code
