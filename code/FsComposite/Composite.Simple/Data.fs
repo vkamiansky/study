@@ -19,22 +19,6 @@ module Data =
 
     //how to fold
 
-    let how_to_find_AB =
-        let f1 = function | A -> true | _ -> false
-        let f2 = function | B -> true | _ -> false
-        composeTupleAcc ([f1; f2] |> LazyList.ofList) LazyList.empty
-        
-    let how_to_find_BC =
-        let f1 = function | B -> true | _ -> false
-        let f2 = function | C -> true | _ -> false
-        composeTupleAcc ([f1; f2] |> LazyList.ofList) LazyList.empty
-
-    let find_AB obj =
-        fill_accs_for_lst how_to_find_AB obj
-        
-    let find_BC obj =
-        fill_accs_for_lst how_to_find_BC obj
-
     let transform_AB obj =
         let f1 = function | A -> true | _ -> false
         let f2 = function | B -> true | _ -> false

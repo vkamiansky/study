@@ -23,27 +23,3 @@ module Processing =
     let find_2_and_transform_strict f_is_1 f_is_2 f_transform lst =
         let f_transform_strict = function | (Some x1, Some x2) -> l(f_transform (x1, x2)) | _ ->  LazyList.empty
         find_2_and_transform f_is_1 f_is_2 f_transform_strict lst
-
-    
-    let rec fill_accs_for_element search_funcs processed_funcs obj =
-        match search_funcs with
-        | Nil -> processed_funcs
-        | Cons(h, tail) -> match h with
-                           | (x, Nil) -> match x obj with
-                                         | true -> fill_accs_for_element tail (LazyList.append (l (x, l obj)) processed_funcs) obj
-                                         | false -> fill_accs_for_element tail (LazyList.append (l h) processed_funcs) obj
-                           | (x, y) -> fill_accs_for_element tail (LazyList.append (l h) processed_funcs) obj
-
-    let rec fill_accs_for_lst search_funcs lst =
-        match lst with
-        | Nil -> search_funcs
-        | Cons(h, tail) -> fill_accs_for_lst (fill_accs_for_element search_funcs LazyList.empty h) tail
-
-    let rec fill_accs_in_scn scn lst =
-        match scn with
-        | Cons(h, t) -> fill_accs_for_lst h lst
-
-    let rec composeTupleAcc funcs acc =
-        match funcs with
-        | Nil -> acc
-        | Cons(h, t) -> composeTupleAcc t (LazyList.append (l (h, LazyList.empty)) acc)

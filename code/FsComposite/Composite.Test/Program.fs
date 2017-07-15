@@ -41,11 +41,8 @@ module Program =
         let client = new RestClient("https://api.github.com")
         client.Authenticator <- new HttpBasicAuthenticator(userName, (printfn "User password: "; Console.readPassword()))
 
-        let inputGithub = Composite ([Value requestReadPr; Value requestReadPrs] |> LazyList.ofList)
-        let inputSimple = Composite ([Value A; Value B; Value C] |> LazyList.ofList)
-//        let expanded = ana [v (expandGithub_step1 client); v (expandGithub_step2 client)] input
-        let expanded = ana [v expandSimple] inputSimple
-        let collapsed = cata [find_AB; find_BC] expanded
+        let input = Composite ([Value requestReadPr; Value requestReadPrs] |> LazyList.ofList)
+        let expanded = ana [v (expandGithub_step1 client); v (expandGithub_step2 client)] input
 
         expanded |> toConsole
         Console.ReadKey |> ignore
