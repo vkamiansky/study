@@ -29,14 +29,14 @@ module Processing =
         match search_funcs with
         | Nil -> (unresulted_funcs, results)
         | Cons(h, tail) -> match h obj with
-                           | true -> fill_accs_for_element tail unresulted_funcs (List.append results [obj]) obj
+                           | true -> fill_accs_for_element tail unresulted_funcs (LazyList.append results (ll obj)) obj
                            | false -> fill_accs_for_element tail (LazyList.append (ll h) unresulted_funcs) results obj
 
-    let rec fill_accs_in_scn scn lst =
+    let rec find_by_scn scn lst =
         match lst with
         | Nil -> scn
         | Cons(obj, objs) ->
-            fill_accs_in_scn (LazyList.map (fun searchFuncsSet ->
+            find_by_scn (LazyList.map (fun searchFuncsSet ->
                                   match searchFuncsSet with
                                   | (searchFuncs, result, f_transform) ->
                                      let processed = fill_accs_for_element searchFuncs LazyList.empty result obj
