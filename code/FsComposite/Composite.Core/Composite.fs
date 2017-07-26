@@ -33,12 +33,6 @@ module Composite =
         | f :: scn_tail -> match obj with
                            | Value x -> ana scn_tail (toComposite(f x))
                            | Composite x -> Composite(LazyList.map (ana scn) x)
-    let cata scn obj =
-        match scn with
-        | [] -> LazyList.empty
-        | _ -> let f_obj = flat obj
-               LazyList.collect (fun x -> x f_obj) (scn |> LazyList.ofList)
-
     let v f obj =
         match f obj with
         | Nil -> raise(FatalError "Empty data sequence is an invalid binding result.")
