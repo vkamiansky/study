@@ -3,30 +3,33 @@
 open Composite.Core.Composite
 
 module Processing =
- 
-    let rec is_obj_suitable check_funcs processed_funcs obj =
-        match check_funcs with
-        | Nil -> processed_funcs
-        | Cons(h, tail) ->
-            match h with
-            | (f, None) as p ->
-                match f obj with
-                | true -> is_obj_suitable tail (LazyList.append processed_funcs (ll (f, Some obj))) obj
-                | false -> is_obj_suitable tail (LazyList.append processed_funcs (ll p)) obj
-            | t -> is_obj_suitable tail (LazyList.append processed_funcs (ll t)) obj
-    
-    let rec cata scn lst = 
-        match lst with
-        | Nil -> 
-            LazyList.collect (fun x -> 
-                match x with
-                | (check_tuple_set, f_transform) -> 
-                    f_transform (List.map (fun check_tuple -> 
-                                     match check_tuple with
-                                     | (_, result) -> result) (LazyList.toList check_tuple_set))) scn
-        | Cons(obj, tail) ->
-            cata (LazyList.map (fun set_for_transform ->
-                      match set_for_transform with
-                      | (check_tuple, f_transform) ->
-                          let processed = is_obj_suitable check_tuple LazyList.empty obj
-                          (processed, f_transform)) scn) tail
+
+    let update_acc check_funcs acc obj =
+        List.zip check_funcs acc
+            |> List.map (function
+                         | (f, None) -> f obj
+                         | (_, res) -> res)
+
+    let update_results frames obj =
+        let pre_results = frames
+                          |> List.map (function
+                                       | (check_funcs, transform, acc) ->
+                                            (let acc_new = update_acc check_funcs acc obj
+                                             match transform acc_new with
+                                             | [] -> (Some (check_funcs, transform, acc_new), [])
+                                             | r -> (None, r)))
+
+        pre_results |> List.choose (function | (f, _) -> f),
+        pre_results |> List.collect (function | (_, r) -> r) |> LazyList.ofList
+
+    let cata scn lst =
+        let frames_init = scn |> List.map (function |(check_funcs, transform) -> (check_funcs, transform, check_funcs |> List.map (fun _ -> None)))
+        let rec get_results frames objs =
+            match frames, objs with
+            | [], _ -> LazyList.empty
+            | _, Nil -> LazyList.empty
+            | f, Cons(head, tail) -> (match update_results f head with
+                                      |(frames_new, results_new) -> results_new
+                                                                    |> LazyList.append (get_results frames_new tail))
+
+        get_results frames_init lst
