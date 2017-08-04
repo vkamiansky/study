@@ -1,20 +1,12 @@
-﻿using ImageEditor.Interface;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Property;
 using System.Windows.Media;
 using System.Drawing;
-using System.Windows.Media.Imaging;
-using System.Windows;
 using ImageEditor.Interface.ViewModel;
+using ImageEditor.Interface.ViewModel.model;
 using ImageEditor.ViewModel.model;
-using Brushes = System.Drawing.Brushes;
-using Color = System.Windows.Media.Color;
 using ImageConverter = ImageEditor.ViewModel.model.ImageConverter;
-using Size = System.Windows.Size;
 
 namespace ImageEditor.ViewModel
 {
@@ -24,7 +16,7 @@ namespace ImageEditor.ViewModel
         private const int DefaultSize = 6;
 
         public IProperty<ImageSource> ImageSource => _imageSource;
-        public IProperty<List<Layer>> Layers => _layers;
+        public IProperty<List<ILayer>> Layers => _layers;
         public IInputProperty<string> ImagePath { get; }
         public IInputProperty<int> MouseWheelDelta { get; }
         public IInputProperty<Tuple<int, int>> Shift { get; }
@@ -35,7 +27,7 @@ namespace ImageEditor.ViewModel
         public IInputProperty<SolidColorBrush> ToolBrush { get; }
 
         private readonly ICallProperty<ImageSource> _imageSource;
-        private readonly ICallProperty<List<Layer>> _layers;
+        private readonly ICallProperty<List<ILayer>> _layers;
 
         private Canvas _canvas;
         private readonly ImageConverter _converter = new ImageConverter();
@@ -49,6 +41,7 @@ namespace ImageEditor.ViewModel
             ImageScale.OnChanged(() =>
             {
                 string s = ImageScale.Value;
+                // ReSharper disable once RedundantAssignment
                 float scale = -1f;
                 float.TryParse(s.Remove(s.Length - 1).Replace(",", "."), out scale);
                 if (scale <= 1 || scale >= 3200) return;
@@ -108,8 +101,8 @@ namespace ImageEditor.ViewModel
                 _imageSource.Go();
             });
 
-            _layers = Reloadable<List<Layer>>.On().Each()
-                .Call(_ => _canvas.Layers).Create();
+            _layers = Reloadable<List<ILayer>>.On().Each()
+                .Call(_ => _canvas.Layers.ConvertAll(x => x as ILayer)).Create();
 
             ToolMenu = Reloadable<ToolMenuItem>.On().Each().Input().Create();
 

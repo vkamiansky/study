@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static ImageEditor.ViewModel.model.Constants;
+using ImageEditor.Interface.ViewModel.model;
 
 namespace ImageEditor.ViewModel.model
 {
-    public class Layer
+    public class Layer : ILayer
     {
         public double X { get; set; }
         public double Y { get; set; }
@@ -58,8 +54,8 @@ namespace ImageEditor.ViewModel.model
             }
         }
 
-        public float[] raw { get; set; }
-        public float[] cachedRaw { get; set; }
+        public float[] Raw { get; set; }
+        public float[] CachedRaw { get; set; }
         public int ScaledWidth { get; set; }
         public int ScaledHeight { get; set; }
 
@@ -72,7 +68,7 @@ namespace ImageEditor.ViewModel.model
             _width = width;
             Height = height;
 
-            raw = new float[width * height * ChannelsCount];
+            Raw = new float[width * height * Constants.ChannelsCount];
         }
 
         public Layer(int x, int y, int width, int height, float[] raw)
@@ -81,7 +77,7 @@ namespace ImageEditor.ViewModel.model
             Y = y;
             _width = width;
             Height = height;
-            this.raw = raw;
+            Raw = raw;
         }
     }
 }

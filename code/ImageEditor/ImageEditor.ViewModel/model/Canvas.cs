@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 using static ImageEditor.ViewModel.model.Constants;
 
@@ -28,10 +25,12 @@ namespace ImageEditor.ViewModel.model
         private readonly int _width;
         private readonly int _height;
         private readonly int _length;
-        private float[] raw;
+        private float[] _raw;
         public List<Layer> Layers { get; }
         private float _scale = 1f;
+        #pragma warning disable 414
         private bool _isDirty = true;
+        #pragma warning restore 414
 
         public Canvas(int width, int height, float[] imgRaw)
         {
@@ -42,7 +41,7 @@ namespace ImageEditor.ViewModel.model
             _height = height;
             _length = width * height * ChannelsCount;
 
-            raw = GenerateBackground();
+            _raw = GenerateBackground();
             Layers = new List<Layer>();
             var layer = new Layer(0, 0, width, height, imgRaw);
             layer.IsSelected = true;
@@ -68,11 +67,11 @@ namespace ImageEditor.ViewModel.model
 
                 layer.ScaledWidth = (int) (layer.Width * _scale);
                 layer.ScaledHeight = (int) (layer.Height * _scale);
-                layer.cachedRaw = ApplyScale(layer.raw, layer.Width, layer.Height, layer.ScaledWidth,
+                layer.CachedRaw = ApplyScale(layer.Raw, layer.Width, layer.Height, layer.ScaledWidth,
                     layer.ScaledHeight);
 
 
-                compose(layer.cachedRaw, layer.ScaledWidth, layer.ScaledHeight,
+                compose(layer.CachedRaw, layer.ScaledWidth, layer.ScaledHeight,
                     result, Width, Height, (int) (layer.X), (int) (layer.Y), 0, 0, layer.Opacity);
             }
 
@@ -160,16 +159,16 @@ namespace ImageEditor.ViewModel.model
             float a, b, c, d, w, h, xf, yf, nxDiff, nyDiff, m1, m2, m3, m4;
 
             // don't optimize it, left it for flexibility of code
-            float x_ratio = 1f / _scale;
-            float y_ratio = 1f / _scale;
+            float xRatio = 1f / _scale;
+            float yRatio = 1f / _scale;
 
 
             for (int y = 0; y < h2; y++)
             {
                 for (int x = 0; x < w2; x++)
                 {
-                    xf = (x_ratio * (x + dx));
-                    yf = (y_ratio * (y + dy));
+                    xf = (xRatio * (x + dx));
+                    yf = (yRatio * (y + dy));
 
                     x1 = (int) (xf);
                     y1 = (int) (yf);
@@ -186,8 +185,8 @@ namespace ImageEditor.ViewModel.model
                     i3 = ((y1 + 1) * w1 + x1) * 4;
                     i4 = ((y1 + 1) * w1 + x1 + 1) * 4;
 
-                    x2 = (int) (x);
-                    y2 = (int) (y);
+                    x2 = x;
+                    y2 = y;
 
                     if (x2 < 0 || x2 >= w2 - 1 || y2 < 0 || y2 >= h2 - 1)
                         continue;
@@ -321,7 +320,7 @@ namespace ImageEditor.ViewModel.model
                 }
             }
 
-            compose(brush, w, h, selectedLayer.raw,
+            compose(brush, w, h, selectedLayer.Raw,
                 selectedLayer.Width, selectedLayer.Height, x1, y1, 0, 0, opacity);
         }
 
@@ -374,7 +373,7 @@ namespace ImageEditor.ViewModel.model
                     {
                         d = (float) Math.Sqrt(d2);
                         int index = (j * selectedLayer.Width + i) * ChannelsCount;
-                        selectedLayer.raw[index + 3] *=  d / size * opacity + 0.001f;
+                        selectedLayer.Raw[index + 3] *=  d / size * opacity + 0.001f;
                     }
                 }
             }

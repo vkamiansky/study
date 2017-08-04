@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ImageEditor.ViewModel.model
+﻿namespace ImageEditor.ViewModel.model
 {
     public class Constants
     {

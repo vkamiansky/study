@@ -1,16 +1,13 @@
 ﻿using ImageEditor.Interface.ViewModel;
 using System;
-using System.Collections.Generic;
 using Property;
 
 namespace ImageEditor.ViewModel
 {
     public class AppStateViewModel : IAppStateViewModel
     {
-        private readonly IInputProperty<AppState> _State;
-        public IProperty<AppState> State => _State;
-
-        private readonly Dictionary<AppStateDataKey, object> _Data;
+        private readonly IInputProperty<AppState> _state;
+        public IProperty<AppState> State => _state;
 
         public void DoAction(AppStateAction action)
         {
@@ -19,7 +16,7 @@ namespace ImageEditor.ViewModel
 
         public AppStateViewModel()
         {
-            _State = Reloadable<AppState>.On().Each().Input().Create(AppState.EditorView);
+            _state = Reloadable<AppState>.On().Each().Input().Create(AppState.EditorView);
         }
     }
 }

@@ -1,18 +1,16 @@
-﻿using Property;
-using System;
+﻿using System;
 using System.Collections.Generic;
-
 using System.Windows.Media;
-using ImageEditor.Interface.ViewModel;
-using ImageEditor.ViewModel.model;
+using ImageEditor.Interface.ViewModel.model;
+using Property;
 
-namespace ImageEditor.Interface
+namespace ImageEditor.Interface.ViewModel
 {
     public interface IEditorViewModel
     {
         IProperty<ImageSource> ImageSource { get; }
 
-        IProperty<List<Layer>> Layers { get; }
+        IProperty<List<ILayer>> Layers { get; }
 
         IInputProperty<ToolMenuItem> ToolMenu { get; }
 
