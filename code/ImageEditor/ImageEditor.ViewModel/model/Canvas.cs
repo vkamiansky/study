@@ -65,10 +65,17 @@ namespace ImageEditor.ViewModel.model
             {
                 if (!layer.IsSelected) continue;
 
-                layer.ScaledWidth = (int) (layer.Width * _scale);
-                layer.ScaledHeight = (int) (layer.Height * _scale);
-                layer.CachedRaw = ApplyScale(layer.Raw, layer.Width, layer.Height, layer.ScaledWidth,
-                    layer.ScaledHeight);
+                layer.ScaledWidth = (int) (layer.Width * _scale - (layer.X > 0 ? layer.X : 0));
+                layer.ScaledHeight = (int) (layer.Height * _scale - (layer.Y > 0 ? layer.Y : 0));
+
+                int layerLeft = (int) (layer.X < 0 ? (-layer.X) : 0);
+                int layerTop = (int) (layer.Y < 0 ? (-layer.Y) : 0);
+
+                Console.WriteLine("scaled width {0:d}, scaled height {1:d}", layer.ScaledWidth, layer.ScaledHeight);
+                Console.WriteLine("layerLeft {0:d}, layerTop {1:d}", layerLeft, layerTop);
+
+                layer.CachedRaw = ApplyScale(layer.Raw, layer.Width,
+                    layer.Height, layer.ScaledWidth, layer.ScaledHeight, layerLeft, layerTop);
 
 
                 compose(layer.CachedRaw, layer.ScaledWidth, layer.ScaledHeight,
@@ -146,7 +153,7 @@ namespace ImageEditor.ViewModel.model
             return clone;
         }
 
-        private float[] ApplyScale(float[] source, int w1, int h1, int w2, int h2)
+        private float[] ApplyScale(float[] source, int w1, int h1, int w2, int h2, int xStart = 0, int yStart= 0)
         {
             int srcLength = _length;
             int destLength = h2 * w2 * ChannelsCount;
@@ -163,9 +170,9 @@ namespace ImageEditor.ViewModel.model
             float yRatio = 1f / _scale;
 
 
-            for (int y = 0; y < h2; y++)
+            for (int y = yStart; y < h2; y++)
             {
-                for (int x = 0; x < w2; x++)
+                for (int x = xStart; x < w2; x++)
                 {
                     xf = (xRatio * (x + dx));
                     yf = (yRatio * (y + dy));
