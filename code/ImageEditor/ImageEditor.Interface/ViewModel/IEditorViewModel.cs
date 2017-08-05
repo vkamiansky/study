@@ -21,7 +21,7 @@ namespace ImageEditor.Interface.ViewModel
 
         IInputProperty<int> MouseWheelDelta { get; }
 
-        IInputProperty<Tuple<int, int>> Shift { get; }
+        IInputProperty<Tuple<double, double>> Shift { get; }
 
         IInputProperty<int> ToolSize { get; }
 

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using ImageEditor.Interface.ViewModel;
@@ -8,18 +10,20 @@ namespace ImageEditor.action
 {
     public class MouseDownAction : TriggerAction<FrameworkElement>
     {
-        private const double RoundCorrection = .5;
+/*        private readonly Stopwatch _stopwatch = new Stopwatch();
 
-        public Tuple<int, int> Shift
+        private const long EmitThreshold = 0;*/
+
+        public Tuple<double, double> Shift
         {
-            get => (Tuple<int, int>) GetValue(ShiftProperty);
+            get => (Tuple<double, double>) GetValue(ShiftProperty);
             set => SetValue(ShiftProperty, value);
         }
 
-        public IInputElement GetPosElement
+        public Image Image
         {
-            get => (IInputElement) GetValue(GetPosElementProperty);
-            set => SetValue(GetPosElementProperty, value);
+            get => (Image) GetValue(ImageProperty);
+            set => SetValue(ImageProperty, value);
         }
 
         public ToolMenuItem ToolMenu
@@ -33,42 +37,53 @@ namespace ImageEditor.action
                 new PropertyMetadata(default(ToolMenuItem)));
 
         public static readonly DependencyProperty ShiftProperty
-            = DependencyProperty.Register("Shift", typeof(Tuple<int, int>), typeof(MouseDownAction),
-                new PropertyMetadata(default(Tuple<int, int>)));
+            = DependencyProperty.Register("Shift", typeof(Tuple<double, double>), typeof(MouseDownAction),
+                new PropertyMetadata(default(Tuple<double, double>)));
 
-        public static readonly DependencyProperty GetPosElementProperty
-            = DependencyProperty.Register("GetPosElement", typeof(IInputElement), typeof(MouseDownAction),
-                new PropertyMetadata(default(IInputElement)));
+        public static readonly DependencyProperty ImageProperty
+            = DependencyProperty.Register("Image", typeof(Image), typeof(MouseDownAction),
+                new PropertyMetadata(default(Image)));
 
-        private int _x;
-        private int _y;
-
+        private double _x;
+        private double _y;
 
         protected override void Invoke(object parameter)
         {
             if (!(parameter is MouseEventArgs)) return;
+
+ /*           if (_stopwatch.IsRunning
+                && _stopwatch.ElapsedMilliseconds < EmitThreshold)
+            {
+                return;
+            }*/
+
             MouseEventArgs e = (MouseEventArgs) parameter;
 
-            var point = e.GetPosition(GetPosElement);
+            var point = e.GetPosition(Image);
 
-            int x = (int) (point.X + RoundCorrection);
-            int y = (int) (point.Y + RoundCorrection);
+            double x = point.X  / Image.ActualWidth;
+            double y = point.Y / Image.ActualHeight;
+
+            double dx = x - _x;
+            double dy = y - _y;
 
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                if (ToolMenu != ToolMenuItem.Move)
+                if (ToolMenu == ToolMenuItem.Move)
                 {
-                    Shift = new Tuple<int, int>(x, y);
+                    if (dx != 0 || dy != 0)
+                        Shift = new Tuple<double, double>(dx, dy);
                 }
                 else
                 {
-                    if (x != _x || y != _y)
-                        Shift = new Tuple<int, int>(x - _x, y - _y);
+                    Shift = new Tuple<double, double>(x, y);
                 }
             }
 
             _x = x;
             _y = y;
+
+            //_stopwatch.Restart();
         }
     }
 }

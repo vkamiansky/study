@@ -6,7 +6,6 @@ using System.Drawing;
 using ImageEditor.Interface.ViewModel;
 using ImageEditor.Interface.ViewModel.model;
 using ImageEditor.ViewModel.model;
-using ImageConverter = ImageEditor.ViewModel.model.ImageConverter;
 
 namespace ImageEditor.ViewModel
 {
@@ -19,7 +18,7 @@ namespace ImageEditor.ViewModel
         public IProperty<List<ILayer>> Layers => _layers;
         public IInputProperty<string> ImagePath { get; }
         public IInputProperty<int> MouseWheelDelta { get; }
-        public IInputProperty<Tuple<int, int>> Shift { get; }
+        public IInputProperty<Tuple<double, double>> Shift { get; }
         public IInputProperty<string> ImageScale { get; }
         public IInputProperty<ToolMenuItem> ToolMenu { get; }
         public IInputProperty<int> ToolSize { get; }
@@ -31,7 +30,7 @@ namespace ImageEditor.ViewModel
 
         private Canvas _canvas;
 
-        private bool calledFromUI = true;
+        private bool _calledFromUi = true;
         private float _scale = 1f;
 
         private float Scale
@@ -42,13 +41,13 @@ namespace ImageEditor.ViewModel
                 if (value < 0.0002) value = 0.0002f;
                 if (value > 32) value = 32;
                 if (value == _scale) return;
-
+                value = (float) Math.Round(value, 2, MidpointRounding.AwayFromZero);
                 _scale = value;
                 _imageSource.Go();
 
-                calledFromUI = false;
+                _calledFromUi = false;
                 ImageScale.Input = _scale * 100 + "%";
-                calledFromUI = true;
+                _calledFromUi = true;
             }
         }
 
@@ -60,7 +59,7 @@ namespace ImageEditor.ViewModel
 
             ImageScale.OnChanged(() =>
             {
-                if (!calledFromUI) return;
+                if (!_calledFromUi) return;
                 string s = ImageScale.Value;
 
                 // ReSharper disable once RedundantAssignment
@@ -74,7 +73,7 @@ namespace ImageEditor.ViewModel
             _imageSource = Reloadable<CanvasSource>.On().Each()
                 .Call(_ => _canvas.ToCanvasSource(_scale)).Create();
 
-            Shift = Reloadable<Tuple<int, int>>.On().Each().Input().Create();
+            Shift = Reloadable<Tuple<double, double>>.On().Each().Input().Create();
 
             ToolBrush = Reloadable<SolidColorBrush>.On().Each().Input().Create();
 
@@ -82,19 +81,21 @@ namespace ImageEditor.ViewModel
 
             Shift.OnChanged(() =>
             {
+                var dx = Shift.Value.Item1 * _canvas.Width;
+                var dy = Shift.Value.Item2 * _canvas.Height;
                 switch (ToolMenu.Value)
                 {
                     case ToolMenuItem.Move:
-                        _canvas.OnMoved(Shift.Value.Item1, Shift.Value.Item2);
+                        _canvas.OnMoved(dx, dy);
                         break;
 
                     case ToolMenuItem.Brush:
-                        _canvas.Draw(Shift.Value.Item1, Shift.Value.Item2, ToolSize.Value, ToolOpacity.Value,
+                        _canvas.Draw((int) dx, (int) dy, ToolSize.Value, ToolOpacity.Value,
                             ToolBrush.Value.Color);
                         break;
 
                     case ToolMenuItem.Erase:
-                        _canvas.Erase(Shift.Value.Item1, Shift.Value.Item2, ToolSize.Value, ToolOpacity.Value);
+                        _canvas.Erase((int) dx, (int) dy, ToolSize.Value, ToolOpacity.Value);
                         break;
                 }
 

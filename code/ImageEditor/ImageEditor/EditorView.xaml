@@ -186,12 +186,12 @@
                     <i:EventTrigger EventName="MouseMove">
                         <action:MouseDownAction Shift="{Binding Shift.Input, Mode=TwoWay}"
                                                 ToolMenu="{Binding ToolMenu.Input, Mode=TwoWay}"
-                                                GetPosElement="{Binding ElementName=Canvas}" />
+                                                Image="{Binding ElementName=Canvas}" />
                     </i:EventTrigger>
                     <i:EventTrigger EventName="PreviewMouseDown">
                         <action:MouseClickAction Shift="{Binding Shift.Input, Mode=TwoWay}"
                                                  ToolMenu="{Binding ToolMenu.Input, Mode=TwoWay}"
-                                                 GetPosElement="{Binding ElementName=Canvas}" />
+                                                 Image="{Binding ElementName=Canvas}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
 

@@ -30,31 +30,15 @@ namespace ImageEditor.ViewModel.model
 
         public float[] GetRaw()
         {
-            Stopwatch sw = new Stopwatch();
-
-            Console.WriteLine("Start raw");
-            sw.Start();
-            
             var result = GenerateBackground();
 
             foreach (var layer in Layers)
             {
                 if (!layer.IsSelected) continue;
 
-                int layerLeft = (int) (layer.X < 0 ? (-layer.X) : 0);
-                int layerTop = (int) (layer.Y < 0 ? (-layer.Y) : 0);
-
-                Console.WriteLine("scaled width {0:d}, scaled height {1:d}", layer.Width, layer.Height);
-                Console.WriteLine("layerLeft {0:d}, layerTop {1:d}", layerLeft, layerTop);
-
                 compose(layer.Raw, layer.Width, layer.Height,
                     result, Width, Height, (int) (layer.X), (int) (layer.Y), 0, 0, layer.Opacity);
             }
-
-
-            sw.Stop();
-            Console.WriteLine("stop:" + sw.ElapsedMilliseconds);
-
             return result;
         }
 
@@ -157,14 +141,14 @@ namespace ImageEditor.ViewModel.model
             }
         }
 
-        public void OnMoved(int dx, int dy)
+        public void OnMoved(double dx, double dy)
         {
             var selectedLayer = GetSelectedLayer();
             if (selectedLayer == null) return;
             selectedLayer.X += dx;
             selectedLayer.Y += dy;
-
-            Console.WriteLine("dx: " + dx + " dy: " + dy + " X: " + selectedLayer.X + " Y: " + selectedLayer.Y);
+            
+            Debug.WriteLine($"dx: {dx:F2} dy: {dy:F2}  X: {selectedLayer.X:F2} Y: {selectedLayer.Y:F3}");
         }
 
         private Layer GetSelectedLayer()
