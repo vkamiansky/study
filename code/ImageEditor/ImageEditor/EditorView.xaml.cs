@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -18,6 +19,9 @@ namespace ImageEditor
             InitializeComponent();
 
             ScaleTextBox.PreviewKeyDown += ScaleTextBox_PreviewKeyDown;
+            var actualWidth = GridOne.ColumnDefinitions[0].ActualWidth;
+            var actualHeight = GridOne.RowDefinitions[2].ActualHeight;
+            GridOne.SizeChanged += OnSizeChanged;
         }
 
         private void ScaleTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -30,6 +34,13 @@ namespace ImageEditor
                 BindingExpression binding = BindingOperations.GetBindingExpression(tBox, prop);
                 binding?.UpdateSource();
             }
+        }
+
+        private void OnSizeChanged(Object o, SizeChangedEventArgs args)
+        {
+            var actualWidth = GridOne.ColumnDefinitions[0].ActualWidth;
+            var actualHeight = GridOne.RowDefinitions[2].ActualHeight;
+            Canvas.OnContainerSizeChanged((int) actualWidth, (int) actualHeight);
         }
     }
 }

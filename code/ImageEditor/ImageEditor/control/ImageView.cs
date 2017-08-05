@@ -32,6 +32,11 @@ namespace ImageEditor.control
             CanvasSource newCanvasSource = (CanvasSource) e.NewValue;
             imageView.Source = newCanvasSource.ToBitmapSource(); 
         }
+
+        public void OnContainerSizeChanged(int newWidth, int newHeight)
+        {
+            
+        }
     }
 
     static class Converter
