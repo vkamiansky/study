@@ -1,18 +1,14 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-using System.Windows;
-using System.Windows.Media.Imaging;
 using static ImageEditor.ViewModel.model.Constants;
 
 namespace ImageEditor.ViewModel.model
 {
-    public class ImageConverter
+    public static class ImageConverter
     {
-        public Canvas ConvertToCanvas(Bitmap bitmap)
+        public static Canvas ToCanvas(this Bitmap bitmap)
         {
-
             if (bitmap.PixelFormat != PixelFormat.Format32bppArgb)
             {
                 Bitmap temp = new Bitmap(bitmap.Width, bitmap.Height, PixelFormat.Format32bppArgb);
@@ -44,9 +40,8 @@ namespace ImageEditor.ViewModel.model
             return new Canvas(width, height, raw);
         }
 
-        public BitmapSource ConvertToBitmapSource(Canvas canvas)
+        public static Bitmap ToBitmap(this Canvas canvas)
         {
-
             float[] raw = canvas.GetRaw();
             int resultLength = raw.Length;
             byte[] byteRaw = new byte[resultLength];
@@ -63,22 +58,8 @@ namespace ImageEditor.ViewModel.model
 
             Marshal.Copy(byteRaw, 0, data.Scan0, resultLength);
             bmp.UnlockBits(data);
-
-            BitmapSource source = BitmapToBitmapSource(bmp);
-
-            source.Freeze();
-
-            bmp.Dispose();
-            return source;
-        }
-
-        public BitmapSource BitmapToBitmapSource(Image source)
-        {
-            return System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                ((Bitmap)source).GetHbitmap(),
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());
+            
+            return bmp;
         }
     }
 }

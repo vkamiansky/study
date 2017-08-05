@@ -5,7 +5,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:action="clr-namespace:ImageEditor.action"
-             xmlns:ncore="http://schemas.ncore.com/wpf/xaml/colorbox"
+             xmlns:ncore="http://schemas.ncore.com/wpf/xaml/colorbox" 
+             xmlns:control="clr-namespace:ImageEditor.control"
              mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -175,8 +176,8 @@
             <Rectangle Grid.Row="0" Fill="{StaticResource DividerBrush}" Height="1" Margin="0,0,0,9.4" Grid.RowSpan="2" />
 
             <!-- Width="200" Height="200" -->
-            <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="Canvas"
-                   Grid.Column="0" Grid.Row="1" Source="{Binding ImageSource.Value}" Stretch="None"
+            <control:ImageView HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="Canvas"
+                   Grid.Column="0" Grid.Row="1" Bitmap="{Binding ImageSource.Value}" Stretch="None"
                    Margin="0,0.2,0,0.6" Grid.RowSpan="2">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseWheel">
@@ -194,7 +195,7 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
 
-            </Image>
+            </control:ImageView>
 
             <Grid Grid.Row="3" Background="{StaticResource BgBrush}">
                 <Grid.ColumnDefinitions>
@@ -223,7 +224,7 @@
                      ItemsSource="{Binding Layers.Value}"
                      IsSynchronizedWithCurrentItem="True" Background="{StaticResource BgBrush}" />
 
-            <Rectangle Grid.ColumnSpan="2" Grid.Row="0" Fill="{StaticResource DividerBrush}" Height="1" />
+            <Rectangle Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0" Fill="{StaticResource DividerBrush}" Height="1" />
         </Grid>
 
     </Grid>

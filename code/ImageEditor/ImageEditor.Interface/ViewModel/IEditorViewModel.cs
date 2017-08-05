@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Media;
 using ImageEditor.Interface.ViewModel.model;
 using Property;
@@ -8,7 +9,7 @@ namespace ImageEditor.Interface.ViewModel
 {
     public interface IEditorViewModel
     {
-        IProperty<ImageSource> ImageSource { get; }
+        IProperty<Bitmap> ImageSource { get; }
 
         IProperty<List<ILayer>> Layers { get; }
 

@@ -64,7 +64,7 @@ namespace ImageEditor.ViewModel.model
             foreach (var layer in Layers)
             {
                 if (!layer.IsSelected) continue;
-
+    
                 layer.ScaledWidth = (int) (layer.Width * _scale - (layer.X > 0 ? layer.X : 0));
                 layer.ScaledHeight = (int) (layer.Height * _scale - (layer.Y > 0 ? layer.Y : 0));
 

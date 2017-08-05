@@ -15,7 +15,7 @@ namespace ImageEditor.ViewModel
         private const float DefaultOpacity = 1f;
         private const int DefaultSize = 6;
 
-        public IProperty<ImageSource> ImageSource => _imageSource;
+        public IProperty<Bitmap> ImageSource => _imageSource;
         public IProperty<List<ILayer>> Layers => _layers;
         public IInputProperty<string> ImagePath { get; }
         public IInputProperty<int> MouseWheelDelta { get; }
@@ -26,11 +26,10 @@ namespace ImageEditor.ViewModel
         public IInputProperty<float> ToolOpacity { get; }
         public IInputProperty<SolidColorBrush> ToolBrush { get; }
 
-        private readonly ICallProperty<ImageSource> _imageSource;
+        private readonly ICallProperty<Bitmap> _imageSource;
         private readonly ICallProperty<List<ILayer>> _layers;
 
         private Canvas _canvas;
-        private readonly ImageConverter _converter = new ImageConverter();
 
         public EditorViewModel()
         {
@@ -53,8 +52,8 @@ namespace ImageEditor.ViewModel
                 _imageSource.Go();
             });
 
-            _imageSource = Reloadable<ImageSource>.On().Each()
-                .Call(_ => _converter.ConvertToBitmapSource(_canvas)).Create();
+            _imageSource = Reloadable<Bitmap>.On().Each()
+                .Call(_ => _canvas.ToBitmap()).Create();
 
             Shift = Reloadable<Tuple<int, int>>.On().Each().Input().Create();
 
@@ -95,7 +94,7 @@ namespace ImageEditor.ViewModel
             ImagePath = Reloadable<string>.On().Each().Input().Create();
             ImagePath.OnChanged(() =>
             {
-                _canvas = _converter.ConvertToCanvas(new Bitmap(ImagePath.Value));
+                _canvas = new Bitmap(ImagePath.Value).ToCanvas();
                 _canvas.OnLayersChanged(() => _imageSource.Go());
                 _layers.Go();
                 _imageSource.Go();
