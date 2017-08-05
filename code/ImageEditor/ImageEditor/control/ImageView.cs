@@ -1,52 +1,71 @@
 ﻿using System.Drawing;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using ImageEditor.Interface.ViewModel.model;
+using ImageEditor.scalers;
 
 namespace ImageEditor.control
 {
     public class ImageView : System.Windows.Controls.Image
     {
-        public Bitmap Bitmap
+        public CanvasSource CanvasSource
         {
-            get => (Bitmap) GetValue(BitmapProperty);
+            get => (CanvasSource) GetValue(CanvasSourceProperty);
 
-            set => SetValue(BitmapProperty, value);
+            set => SetValue(CanvasSourceProperty, value);
         }
 
-        public static readonly DependencyProperty BitmapProperty
-            = DependencyProperty.Register("Bitmap", typeof(Bitmap), typeof(ImageView),
+        public static readonly DependencyProperty CanvasSourceProperty
+            = DependencyProperty.Register("CanvasSource", typeof(CanvasSource), typeof(ImageView),
                 new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure
-                                                    | FrameworkPropertyMetadataOptions.AffectsRender, OnBitmapChanged,
+                                                    | FrameworkPropertyMetadataOptions.AffectsRender, OnDataChanged,
                     null), null);
 
-
-        private static void OnBitmapChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        
+        private static void OnDataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ImageView imageView = (ImageView) d;
 
-            Bitmap oldBitmap = (Bitmap) e.OldValue;
-            Bitmap newBitmap = (Bitmap) e.NewValue;
-
-            imageView.Source = newBitmap.ToBitmapSource();
-            oldBitmap?.Dispose();
+            CanvasSource newCanvasSource = (CanvasSource) e.NewValue;
+            imageView.Source = newCanvasSource.ToBitmapSource(); 
         }
     }
 
     static class Converter
     {
-        public static BitmapSource ToBitmapSource(this Bitmap bitmap)
+        public static BitmapSource ToBitmapSource(this CanvasSource canvasSource)
         {
-            var bitmapData = bitmap.LockBits(
-                new Rectangle(0, 0, bitmap.Width, bitmap.Height),
-                System.Drawing.Imaging.ImageLockMode.ReadOnly, bitmap.PixelFormat);
+            canvasSource.ApplyScale(ScalerChooser.Instance.ChooseScaler(canvasSource.Scale));
+            Bitmap bitmap = new Bitmap(canvasSource.Width, canvasSource.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
+            BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, canvasSource.Width, canvasSource.Height),
+                ImageLockMode.ReadWrite, bitmap.PixelFormat);
+
+            Marshal.Copy(canvasSource.Raw.ToByteArray(), 0, bitmapData.Scan0, canvasSource.Raw.Length);
+            
             var bitmapSource = BitmapSource.Create(
-                bitmapData.Width, bitmapData.Height, 96, 96, PixelFormats.Bgra32, null,
+                bitmapData.Width, bitmapData.Height, bitmap.HorizontalResolution, bitmap.VerticalResolution, PixelFormats.Bgra32, null,
                 bitmapData.Scan0, bitmapData.Stride * bitmapData.Height, bitmapData.Stride);
 
             bitmap.UnlockBits(bitmapData);
+            bitmap.Dispose();
             return bitmapSource;
+        }
+
+        public static byte[] ToByteArray(this float[] raw)
+        {
+            int resultLength = raw.Length;
+            byte[] byteRaw = new byte[resultLength];
+
+            for (int i = 0; i < resultLength; i++)
+            {
+                byteRaw[i] = (byte) (raw[i] * Constants.ColorDenormalizeRatio);
+            }
+
+            return byteRaw;
         }
     }
 }

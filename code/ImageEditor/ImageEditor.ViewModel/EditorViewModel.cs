@@ -15,7 +15,7 @@ namespace ImageEditor.ViewModel
         private const float DefaultOpacity = 1f;
         private const int DefaultSize = 6;
 
-        public IProperty<Bitmap> ImageSource => _imageSource;
+        public IProperty<CanvasSource> ImageSource => _imageSource;
         public IProperty<List<ILayer>> Layers => _layers;
         public IInputProperty<string> ImagePath { get; }
         public IInputProperty<int> MouseWheelDelta { get; }
@@ -26,10 +26,31 @@ namespace ImageEditor.ViewModel
         public IInputProperty<float> ToolOpacity { get; }
         public IInputProperty<SolidColorBrush> ToolBrush { get; }
 
-        private readonly ICallProperty<Bitmap> _imageSource;
+        private readonly ICallProperty<CanvasSource> _imageSource;
         private readonly ICallProperty<List<ILayer>> _layers;
 
         private Canvas _canvas;
+
+        private bool calledFromUI = true;
+        private float _scale = 1f;
+
+        private float Scale
+        {
+            get => _scale;
+            set
+            {
+                if (value < 0.0002) value = 0.0002f;
+                if (value > 32) value = 32;
+                if (value == _scale) return;
+
+                _scale = value;
+                _imageSource.Go();
+
+                calledFromUI = false;
+                ImageScale.Input = _scale * 100 + "%";
+                calledFromUI = true;
+            }
+        }
 
         public EditorViewModel()
         {
@@ -39,21 +60,19 @@ namespace ImageEditor.ViewModel
 
             ImageScale.OnChanged(() =>
             {
+                if (!calledFromUI) return;
                 string s = ImageScale.Value;
+
                 // ReSharper disable once RedundantAssignment
-                float scale = -1f;
-                float.TryParse(s.Remove(s.Length - 1).Replace(",", "."), out scale);
-                if (scale <= 1 || scale >= 3200) return;
-
-                scale /= 100;
-
-                _canvas.Scale = scale;
-
-                _imageSource.Go();
+                float sc = -1f;
+                float.TryParse(s.Remove(s.Length - 1).Replace(",", "."), out sc);
+                sc /= 100f;
+                if (Scale == sc) return;
+                Scale = sc;
             });
 
-            _imageSource = Reloadable<Bitmap>.On().Each()
-                .Call(_ => _canvas.ToBitmap()).Create();
+            _imageSource = Reloadable<CanvasSource>.On().Each()
+                .Call(_ => _canvas.ToCanvasSource(_scale)).Create();
 
             Shift = Reloadable<Tuple<int, int>>.On().Each().Input().Create();
 
@@ -86,9 +105,16 @@ namespace ImageEditor.ViewModel
 
             MouseWheelDelta.OnChanged(() =>
             {
-                _canvas.OnSizeChanged(MouseWheelDelta.Value);
-                ImageScale.Input = _canvas.Scale * 100 + "%";
-                _imageSource.Go();
+                var value = MouseWheelDelta.Value;
+                if (value > 0)
+                {
+                    Scale *= value * Constants.ScaleRatio;
+                }
+                if (value < 0)
+                {
+                    value = -value;
+                    Scale /= value * Constants.ScaleRatio;
+                }
             });
 
             ImagePath = Reloadable<string>.On().Each().Input().Create();

@@ -85,6 +85,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="control\ImageView2.cs" />
+    <Compile Include="scalers\BilinearScaler.cs" />
+    <Compile Include="scalers\NearestNeighbourScaler.cs" />
+    <Compile Include="scalers\ScalerChooser.cs" />
+    <Compile Include="scalers\StubScaler.cs" />
     <Page Include="EditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

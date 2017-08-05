@@ -167,7 +167,7 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="1" />
-                <RowDefinition Height="10*" />
+                <RowDefinition Height="*" />
                 <RowDefinition Height="191*" />
                 <RowDefinition Height="15" />
 
@@ -177,7 +177,7 @@
 
             <!-- Width="200" Height="200" -->
             <control:ImageView HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="Canvas"
-                   Grid.Column="0" Grid.Row="1" Bitmap="{Binding ImageSource.Value}" Stretch="None"
+                   Grid.Column="0" Grid.Row="1" CanvasSource="{Binding ImageSource.Value}" Stretch="None"
                    Margin="0,0.2,0,0.6" Grid.RowSpan="2">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseWheel">

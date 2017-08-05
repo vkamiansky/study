@@ -1,7 +1,8 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
-using static ImageEditor.ViewModel.model.Constants;
+using ImageEditor.Interface.ViewModel.model;
+using static ImageEditor.Interface.ViewModel.model.Constants;
 
 namespace ImageEditor.ViewModel.model
 {
@@ -40,26 +41,9 @@ namespace ImageEditor.ViewModel.model
             return new Canvas(width, height, raw);
         }
 
-        public static Bitmap ToBitmap(this Canvas canvas)
+        public static CanvasSource ToCanvasSource(this Canvas canvas, float scale)
         {
-            float[] raw = canvas.GetRaw();
-            int resultLength = raw.Length;
-            byte[] byteRaw = new byte[resultLength];
-
-            for (int i = 0; i < resultLength; i++)
-            {
-                byteRaw[i] = (byte) (raw[i] * ColorDenormalizeRatio);
-            }
-
-            Bitmap bmp = new Bitmap(canvas.Width, canvas.Height, PixelFormat.Format32bppArgb);
-
-            BitmapData data = bmp.LockBits(new Rectangle(0, 0, canvas.Width, canvas.Height),
-                ImageLockMode.WriteOnly, bmp.PixelFormat);
-
-            Marshal.Copy(byteRaw, 0, data.Scan0, resultLength);
-            bmp.UnlockBits(data);
-            
-            return bmp;
+            return new CanvasSource(canvas.GetRaw(), canvas.Width, canvas.Height, scale);
         }
     }
 }

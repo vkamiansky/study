@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Media;
-using static ImageEditor.ViewModel.model.Constants;
+using static ImageEditor.Interface.ViewModel.model.Constants;
 
 namespace ImageEditor.ViewModel.model
 {
@@ -12,34 +12,14 @@ namespace ImageEditor.ViewModel.model
         public int Width { get; set; }
         public int Length { get; set; }
 
-        public float Scale
-        {
-            get => _scale;
-            set
-            {
-                _isDirty = true;
-                _scale = value;
-            }
-        }
-
-        private readonly int _width;
-        private readonly int _height;
-        private readonly int _length;
         private float[] _raw;
         public List<Layer> Layers { get; }
-        private float _scale = 1f;
-        #pragma warning disable 414
-        private bool _isDirty = true;
-        #pragma warning restore 414
 
         public Canvas(int width, int height, float[] imgRaw)
         {
             Height = height;
             Width = width;
             Length = Height * Width * ChannelsCount;
-            _width = width;
-            _height = height;
-            _length = width * height * ChannelsCount;
 
             _raw = GenerateBackground();
             Layers = new List<Layer>();
@@ -54,31 +34,20 @@ namespace ImageEditor.ViewModel.model
 
             Console.WriteLine("Start raw");
             sw.Start();
-
-            Height = (int) ((_height - 1) * _scale);
-            Width = (int) ((_width - 1) * _scale);
-            Length = Height * Width * ChannelsCount;
-
+            
             var result = GenerateBackground();
 
             foreach (var layer in Layers)
             {
                 if (!layer.IsSelected) continue;
-    
-                layer.ScaledWidth = (int) (layer.Width * _scale - (layer.X > 0 ? layer.X : 0));
-                layer.ScaledHeight = (int) (layer.Height * _scale - (layer.Y > 0 ? layer.Y : 0));
 
                 int layerLeft = (int) (layer.X < 0 ? (-layer.X) : 0);
                 int layerTop = (int) (layer.Y < 0 ? (-layer.Y) : 0);
 
-                Console.WriteLine("scaled width {0:d}, scaled height {1:d}", layer.ScaledWidth, layer.ScaledHeight);
+                Console.WriteLine("scaled width {0:d}, scaled height {1:d}", layer.Width, layer.Height);
                 Console.WriteLine("layerLeft {0:d}, layerTop {1:d}", layerLeft, layerTop);
 
-                layer.CachedRaw = ApplyScale(layer.Raw, layer.Width,
-                    layer.Height, layer.ScaledWidth, layer.ScaledHeight, layerLeft, layerTop);
-
-
-                compose(layer.CachedRaw, layer.ScaledWidth, layer.ScaledHeight,
+                compose(layer.Raw, layer.Width, layer.Height,
                     result, Width, Height, (int) (layer.X), (int) (layer.Y), 0, 0, layer.Opacity);
             }
 
@@ -87,12 +56,6 @@ namespace ImageEditor.ViewModel.model
             Console.WriteLine("stop:" + sw.ElapsedMilliseconds);
 
             return result;
-        }
-
-        public void OnSizeChanged(int delta)
-        {
-            _scale += delta * ScaleRatio;
-            _isDirty = true;
         }
 
         private float[] _cachedBackgroung;
@@ -152,82 +115,7 @@ namespace ImageEditor.ViewModel.model
             }
             return clone;
         }
-
-        private float[] ApplyScale(float[] source, int w1, int h1, int w2, int h2, int xStart = 0, int yStart= 0)
-        {
-            int srcLength = _length;
-            int destLength = h2 * w2 * ChannelsCount;
-
-            float[] dest = new float[destLength];
-
-            int dx = 0, dy = 0;
-
-            int x1, y1, x2, y2, i0, i1, i2, i3, i4;
-            float a, b, c, d, w, h, xf, yf, nxDiff, nyDiff, m1, m2, m3, m4;
-
-            // don't optimize it, left it for flexibility of code
-            float xRatio = 1f / _scale;
-            float yRatio = 1f / _scale;
-
-
-            for (int y = yStart; y < h2; y++)
-            {
-                for (int x = xStart; x < w2; x++)
-                {
-                    xf = (xRatio * (x + dx));
-                    yf = (yRatio * (y + dy));
-
-                    x1 = (int) (xf);
-                    y1 = (int) (yf);
-
-                    if (x1 < 0 || x1 >= w1 - 1 || y1 < 0 || y1 >= h1 - 1)
-                        continue;
-
-                    w = xf - x1;
-                    h = yf - y1;
-
-
-                    i1 = (y1 * w1 + x1) * 4;
-                    i2 = (y1 * w1 + x1 + 1) * 4;
-                    i3 = ((y1 + 1) * w1 + x1) * 4;
-                    i4 = ((y1 + 1) * w1 + x1 + 1) * 4;
-
-                    x2 = x;
-                    y2 = y;
-
-                    if (x2 < 0 || x2 >= w2 - 1 || y2 < 0 || y2 >= h2 - 1)
-                        continue;
-
-                    i0 = ((y2 * w2 + x2) * 4);
-
-                    nxDiff = 1 - w;
-                    nyDiff = 1 - h;
-
-                    m1 = nxDiff * nyDiff;
-                    m2 = w * nyDiff;
-                    m3 = h * nxDiff;
-                    m4 = w * h;
-
-                    for (int i = 0; i < 4; i++)
-                    {
-                        if (i4 + i >= srcLength || i1 + i < 0
-                            || i0 + i < 0 || i0 + i >= destLength) break;
-                        a = source[i1 + i];
-                        b = source[i2 + i];
-                        c = source[i3 + i];
-                        d = source[i4 + i];
-
-                        dest[i0 + i] =
-                            a * m1
-                            + b * m2
-                            + c * m3
-                            + d * m4;
-                    }
-                }
-            }
-            return dest;
-        }
-
+        
         private void compose(float[] a, int widthA, int heightA, float[] b, int widthB, int heightB,
             int bX = 0, int bY = 0, int aX = 0, int aY = 0, float opacity = 1f)
         {
@@ -295,8 +183,8 @@ namespace ImageEditor.ViewModel.model
             var selectedLayer = GetSelectedLayer();
             if (selectedLayer == null) return;
 
-            x = (int) (x / Scale + 0.5);
-            y = (int) (y / Scale + 0.5);
+            //x = (int) (x / Scale + 0.5);
+            //y = (int) (y / Scale + 0.5);
 
             float[] col = NormalizeColor(color);
 
@@ -351,8 +239,8 @@ namespace ImageEditor.ViewModel.model
             var selectedLayer = GetSelectedLayer();
             if (selectedLayer == null) return;
 
-            x = (int) (x / Scale + 0.5);
-            y = (int) (y / Scale + 0.5);
+            //x = (int) (x / Scale + 0.5);
+            //y = (int) (y / Scale + 0.5);
 
             int x1 = x - size;
             int y1 = y - size;

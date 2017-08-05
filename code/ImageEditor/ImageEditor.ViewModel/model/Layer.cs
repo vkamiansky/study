@@ -55,9 +55,6 @@ namespace ImageEditor.ViewModel.model
         }
 
         public float[] Raw { get; set; }
-        public float[] CachedRaw { get; set; }
-        public int ScaledWidth { get; set; }
-        public int ScaledHeight { get; set; }
 
         public Action OnChanged { get; set; }
 

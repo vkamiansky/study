@@ -9,7 +9,7 @@ namespace ImageEditor.Interface.ViewModel
 {
     public interface IEditorViewModel
     {
-        IProperty<Bitmap> ImageSource { get; }
+        IProperty<CanvasSource> ImageSource { get; }
 
         IProperty<List<ILayer>> Layers { get; }
 

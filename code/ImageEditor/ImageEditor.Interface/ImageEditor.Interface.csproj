@@ -62,7 +62,10 @@
     <Compile Include="ViewModel\AppStateDataKey.cs" />
     <Compile Include="ViewModel\IAppStateViewModel.cs" />
     <Compile Include="ViewModel\IMainViewModel.cs" />
+    <Compile Include="ViewModel\model\CanvasSource.cs" />
+    <Compile Include="ViewModel\model\Constants.cs" />
     <Compile Include="ViewModel\model\ILayer.cs" />
+    <Compile Include="ViewModel\model\ImageScaler.cs" />
     <Compile Include="ViewModel\ToolMenuItem.cs" />
   </ItemGroup>
   <ItemGroup>
