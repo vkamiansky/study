@@ -12,7 +12,6 @@ namespace ImageEditor.ViewModel.model
         public int Width { get; set; }
         public int Length { get; set; }
 
-        private float[] _raw;
         public List<Layer> Layers { get; }
 
         public Canvas(int width, int height, float[] imgRaw, string name = "")
@@ -21,7 +20,6 @@ namespace ImageEditor.ViewModel.model
             Width = width;
             Length = Height * Width * ChannelsCount;
 
-            _raw = GenerateBackground();
             Layers = new List<Layer>();
             var layer = new Layer(0, 0, width, height, imgRaw)
             {
@@ -33,7 +31,7 @@ namespace ImageEditor.ViewModel.model
 
         public float[] GetRaw()
         {
-            var result = GenerateBackground();
+            var result = new float[Length];
 
             foreach (var layer in Layers)
             {
@@ -43,46 +41,6 @@ namespace ImageEditor.ViewModel.model
                     result, Width, Height, (int) (layer.X), (int) (layer.Y), 0, 0, layer.Opacity);
             }
             return result;
-        }
-
-        private float[] _cachedBackgroung;
-
-        private float[] GenerateBackground()
-        {
-            float[] rawArr;
-            if (_cachedBackgroung != null && _cachedBackgroung.Length == Length)
-            {
-                rawArr = _cachedBackgroung;
-            }
-            else
-            {
-                rawArr = new float[Length];
-                _cachedBackgroung = rawArr;
-            }
-            for (int y = 0; y < Height; y++)
-            {
-                for (int x = 0; x < Width; x++)
-                {
-                    int index = (y * Width + x) * ChannelsCount;
-                    var d = y / BgTileSide % 2;
-                    var f = x / BgTileSide % 2;
-                    if (d == 0 && f == 0 || d != 0 && f != 0)
-                    {
-                        rawArr[index + 0] = BgWhite;
-                        rawArr[index + 1] = BgWhite;
-                        rawArr[index + 2] = BgWhite;
-                        rawArr[index + 3] = Opaque;
-                    }
-                    else
-                    {
-                        rawArr[index + 0] = BgGrey;
-                        rawArr[index + 1] = BgGrey;
-                        rawArr[index + 2] = BgGrey;
-                        rawArr[index + 3] = Opaque;
-                    }
-                }
-            }
-            return Clone(rawArr);
         }
 
         public void OnLayersChanged(Action action)

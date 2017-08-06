@@ -15,7 +15,7 @@ namespace ImageEditor.ViewModel.model
 
         public static CanvasSource ToCanvasSource(this Canvas canvas, float scale)
         {
-            return new CanvasSource(canvas.GetRaw(), canvas.Width, canvas.Height, scale);
+            return new CanvasSource(canvas.GetRaw().CloneArray(), canvas.Width, canvas.Height, scale);
         }
 
         public static Canvas ToCanvas(this NewFileData fileData)

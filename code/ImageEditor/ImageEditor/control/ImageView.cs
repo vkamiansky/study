@@ -13,7 +13,7 @@ namespace ImageEditor.control
     {
         public static int MaxWidth;
         public static int MaxHeight;
-        
+
         public CanvasSource CanvasSource
         {
             get => (CanvasSource) GetValue(CanvasSourceProperty);
@@ -27,36 +27,82 @@ namespace ImageEditor.control
                                                     | FrameworkPropertyMetadataOptions.AffectsRender, OnDataChanged,
                     null), null);
 
-        
+
         private static void OnDataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ImageView imageView = (ImageView) d;
 
             CanvasSource newCanvasSource = (CanvasSource) e.NewValue;
-            imageView.Source = newCanvasSource.ToBitmapSource(); 
+
+            newCanvasSource.ApplyScale(ScalerChooser.Instance.ChooseScaler(newCanvasSource.Scale));
+            newCanvasSource.ApplyBackground();
+
+            imageView.Source = newCanvasSource.ToBitmapSource();
         }
+
 
         public void OnContainerSizeChanged(int newWidth, int newHeight)
         {
             MaxWidth = newWidth;
             MaxHeight = newHeight;
         }
+
+        /* private float[] _cachedBackgroung;
+ 
+         private float[] GenerateBackground()
+         {
+             float[] rawArr;
+             if (_cachedBackgroung != null && _cachedBackgroung.Length == Length)
+             {
+                 rawArr = _cachedBackgroung;
+             }
+             else
+             {
+                 rawArr = new float[Length];
+                 _cachedBackgroung = rawArr;
+             }
+             for (int y = 0; y < Height; y++)
+             {
+                 for (int x = 0; x < Width; x++)
+                 {
+                     int index = (y * Width + x) * ChannelsCount;
+                     var d = y / BgTileSide % 2;
+                     var f = x / BgTileSide % 2;
+                     if (d == 0 && f == 0 || d != 0 && f != 0)
+                     {
+                         rawArr[index + 0] = BgWhite;
+                         rawArr[index + 1] = BgWhite;
+                         rawArr[index + 2] = BgWhite;
+                         rawArr[index + 3] = Opaque;
+                     }
+                     else
+                     {
+                         rawArr[index + 0] = BgGrey;
+                         rawArr[index + 1] = BgGrey;
+                         rawArr[index + 2] = BgGrey;
+                         rawArr[index + 3] = Opaque;
+                     }
+                 }
+             }
+             return Clone(rawArr);
+         }*/
     }
 
     static class Converter
     {
         public static BitmapSource ToBitmapSource(this CanvasSource canvasSource)
         {
-            canvasSource.ApplyScale(ScalerChooser.Instance.ChooseScaler(canvasSource.Scale));
-            Bitmap bitmap = new Bitmap(canvasSource.Width, canvasSource.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            Bitmap bitmap = new Bitmap(canvasSource.Width, canvasSource.Height,
+                System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
             BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, canvasSource.Width, canvasSource.Height),
                 ImageLockMode.ReadWrite, bitmap.PixelFormat);
 
             Marshal.Copy(canvasSource.Raw.ToByteArray(), 0, bitmapData.Scan0, canvasSource.Raw.Length);
-            
+
             var bitmapSource = BitmapSource.Create(
-                bitmapData.Width, bitmapData.Height, bitmap.HorizontalResolution, bitmap.VerticalResolution, PixelFormats.Bgra32, null,
+                bitmapData.Width, bitmapData.Height, bitmap.HorizontalResolution, bitmap.VerticalResolution,
+                PixelFormats.Bgra32, null,
                 bitmapData.Scan0, bitmapData.Stride * bitmapData.Height, bitmapData.Stride);
 
             bitmap.UnlockBits(bitmapData);

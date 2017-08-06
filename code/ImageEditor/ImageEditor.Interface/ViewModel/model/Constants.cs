@@ -11,8 +11,8 @@
         public const float ColorDenormalizeRatio = 255f;
         public const float ScaleRatio = 1.1f / 120f;
         public const int BgTileSide = 8; //px
-        public const float BgGrey = 204 * ColorNormalizeRatio;
-        public const float BgWhite = 255 * ColorNormalizeRatio;
+        public const float Grey = 204 * ColorNormalizeRatio;
+        public const float White = 255 * ColorNormalizeRatio;
         public const float Opaque = 1f;
     }
 }
