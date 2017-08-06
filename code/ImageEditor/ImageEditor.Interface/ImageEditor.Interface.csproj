@@ -66,6 +66,7 @@
     <Compile Include="ViewModel\model\Constants.cs" />
     <Compile Include="ViewModel\model\ILayer.cs" />
     <Compile Include="ViewModel\model\ImageScaler.cs" />
+    <Compile Include="ViewModel\model\NewFileData.cs" />
     <Compile Include="ViewModel\ToolMenuItem.cs" />
   </ItemGroup>
   <ItemGroup>

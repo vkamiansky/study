@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using ColorBox;
 
@@ -21,7 +22,8 @@ namespace ImageEditor
             ScaleTextBox.PreviewKeyDown += ScaleTextBox_PreviewKeyDown;
             var actualWidth = GridOne.ColumnDefinitions[0].ActualWidth;
             var actualHeight = GridOne.RowDefinitions[2].ActualHeight;
-            GridOne.SizeChanged += OnSizeChanged;
+            //GridOne.SizeChanged += OnSizeChanged;
+            MainGrid.SizeChanged += OnSizeChanged;
         }
 
         private void ScaleTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -38,9 +40,9 @@ namespace ImageEditor
 
         private void OnSizeChanged(Object o, SizeChangedEventArgs args)
         {
-            var actualWidth = GridOne.ColumnDefinitions[0].ActualWidth;
-            var actualHeight = GridOne.RowDefinitions[2].ActualHeight;
-            Canvas.OnContainerSizeChanged((int) actualWidth, (int) actualHeight);
+            /*var size = GetElementPixelSize(MainGrid);
+            Canvas.OnContainerSizeChanged((int) size.Width, (int) size.Height);*/
         }
+        
     }
 }

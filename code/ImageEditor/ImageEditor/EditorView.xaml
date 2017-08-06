@@ -39,7 +39,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid>
+    <Grid Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="*" />
@@ -78,7 +78,7 @@
                     </Slider.LayoutTransform>
                 </Slider>
 
-                <Label FontSize="8" Foreground="White">Opacity: </Label>
+                <Label FontSize="8" Foreground="White">Opacity:</Label>
 
                 <Slider AutoToolTipPlacement="TopLeft" Height="10" Width="50" HorizontalAlignment="Left"
                         VerticalAlignment="Center" Foreground="{DynamicResource MenuItemPressedBrush}"
@@ -168,17 +168,15 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="1" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="191*" />
                 <RowDefinition Height="15" />
 
             </Grid.RowDefinitions>
 
-            <Rectangle Grid.Row="0" Fill="{StaticResource DividerBrush}" Height="1" Margin="0,0,0,9.4" Grid.RowSpan="2" />
+            <Rectangle Grid.Row="0" Fill="{StaticResource DividerBrush}" Height="1"/>
 
-            <!-- Width="200" Height="200" -->
+            <!--  -->
             <control:ImageView HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="Canvas"
-                   Grid.Column="0" Grid.Row="1" CanvasSource="{Binding ImageSource.Value}" Stretch="None"
-                   Margin="0,0.2,0,0.6" Grid.RowSpan="2">
+                   Grid.Column="0" Grid.Row="1" CanvasSource="{Binding ImageSource.Value}" Stretch="None">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseWheel">
                         <action:MouseWheelAction Delta="{Binding MouseWheelDelta.Input, Mode=TwoWay}" />
@@ -194,10 +192,9 @@
                                                  Image="{Binding ElementName=Canvas}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
-
             </control:ImageView>
 
-            <Grid Grid.Row="3" Background="{StaticResource BgBrush}">
+            <Grid Grid.Row="2" Background="{StaticResource BgBrush}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>

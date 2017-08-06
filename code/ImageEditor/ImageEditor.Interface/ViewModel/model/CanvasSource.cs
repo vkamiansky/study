@@ -17,14 +17,16 @@ namespace ImageEditor.Interface.ViewModel.model
             Scale = scale;
         }
 
-        public void ApplyScale(ImageScaler scaler)
+        public void ApplyScale(ImageScaler scaler, int maxWidth = 0, int maxHeight = 0)
         {
             int newWidth = (int) (Width * Scale);
             int newHeight = (int) (Height * Scale);
-            Raw = scaler.Scale(Raw, Width, Height, newWidth, newHeight);
+            Raw = scaler.Scale(Raw, Width, Height, newWidth, newHeight, xEnd:maxWidth, yEnd:maxHeight);
             Width = newWidth;
             Height = newHeight;
             Scale = 1;
         }
+        
+     
     }
 }

@@ -11,6 +11,9 @@ namespace ImageEditor.control
 {
     public class ImageView : System.Windows.Controls.Image
     {
+        public static int MaxWidth;
+        public static int MaxHeight;
+        
         public CanvasSource CanvasSource
         {
             get => (CanvasSource) GetValue(CanvasSourceProperty);
@@ -35,7 +38,8 @@ namespace ImageEditor.control
 
         public void OnContainerSizeChanged(int newWidth, int newHeight)
         {
-            
+            MaxWidth = newWidth;
+            MaxHeight = newHeight;
         }
     }
 

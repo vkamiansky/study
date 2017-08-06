@@ -6,8 +6,11 @@ namespace ImageEditor.scalers
     public class BilinearScaler : ImageScaler
     {
         [SuppressMessage("ReSharper", "TooWideLocalVariableScope")]
-        public float[] Scale(float[] source, int w1, int h1, int w2, int h2, int xStart = 0, int yStart = 0)
+        public float[] Scale(float[] source, int w1, int h1, int w2, int h2,
+            int xStart = 0, int yStart = 0, int xEnd = 0, int yEnd = 0)
         {
+            xEnd = xEnd == 0 ? w2 : xEnd;
+            yEnd = yEnd == 0 ? h2 : yEnd;
             int srcLength = source.Length;
             int destLength = h2 * w2 * Constants.ChannelsCount;
 
@@ -23,9 +26,9 @@ namespace ImageEditor.scalers
             float yRatio = h1 * 1f / h2;
 
 
-            for (int y = yStart; y < h2; y++)
+            for (int y = yStart; y < yEnd; y++)
             {
-                for (int x = xStart; x < w2; x++)
+                for (int x = xStart; x < yEnd; x++)
                 {
                     xf = (xRatio * (x + dx));
                     yf = (yRatio * (y + dy));

@@ -15,7 +15,7 @@ namespace ImageEditor.ViewModel.model
         private float[] _raw;
         public List<Layer> Layers { get; }
 
-        public Canvas(int width, int height, float[] imgRaw)
+        public Canvas(int width, int height, float[] imgRaw, string name = "")
         {
             Height = height;
             Width = width;
@@ -23,8 +23,11 @@ namespace ImageEditor.ViewModel.model
 
             _raw = GenerateBackground();
             Layers = new List<Layer>();
-            var layer = new Layer(0, 0, width, height, imgRaw);
-            layer.IsSelected = true;
+            var layer = new Layer(0, 0, width, height, imgRaw)
+            {
+                IsSelected = true,
+                Name = name
+            };
             Layers.Add(layer);
         }
 

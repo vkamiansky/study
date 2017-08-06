@@ -8,7 +8,28 @@ namespace ImageEditor.ViewModel.model
 {
     public static class ImageConverter
     {
-        public static Canvas ToCanvas(this Bitmap bitmap)
+        public static Canvas ToCanvas(this Bitmap bitmap, string fileName)
+        {
+            return new Canvas(bitmap.Width, bitmap.Height, bitmap.ToRaw(), fileName);
+        }
+
+        public static CanvasSource ToCanvasSource(this Canvas canvas, float scale)
+        {
+            return new CanvasSource(canvas.GetRaw(), canvas.Width, canvas.Height, scale);
+        }
+
+        public static Canvas ToCanvas(this NewFileData fileData)
+        {
+            var width = fileData.Width;
+            var height = fileData.Height;
+            Bitmap bitmap = new Bitmap(width, height);
+            var ghx = Graphics.FromImage(bitmap);
+            ghx.FillRectangle(new SolidBrush(fileData.Color), new Rectangle(0, 0, width, height));
+            ghx.Dispose();
+            return new Canvas(width, height, bitmap.ToRaw(), fileData.Name);
+        }
+
+        public static float[] ToRaw(this Bitmap bitmap)
         {
             if (bitmap.PixelFormat != PixelFormat.Format32bppArgb)
             {
@@ -37,13 +58,7 @@ namespace ImageEditor.ViewModel.model
             {
                 raw[i] = byteRaw[i] * ColorNormalizeRatio;
             }
-
-            return new Canvas(width, height, raw);
-        }
-
-        public static CanvasSource ToCanvasSource(this Canvas canvas, float scale)
-        {
-            return new CanvasSource(canvas.GetRaw(), canvas.Width, canvas.Height, scale);
+            return raw;
         }
     }
 }

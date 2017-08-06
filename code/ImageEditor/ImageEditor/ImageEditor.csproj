@@ -51,9 +51,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ColorBox, Version=1.1.0.0, Culture=neutral, PublicKeyToken=f971124b2576acfc">
-      <HintPath>..\packages\colorBox\ColorBox.dll</HintPath>
-    </Reference>
     <Reference Include="ColorBox, Version=1.1.0.0, Culture=neutral, PublicKeyToken=f971124b2576acfc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ColorBox.dll</HintPath>
@@ -85,12 +82,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="control\ImageView2.cs" />
+    <Compile Include="action\NewFileDialogAction.cs" />
+    <Compile Include="NewFileDialog.xaml.cs">
+      <DependentUpon>NewFileDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="scalers\BilinearScaler.cs" />
     <Compile Include="scalers\NearestNeighbourScaler.cs" />
     <Compile Include="scalers\ScalerChooser.cs" />
     <Compile Include="scalers\StubScaler.cs" />
     <Page Include="EditorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewFileDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

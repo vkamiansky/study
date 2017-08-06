@@ -22,7 +22,7 @@ namespace ImageEditor.ViewModel.model
             }
         }
 
-        public string Name { get; set; } = "Layer 1";
+        public string Name { get; set; }
 
         public int Width
         {

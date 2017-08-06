@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Property;
 using System.Windows.Media;
 using System.Drawing;
+using System.IO;
 using ImageEditor.Interface.ViewModel;
 using ImageEditor.Interface.ViewModel.model;
 using ImageEditor.ViewModel.model;
@@ -17,6 +18,7 @@ namespace ImageEditor.ViewModel
         public IProperty<CanvasSource> ImageSource => _imageSource;
         public IProperty<List<ILayer>> Layers => _layers;
         public IInputProperty<string> ImagePath { get; }
+        public IInputProperty<NewFileData> NewFile { get; }
         public IInputProperty<int> MouseWheelDelta { get; }
         public IInputProperty<Tuple<double, double>> Shift { get; }
         public IInputProperty<string> ImageScale { get; }
@@ -121,11 +123,12 @@ namespace ImageEditor.ViewModel
             ImagePath = Reloadable<string>.On().Each().Input().Create();
             ImagePath.OnChanged(() =>
             {
-                _canvas = new Bitmap(ImagePath.Value).ToCanvas();
-                _canvas.OnLayersChanged(() => _imageSource.Go());
-                _layers.Go();
-                _imageSource.Go();
+                var fileName = Path.GetFileName(ImagePath.Value)?.Split('.')[0];
+                InitCanvas(new Bitmap(ImagePath.Value).ToCanvas(fileName));
             });
+
+            NewFile = Reloadable<NewFileData>.On().Each().Input().Create();
+            NewFile.OnChanged(() => { InitCanvas(NewFile.Input.ToCanvas()); });
 
             _layers = Reloadable<List<ILayer>>.On().Each()
                 .Call(_ => _canvas.Layers.ConvertAll(x => x as ILayer)).Create();
@@ -137,6 +140,14 @@ namespace ImageEditor.ViewModel
 
             ToolSize.Input = DefaultSize;
             ToolOpacity.Input = DefaultOpacity;
+        }
+
+        private void InitCanvas(Canvas canvas)
+        {
+            _canvas = canvas;
+            _canvas.OnLayersChanged(() => _imageSource.Go());
+            _layers.Go();
+            _imageSource.Go();
         }
     }
 }

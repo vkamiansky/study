@@ -13,7 +13,7 @@ namespace ImageEditor.action
     {
         public string FilePath
         {
-            get => (string)GetValue(FilePathProperty);
+            get => (string) GetValue(FilePathProperty);
             set => SetValue(FilePathProperty, value);
         }
 

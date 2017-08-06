@@ -18,6 +18,8 @@ namespace ImageEditor.Interface.ViewModel
         IInputProperty<string> ImagePath { get; }
 
         IInputProperty<string> ImageScale { get; }
+        
+        IInputProperty<NewFileData> NewFile { get; }
 
         IInputProperty<int> MouseWheelDelta { get; }
 

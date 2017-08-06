@@ -4,16 +4,20 @@ namespace ImageEditor.scalers
 {
     public class NearestNeighbourScaler : ImageScaler
     {
-        public float[] Scale(float[] source, int w1, int h1, int w2, int h2, int xStart = 0, int yStart = 0)
+        public float[] Scale(float[] source, int w1, int h1, int w2, int h2,
+            int xStart = 0, int yStart = 0, int xEnd = 0, int yEnd = 0)
         {
+            xEnd = xEnd == 0 ? w2 : xEnd;
+            yEnd = yEnd == 0 ? h2 : yEnd;
+
             int srcLength = source.Length;
             int destLength = h2 * w2 * Constants.ChannelsCount;
             float[] dest = new float[destLength];
             float xRatio = w2 * 1f / w1;
             float yRatio = h2 * 1f / h1;
-            for (int y = 0; y < h2; y++)
+            for (int y = 0; y < yEnd; y++)
             {
-                for (int x = 0; x < w2; x++)
+                for (int x = 0; x < xEnd; x++)
                 {
                     int x1 = (int) (x / xRatio);
                     int y1 = (int) (y / yRatio);

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -10,9 +9,6 @@ namespace ImageEditor.action
 {
     public class MouseDownAction : TriggerAction<FrameworkElement>
     {
-/*        private readonly Stopwatch _stopwatch = new Stopwatch();
-
-        private const long EmitThreshold = 0;*/
 
         public Tuple<double, double> Shift
         {
@@ -51,12 +47,6 @@ namespace ImageEditor.action
         {
             if (!(parameter is MouseEventArgs)) return;
 
- /*           if (_stopwatch.IsRunning
-                && _stopwatch.ElapsedMilliseconds < EmitThreshold)
-            {
-                return;
-            }*/
-
             MouseEventArgs e = (MouseEventArgs) parameter;
 
             var point = e.GetPosition(Image);
@@ -82,8 +72,6 @@ namespace ImageEditor.action
 
             _x = x;
             _y = y;
-
-            //_stopwatch.Restart();
         }
     }
 }

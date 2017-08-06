@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:action="clr-namespace:ImageEditor.action"
         xmlns:local="clr-namespace:ImageEditor"
-        xmlns:interface="clr-namespace:ImageEditor.Interface;assembly=ImageEditor.Interface"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:viewModel="clr-namespace:ImageEditor.Interface.ViewModel;assembly=ImageEditor.Interface"
         mc:Ignorable="d"
@@ -32,7 +31,7 @@
         <SolidColorBrush x:Key="BgBrush" Color="{DynamicResource MenuBackgroundColor}" />
     </Window.Resources>
 
-    <Grid>
+    <Grid Name="RootGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
             <RowDefinition Height="*" />
@@ -48,7 +47,14 @@
             <Menu Name="MainMenu" Foreground="White" Style="{DynamicResource MenuStyle}" Grid.Column="0"
                   Margin="0,0,0,0">
                 <MenuItem Name="FirstMenuItem" Header="_File" Template="{DynamicResource MenuItemControlTemplate2}">
-                    <MenuItem Foreground="Black" Header="_New…" />
+                    <MenuItem Foreground="Black" Header="_New…">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <action:NewFileDialogAction 
+                                    FileData="{Binding MainViewModel.Editor.Value.NewFile.Input, Mode=TwoWay}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
                     <MenuItem Foreground="Black" Header="_Open…">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
@@ -62,7 +68,7 @@
                     <MenuItem Foreground="Black" Header="_Save" />
                     <MenuItem Foreground="Black" Header="_Save As…" />
                     <Separator />
-                    <MenuItem Foreground="Black" Header="_Exit" >
+                    <MenuItem Foreground="Black" Header="_Exit">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
                                 <action:CloseFormAction Window="{Binding ElementName=MainViewWindow}" />
