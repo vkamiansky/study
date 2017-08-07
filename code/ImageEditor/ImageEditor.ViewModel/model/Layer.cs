@@ -144,7 +144,7 @@ namespace ImageEditor.ViewModel.model
         {
             MapCoord(ref x, ref y);
             MapCoord(ref maxWidth, ref maxHeight);
-            int left = 0, right = 0, top = 0, bottom = 0;
+            double left = 0, right = 0, top = 0, bottom = 0;
             int t = x - size;
             if (t < 0)
             {
@@ -169,26 +169,22 @@ namespace ImageEditor.ViewModel.model
                 if (t > maxHeight) t = maxHeight;
                 bottom = t;
             }
-            //left = left < 0 ? 0 : left;
-            //top = top < 0 ? 0 : top;
-            //right = right < 0 ? 0 : right;
-            //bottom = bottom < 0 ? 0 : bottom;
             Resize(left, top, right, bottom);
         }
 
         // left +20 add 20 to start of layer
         // left -20 remove 20 from start
-        public void Resize(int left = 0, int top = 0, int right = 0, int bottom = 0)
+        public void Resize(double left = 0, double top = 0, double right = 0, double bottom = 0)
         {
             if (left == 0 && top == 0 && right == 0 && bottom == 0) return;
 
-            int width = _width + left + right;
-            int height = _height + top + bottom;
+            int width = (int) (_width + left + right);
+            int height = (int) (_height + top + bottom);
 
             float[] raw = new float[width * height * Constants.ChannelsCount];
 
-            int x = left < 0 ? 0 : left;
-            int y = top < 0 ? 0 : top;
+            int x = (int) (left < 0 ? 0 : left);
+            int y = (int) (top < 0 ? 0 : top);
 
             for (int y1 = 0, y2 = y; y1 < Height && y2 < height; y1++, y2++)
             {
