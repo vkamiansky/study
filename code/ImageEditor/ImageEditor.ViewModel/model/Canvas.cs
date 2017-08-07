@@ -37,8 +37,7 @@ namespace ImageEditor.ViewModel.model
             {
                 if (!layer.IsSelected) continue;
 
-                compose(layer.Raw, layer.Width, layer.Height,
-                    result, Width, Height, (int) (layer.X), (int) (layer.Y), 0, 0, layer.Opacity);
+                layer.Compose(result, Width, Height);
             }
             return result;
         }
@@ -51,64 +50,13 @@ namespace ImageEditor.ViewModel.model
             }
         }
 
-        private float[] Clone(float[] arr)
-        {
-            float[] clone = new float[arr.Length];
-            for (int i = 0; i < arr.Length; i++)
-            {
-                clone[i] = arr[i];
-            }
-            return clone;
-        }
-        
-        private void compose(float[] a, int widthA, int heightA, float[] b, int widthB, int heightB,
-            int bX = 0, int bY = 0, int aX = 0, int aY = 0, float opacity = 1f)
-        {
-            if (bX < 0)
-            {
-                aX += -bX;
-                bX = 0;
-            }
-
-            if (bY < 0)
-            {
-                aY += -bY;
-                bY = 0;
-            }
-
-            for (int y1 = aY, y2 = bY; y1 < heightA && y2 < heightB; y1++, y2++)
-            {
-                for (int x1 = aX, x2 = bX; x1 < widthA && x2 < widthB; x1++, x2++)
-                {
-                    int srcIndex = (y1 * widthA + x1) * ChannelsCount;
-                    int destIndex = (y2 * widthB + x2) * ChannelsCount;
-
-                    float aa = a[srcIndex + 3] * opacity;
-                    float ab = b[destIndex + 3];
-                    float naa = 1 - aa;
-                    float div = aa + ab * naa;
-
-                    b[destIndex + 0] =
-                        (a[srcIndex + 0] * aa + b[destIndex + 0] * ab * naa) / div;
-
-                    b[destIndex + 1] =
-                        (a[srcIndex + 1] * aa + b[destIndex + 1] * ab * naa) / div;
-
-                    b[destIndex + 2] =
-                        (a[srcIndex + 2] * aa + b[destIndex + 2] * ab * naa) / div;
-
-                    b[destIndex + 3] = div;
-                }
-            }
-        }
-
         public void OnMoved(double dx, double dy)
         {
             var selectedLayer = GetSelectedLayer();
             if (selectedLayer == null) return;
             selectedLayer.X += dx;
             selectedLayer.Y += dy;
-            
+
             Debug.WriteLine($"dx: {dx:F2} dy: {dy:F2}  X: {selectedLayer.X:F2} Y: {selectedLayer.Y:F3}");
         }
 
@@ -128,15 +76,19 @@ namespace ImageEditor.ViewModel.model
             var selectedLayer = GetSelectedLayer();
             if (selectedLayer == null) return;
 
-            //x = (int) (x / Scale + 0.5);
-            //y = (int) (y / Scale + 0.5);
+            float[] brush = CreateBrush(size, opacity, color);
 
+            if (selectedLayer.NeedExpandForDraw(x, y, size, Width, Height))
+            {
+                selectedLayer.Expand(x, y, size, Width, Height);
+            }
+            
+            selectedLayer.Draw(x, y, brush, size);
+        }
+
+        float[] CreateBrush(int size, float opacity, Color color)
+        {
             float[] col = NormalizeColor(color);
-
-            int x1 = x - size;
-            int y1 = y - size;
-
-            float d, d2;
 
             var h = size * 2;
             var w = size * 2;
@@ -147,21 +99,19 @@ namespace ImageEditor.ViewModel.model
             {
                 for (int j = 0; j < w; j++)
                 {
-                    d2 = dist2(j, i, size, size);
-                    if (d2 < size * size)
-                    {
-                        d = (float) Math.Sqrt(d2);
-                        int index = (i * w + j) * ChannelsCount;
-                        brush[index + 0] = col[0];
-                        brush[index + 1] = col[1];
-                        brush[index + 2] = col[2];
-                        brush[index + 3] = col[3] * (1 - d / size);
-                    }
+                    var d2 = dist2(j, i, size, size);
+                    if (d2 >= size * size) continue;
+
+                    var d = (float) Math.Sqrt(d2);
+                    int index = (i * w + j) * ChannelsCount;
+                    brush[index + 0] = col[0];
+                    brush[index + 1] = col[1];
+                    brush[index + 2] = col[2];
+                    brush[index + 3] = col[3] * (1 - d / size) * opacity;
                 }
             }
 
-            compose(brush, w, h, selectedLayer.Raw,
-                selectedLayer.Width, selectedLayer.Height, x1, y1, 0, 0, opacity);
+            return brush;
         }
 
         float[] NormalizeColor(Color color)
@@ -213,7 +163,7 @@ namespace ImageEditor.ViewModel.model
                     {
                         d = (float) Math.Sqrt(d2);
                         int index = (j * selectedLayer.Width + i) * ChannelsCount;
-                        selectedLayer.Raw[index + 3] *=  d / size * opacity + 0.001f;
+                        selectedLayer.Raw[index + 3] *= d / size * opacity + 0.001f;
                     }
                 }
             }
