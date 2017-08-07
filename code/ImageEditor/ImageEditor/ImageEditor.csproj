@@ -83,6 +83,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="action\NewFileDialogAction.cs" />
+    <Compile Include="action\OpenHistogramAction.cs" />
     <Compile Include="NewFileDialog.xaml.cs">
       <DependentUpon>NewFileDialog.xaml</DependentUpon>
     </Compile>

@@ -50,8 +50,8 @@
                     <MenuItem Foreground="Black" Header="_New…">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
-                                <action:NewFileDialogAction 
-                                    FileData="{Binding MainViewModel.Editor.Value.NewFile.Input, Mode=TwoWay}"/>
+                                <action:NewFileDialogAction
+                                    FileData="{Binding MainViewModel.Editor.Value.NewFile.Input, Mode=TwoWay}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </MenuItem>
@@ -80,6 +80,16 @@
                 <MenuItem Header="Filter" Template="{DynamicResource MenuItemControlTemplate2}">
                     <MenuItem Foreground="Black" Header="Brightness" />
                     <MenuItem Foreground="Black" Header="Contrast" />
+                </MenuItem>
+
+                <MenuItem Header="Window" Template="{DynamicResource MenuItemControlTemplate2}">
+                    <MenuItem Foreground="Black" Header="_Histogram">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <action:OpenHistogramAction />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
                 </MenuItem>
             </Menu>
 
