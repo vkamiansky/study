@@ -43,17 +43,17 @@ module Data =
     let find_and_transform_BC () =
         
         let f3 = function
-                 | B -> true 
-                 | _ -> false
+                 | B -> Some B 
+                 | _ -> None
 
         let f4 = function
-                 | C -> true 
-                 | _ -> false
+                 | C -> Some C 
+                 | _ -> None
 
         let transform =
             function
-            | [Some b; Some c] -> ll D
-            | [None; Some C] -> ll D
-            | _ -> LazyList.empty
+            | [Some b; Some c] -> [D]
+            | [None; Some C] -> [D]
+            | _ -> []
 
-        (([(f3, None); (f4, None)] |> LazyList.ofList), transform)
+        ([f3; f4], transform)

@@ -28,7 +28,7 @@ module Program =
         let expanded = ana [v expandSimple] inputSimple
         printfn "Expanded seq: %A" (expanded |> toString)
 
-        let collapseScn = [find_and_transform_BC ()] |> LazyList.ofList
+        let collapseScn = [find_and_transform_BC ()]
         let transformed = cata collapseScn (expanded |> flat)
 
         Console.ReadKey |> ignore

@@ -28,8 +28,8 @@ module Processing =
             match frames, objs with
             | [], _ -> LazyList.empty
             | _, Nil -> LazyList.empty
-            | f, Cons(head, tail) -> (match update_results f head with
-                                      |(frames_new, results_new) -> results_new
-                                                                    |> LazyList.append (get_results frames_new tail))
+            | f, Cons(head, tail) -> match update_results f head with
+                                     |(frames_new, results_new) -> results_new
+                                                                   |> LazyList.append (get_results frames_new tail)
 
         get_results frames_init lst
