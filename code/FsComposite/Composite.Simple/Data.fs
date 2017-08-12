@@ -1,5 +1,7 @@
 ﻿namespace Composite.Simple
 
+open System
+
 open Composite.Core.Composite
 open Composite.Core.Processing
 
@@ -9,24 +11,29 @@ module Data =
         | A
         | B
         | C
+        | D
 
-    //how to expand
-
+    // how to expand
     let expandSimple obj =
         match obj with
-        | A -> l B
-        | x -> l x
+        | A -> ll B
+        | x -> ll x
 
-    //how to fold
+    // how to fold
+    let find_and_transform_BC () =
+        
+        let f3 = function
+                 | B -> Some B 
+                 | _ -> None
 
-    let transform_AB obj =
-        let f1 = function | A -> true | _ -> false
-        let f2 = function | B -> true | _ -> false
-        let f = function | (Some a, Some b) -> l C | (None, Some b) -> l C | _ -> LazyList.empty
-        find_2_and_transform f1 f2 f obj
+        let f4 = function
+                 | C -> Some C 
+                 | _ -> None
 
-    let transform_AB_strict obj =
-        let f1 = function | A -> true | _ -> false
-        let f2 = function | B -> true | _ -> false
-        let f = fun (a, b) -> C
-        find_2_and_transform_strict f1 f2 f obj
+        let transform =
+            function
+            | [Some b; Some c] -> [D]
+            | [None; Some C] -> [D]
+            | _ -> []
+
+        ([f3; f4], transform)

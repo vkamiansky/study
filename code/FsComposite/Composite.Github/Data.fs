@@ -51,16 +51,16 @@ module Data =
         | PrReadRequest x -> 
             let result = execute client x
             match result with
-            | Success (resp, code) -> if code = Net.HttpStatusCode.OK then l (PrReadJson resp) else l (RequestError (resp, code))
-            | RestRequestStatus.Error (e) -> l (GitHubObject.Error e)
+            | Success (resp, code) -> if code = Net.HttpStatusCode.OK then ll (PrReadJson resp) else ll (RequestError (resp, code))
+            | RestRequestStatus.Error (e) -> ll (GitHubObject.Error e)
         | PrsReadRequest x -> 
             let result = execute client x
             match result with
-            | Success (resp, code) -> l (PrsReadJson resp)
-            | RestRequestStatus.Error (e) -> l (GitHubObject.Error e)
+            | Success (resp, code) -> ll (PrsReadJson resp)
+            | RestRequestStatus.Error (e) -> ll (GitHubObject.Error e)
 
     let expandGithub_step2 client obj =
         match obj with
-        | PrReadJson x -> l (Message x)
-        | PrsReadJson x -> l (Message x)
-        | x -> l x
+        | PrReadJson x -> ll (Message x)
+        | PrsReadJson x -> ll (Message x)
+        | x -> ll x
