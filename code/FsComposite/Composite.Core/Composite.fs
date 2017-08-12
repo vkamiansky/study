@@ -1,5 +1,7 @@
 ﻿namespace Composite.Core
 
+open Composite.Common.DataTransformationHelper
+
 module Composite =
 
     type 'a Composite =
@@ -7,9 +9,6 @@ module Composite =
     | Composite of LazyList<Composite<'a>>
 
     exception FatalError of string
-
-    let ll obj =
-        [obj] |> LazyList.ofList
 
     let toComposite obj =
         match obj with

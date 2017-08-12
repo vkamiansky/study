@@ -4,6 +4,7 @@ open System
 
 open Composite.Core.Composite
 open Composite.Core.Processing
+open Composite.Common.DataTransformationHelper
 
 module Data =
     

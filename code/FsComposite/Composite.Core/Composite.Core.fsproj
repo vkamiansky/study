@@ -74,6 +74,13 @@
       <Private>True</Private>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Composite.Common\Composite.Common.fsproj">
+      <Name>Composite.Common</Name>
+      <Project>{c08f2b08-c186-40d3-999c-ec7338e0b803}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

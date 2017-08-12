@@ -33,14 +33,13 @@ module Program =
         let inputSimple = Composite ([Value C; Value D] |> LazyList.ofList)
         printfn "Input seq: %A" (inputSimple |> toString)
         
-        let expanded = ana [v expandSimple] inputSimple
-        printfn "Expanded seq: %A" (expanded |> toString)
+        let expanded_simple = ana [v expandSimple] inputSimple
+        printfn "Expanded seq: %A" (expanded_simple |> toString)
 
         let collapseScn = [find_and_transform_BC ()]
-        let transformed = cata collapseScn (expanded |> flat)
+        let transformed = cata collapseScn (expanded_simple |> flat)
 
         // Testing on Github objects
-        
         let userName = "v-ilin" // set this value to username of repository owner
 
         let client = new RestClient("https://api.github.com")
@@ -53,9 +52,9 @@ module Program =
         let requestReadPrs = readPrs userName repoName        
 
         let input = Composite ([Value requestReadPr; Value requestReadPrs] |> LazyList.ofList)
-        let expanded = ana [v (expandGithub_step1 client); v (expandGithub_step2 client)] input
+        let expanded_github = ana [v (expandGithub_step1 client); v (expandGithub_step2 client)] input
 
-        expanded |> toConsole
+        expanded_github |> toConsole
         Console.ReadKey |> ignore
         
         0 // return an integer exit code

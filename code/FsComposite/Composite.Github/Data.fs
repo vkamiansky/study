@@ -7,6 +7,7 @@ open RestSharp
 open Composite.Core.Composite
 open Composite.Core.Processing
 open Composite.Common.RestRequest
+open Composite.Common.DataTransformationHelper
 
 module Data =
     
@@ -45,7 +46,6 @@ module Data =
     | Message of string
     
     //how to expand
-
     let expandGithub_step1 client obj =
         match obj with
         | PrReadRequest x -> 
