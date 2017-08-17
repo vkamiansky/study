@@ -4,14 +4,15 @@ open System
 
 open RestSharp
 open RestSharp.Authenticators
-open FSharpSnippets
 
+open FSharpSnippets
 open Composite.Core.Composite
 open Composite.Core.Processing
 open Composite.Simple.Data
 open Composite.Github.Data
 open Composite.Github.Request
-
+open Composite.Github.Json
+open Composite.Common.DataTransformationHelper
 
 module Program =
 
@@ -30,11 +31,12 @@ module Program =
     let main argv =
         
         // Testing on Simple objects
-        let inputSimple = Composite ([Value C; Value D] |> LazyList.ofList)
-        printfn "Input seq: %A" (inputSimple |> toString)
+        let inputSimple = Composite ([Value A; Value B] |> LazyList.ofList)
+        printfn "Input Simple seq: %A" (inputSimple |> toString)
         
         let expanded_simple = ana [v expandSimple] inputSimple
-        printfn "Expanded seq: %A" (expanded_simple |> toString)
+        printfn "Expanded Simple seq: %A" (expanded_simple |> toString)
+        expanded_simple |> toConsole
 
         let collapseScn = [find_and_transform_BC ()]
         let transformed = cata collapseScn (expanded_simple |> flat)
@@ -48,11 +50,11 @@ module Program =
         let repoName = "fsharp-tutorial" // repository name
         let issueNumber = "3" // issue id
 
-        let requestReadPr = readPr userName repoName (IssueNumber issueNumber)
-        let requestReadPrs = readPrs userName repoName        
+        let input_github = Composite (ll (Value (Repository repoName)))
 
-        let input = Composite ([Value requestReadPr; Value requestReadPrs] |> LazyList.ofList)
-        let expanded_github = ana [v (expandGithub_step1 client); v (expandGithub_step2 client)] input
+        let reviewers = ["vk"; "vi"]
+
+        let expanded_github = ana [readPrs userName; pOpen; execute client; toIssueNumbers reviewers; toLabelNames] input_github
 
         expanded_github |> toConsole
         Console.ReadKey |> ignore
