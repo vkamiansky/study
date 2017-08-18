@@ -85,3 +85,57 @@ module Request =
         match obj with
         | Request o -> ll (Request (RequestAllPages o))
         | _ -> ll obj
+
+    let matchRequest getResponseMethod obj =
+        match obj with
+        | PrsReadRequest x -> PrsReadJson (x |> getResponseMethod)
+        | LabelsReadRequest x -> LabelsReadJson (x |> getResponseMethod)
+        | LabelsAttachRequest x -> LabelsAttachedJson (x |> getResponseMethod)
+        | LabelDettachRequest x -> LabelDettachedJson (x |> getResponseMethod)
+        | PrFilesReadRequest x -> PrFilesReadJson(x |> getResponseMethod)
+        | PrCommentsReadRequest x -> PrCommentsReadJson(x |> getResponseMethod)
+        | IssueCommentsReadRequest x -> IssueCommentsReadJson(x |> getResponseMethod)
+        | PrCommitsReadRequest x -> PrCommitsReadJson(x |> getResponseMethod)
+
+    /// ... use request : turn it into json using REST [client]...
+    let rec executeSingle (client : RestClient) obj =
+        let addJsonBody body (req : IRestRequest) =
+            req.RequestFormat <- DataFormat.Json
+            req.AddBody(body)
+        let getResponseContent req =
+            client.Execute(req).Content
+
+        let rec executeWith getResponseMethod obj2 =
+                try
+                    match obj2 with
+                    | Request (RequestSetInBody (o, s)) -> if s = Set.empty
+                                                           then Response (Message "Request was supposed to have a body. Execution cancelled.")
+                                                           else Request o |> executeWith (addJsonBody s >> getResponseMethod)
+                    | Request req -> Response (matchRequest getResponseMethod req)
+                with
+                | o -> Response (Error o)
+
+        obj |> executeWith getResponseContent
+
+    // function that will determine is json haven't any entities
+    let isEmptyResult obj =
+        match obj with
+        | Response (PrsReadJson x) -> if x.Length < 5 
+                                      then Some obj 
+                                      else None
+
+    let executeAllPages client obj =
+        let rec getResultFromPage startPageNumber results =
+            match obj with
+            | Request x ->
+                match pPage startPageNumber x with
+                | Cons(r, Nil) -> match isEmptyResult (executeSingle client r) with
+                                  | Some y -> getResultFromPage (startPageNumber + 1) (LazyList.append results ([y] |> LazyList.ofList))
+                                  | None -> results
+
+        getResultFromPage 1 LazyList.empty
+
+    let execute client obj =
+        match obj with
+        | Request (RequestAllPages x) -> executeAllPages client obj
+        | Request x -> ll (executeSingle client obj)
