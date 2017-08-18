@@ -6,7 +6,6 @@ open RestSharp
 
 open Composite.Core.Composite
 open Composite.Core.Processing
-open Composite.Common.RestRequest
 open Composite.Common.DataTransformationHelper
 
 module Data =
