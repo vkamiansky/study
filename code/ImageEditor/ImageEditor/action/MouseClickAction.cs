@@ -20,6 +20,12 @@ namespace ImageEditor.action
             set => SetValue(ShiftProperty, value);
         }
 
+        public FrameworkElement FrameworkElement
+        {
+            get => (FrameworkElement) GetValue(FrameworkElementProperty);
+            set => SetValue(FrameworkElementProperty, value);
+        }
+
         public Image Image
         {
             get => (Image) GetValue(ImageProperty);
@@ -44,6 +50,9 @@ namespace ImageEditor.action
             = DependencyProperty.Register("Image", typeof(Image), typeof(MouseClickAction),
                 new PropertyMetadata(default(Image)));
 
+        public static readonly DependencyProperty FrameworkElementProperty
+            = DependencyProperty.Register("FrameworkElement", typeof(FrameworkElement), typeof(MouseClickAction),
+                new PropertyMetadata(default(FrameworkElement)));
 
         protected override void Invoke(object parameter)
         {
@@ -53,13 +62,14 @@ namespace ImageEditor.action
             if (e.LeftButton == MouseButtonState.Released) return;
             if (ToolMenu == ToolMenuItem.Move) return;
 
-            var point = e.GetPosition(Image);
+            var point = e.GetPosition(FrameworkElement);
 
             Debug.WriteLine("Click: " + point.X + " " + point.Y);
 
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                Shift = new Tuple<double, double>(point.X / Image.ActualWidth, point.Y / Image.ActualHeight);
+                Shift = new Tuple<double, double>(point.X / FrameworkElement.ActualWidth,
+                    point.Y / FrameworkElement.ActualHeight);
             }
         }
     }

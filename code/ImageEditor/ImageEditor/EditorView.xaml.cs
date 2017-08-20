@@ -24,7 +24,12 @@ namespace ImageEditor
             var actualHeight = GridOne.RowDefinitions[2].ActualHeight;
             //GridOne.SizeChanged += OnSizeChanged;
             MainGrid.SizeChanged += OnSizeChanged;
+            Window mainWindow = Application.Current.MainWindow;
+            mainWindow.PreviewKeyUp += OnKeyUpHandler;
+            mainWindow.PreviewKeyDown += OnKeyDownHandler;
         }
+
+        public Boolean AltPressed { get; private set; }
 
         private void ScaleTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -42,6 +47,22 @@ namespace ImageEditor
         {
             /*var size = GetElementPixelSize(MainGrid);
             Canvas.OnContainerSizeChanged((int) size.Width, (int) size.Height);*/
+        }
+        
+        private void OnKeyDownHandler(object sender, KeyEventArgs e)
+        {
+            if (e.SystemKey == Key.LeftAlt || e.SystemKey == Key.RightAlt)
+            {
+                AltPressed = true;
+            }
+        }
+        
+        private void OnKeyUpHandler(object sender, KeyEventArgs e)
+        {
+            if (e.SystemKey == Key.LeftAlt || e.SystemKey == Key.RightAlt)
+            {
+                AltPressed = false;
+            }
         }
         
     }

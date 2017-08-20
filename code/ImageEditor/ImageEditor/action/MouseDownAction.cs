@@ -9,6 +9,19 @@ namespace ImageEditor.action
 {
     public class MouseDownAction : TriggerAction<FrameworkElement>
     {
+        public const double MoveTolerance = 0.001d;
+
+        public FrameworkElement ContainerElement
+        {
+            get => (FrameworkElement) GetValue(ContainerElementProperty);
+            set => SetValue(ContainerElementProperty, value);
+        }
+
+        public FrameworkElement TranslateElement
+        {
+            get => (FrameworkElement) GetValue(TranslateElementProperty);
+            set => SetValue(TranslateElementProperty, value);
+        }
 
         public Tuple<double, double> Shift
         {
@@ -40,8 +53,21 @@ namespace ImageEditor.action
             = DependencyProperty.Register("Image", typeof(Image), typeof(MouseDownAction),
                 new PropertyMetadata(default(Image)));
 
+        public static readonly DependencyProperty ContainerElementProperty
+            = DependencyProperty.Register("ContainerElement", typeof(FrameworkElement), typeof(MouseDownAction),
+                new PropertyMetadata(default(FrameworkElement)));
+
+        public static readonly DependencyProperty TranslateElementProperty
+            = DependencyProperty.Register("TranslateElement", typeof(FrameworkElement), typeof(MouseDownAction),
+                new PropertyMetadata(default(FrameworkElement)));
+
         private double _x;
         private double _y;
+
+        private double _downX;
+        private double _downY;
+        private bool _isDownAssigned;
+
 
         protected override void Invoke(object parameter)
         {
@@ -49,29 +75,52 @@ namespace ImageEditor.action
 
             MouseEventArgs e = (MouseEventArgs) parameter;
 
-            var point = e.GetPosition(Image);
+            var point = e.GetPosition(ContainerElement);
+            point = ContainerElement.TranslatePoint(point, TranslateElement);
 
-            double x = point.X  / Image.ActualWidth;
-            double y = point.Y / Image.ActualHeight;
+            double x = point.X / TranslateElement.ActualWidth;
+            double y = point.Y / TranslateElement.ActualHeight;
 
             double dx = x - _x;
             double dy = y - _y;
 
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                if (ToolMenu == ToolMenuItem.Move)
+                // ReSharper disable CompareOfFloatsByEqualityOperator
+                if (!_isDownAssigned)
                 {
-                    if (dx != 0 || dy != 0)
-                        Shift = new Tuple<double, double>(dx, dy);
+                    _isDownAssigned = true;
+                    _downX = x;
+                    _downY = y;
                 }
-                else
+                if (CheckCoord(_downX, _downY))
                 {
-                    Shift = new Tuple<double, double>(x, y);
+                    if (ToolMenu == ToolMenuItem.Move)
+                    {
+                        if (Math.Abs(dx) > MoveTolerance
+                            || Math.Abs(dy) > MoveTolerance)
+                            Shift = new Tuple<double, double>(dx, dy);
+                    }
+                    else
+                    {
+                        Shift = new Tuple<double, double>(x, y);
+                    }
                 }
+            }
+            else if (e.LeftButton == MouseButtonState.Released)
+            {
+                _isDownAssigned = false;
             }
 
             _x = x;
             _y = y;
+        }
+
+        private bool CheckCoord(double x, double y)
+        {
+            return x >= 0 && y >= 0
+                   && x < 1d
+                   && y < 1d;
         }
     }
 }

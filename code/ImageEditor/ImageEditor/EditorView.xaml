@@ -6,7 +6,8 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:action="clr-namespace:ImageEditor.action"
              xmlns:ncore="http://schemas.ncore.com/wpf/xaml/colorbox" 
-             xmlns:control="clr-namespace:ImageEditor.control"
+             xmlns:control="clr-namespace:ImageEditor.control" 
+             xmlns:imageEditor="clr-namespace:ImageEditor"
              mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -161,7 +162,7 @@
         </Grid>
 
         <Grid Name="GridOne" Grid.Row="1" Grid.Column="1" Margin="0,0,0,0"
-              Background="{StaticResource WorkSpaceBgBrush}">
+              Background="{StaticResource WorkSpaceBgBrush}" KeyDown="OnKeyDownHandler" KeyUp="OnKeyUpHandler">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
@@ -172,27 +173,32 @@
 
             </Grid.RowDefinitions>
 
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseWheel">
+                    <action:MouseWheelAction Delta="{Binding MouseWheelDelta.Input, Mode=TwoWay}" 
+                                             IsAltPressed="{Binding AltPressed, PresentationTraceSources.TraceLevel=High,
+                                             RelativeSource={RelativeSource Mode=FindAncestor, 
+                                                 AncestorType=imageEditor:Editor}}" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="MouseMove">
+                    <action:MouseDownAction Shift="{Binding Shift.Input, Mode=TwoWay}"
+                                            ToolMenu="{Binding ToolMenu.Input, Mode=TwoWay}"
+                                            ContainerElement="{Binding ElementName=GridOne}"
+                                            TranslateElement="{Binding ElementName=Canvas}"
+                                            Image="{Binding ElementName=Canvas}" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <action:MouseClickAction Shift="{Binding Shift.Input, Mode=TwoWay}"
+                                             ToolMenu="{Binding ToolMenu.Input, Mode=TwoWay}"
+                                             FrameworkElement="{Binding ElementName=Canvas }"
+                                             Image="{Binding ElementName=Canvas}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            
             <Rectangle Grid.Row="0" Fill="{StaticResource DividerBrush}" Height="1"/>
 
-            <!--  -->
             <control:ImageView HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="Canvas"
-                   Grid.Column="0" Grid.Row="1" CanvasSource="{Binding ImageSource.Value}" Stretch="None">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseWheel">
-                        <action:MouseWheelAction Delta="{Binding MouseWheelDelta.Input, Mode=TwoWay}" />
-                    </i:EventTrigger>
-                    <i:EventTrigger EventName="MouseMove">
-                        <action:MouseDownAction Shift="{Binding Shift.Input, Mode=TwoWay}"
-                                                ToolMenu="{Binding ToolMenu.Input, Mode=TwoWay}"
-                                                Image="{Binding ElementName=Canvas}" />
-                    </i:EventTrigger>
-                    <i:EventTrigger EventName="PreviewMouseDown">
-                        <action:MouseClickAction Shift="{Binding Shift.Input, Mode=TwoWay}"
-                                                 ToolMenu="{Binding ToolMenu.Input, Mode=TwoWay}"
-                                                 Image="{Binding ElementName=Canvas}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </control:ImageView>
+                   Grid.Column="0" Grid.Row="1" CanvasSource="{Binding ImageSource.Value}" Stretch="None"/>
 
             <Grid Grid.Row="2" Background="{StaticResource BgBrush}">
                 <Grid.ColumnDefinitions>

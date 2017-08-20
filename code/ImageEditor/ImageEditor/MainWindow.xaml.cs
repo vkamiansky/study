@@ -24,6 +24,7 @@ namespace ImageEditor
         {
             InitializeComponent();
             DragSpace.PreviewMouseDown += DragSpace_MouseDown;
+            Application.Current.MainWindow = this;
             MouseDown += MainWindow_MouseDown;
         }
 
