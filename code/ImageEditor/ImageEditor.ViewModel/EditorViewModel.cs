@@ -56,7 +56,6 @@ namespace ImageEditor.ViewModel
         public EditorViewModel()
         {
             ImageScale = Reloadable<string>.On().Each().Input().Create();
-
             ImageScale.Input = "100%";
 
             ImageScale.OnChanged(() =>

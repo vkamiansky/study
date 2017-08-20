@@ -11,8 +11,6 @@ namespace ImageEditor.control
 {
     public class ImageView : System.Windows.Controls.Image
     {
-        public static int MaxWidth;
-        public static int MaxHeight;
 
         public CanvasSource CanvasSource
         {
@@ -39,53 +37,6 @@ namespace ImageEditor.control
 
             imageView.Source = newCanvasSource.ToBitmapSource();
         }
-
-
-        public void OnContainerSizeChanged(int newWidth, int newHeight)
-        {
-            MaxWidth = newWidth;
-            MaxHeight = newHeight;
-        }
-
-        /* private float[] _cachedBackgroung;
- 
-         private float[] GenerateBackground()
-         {
-             float[] rawArr;
-             if (_cachedBackgroung != null && _cachedBackgroung.Length == Length)
-             {
-                 rawArr = _cachedBackgroung;
-             }
-             else
-             {
-                 rawArr = new float[Length];
-                 _cachedBackgroung = rawArr;
-             }
-             for (int y = 0; y < Height; y++)
-             {
-                 for (int x = 0; x < Width; x++)
-                 {
-                     int index = (y * Width + x) * ChannelsCount;
-                     var d = y / BgTileSide % 2;
-                     var f = x / BgTileSide % 2;
-                     if (d == 0 && f == 0 || d != 0 && f != 0)
-                     {
-                         rawArr[index + 0] = BgWhite;
-                         rawArr[index + 1] = BgWhite;
-                         rawArr[index + 2] = BgWhite;
-                         rawArr[index + 3] = Opaque;
-                     }
-                     else
-                     {
-                         rawArr[index + 0] = BgGrey;
-                         rawArr[index + 1] = BgGrey;
-                         rawArr[index + 2] = BgGrey;
-                         rawArr[index + 3] = Opaque;
-                     }
-                 }
-             }
-             return Clone(rawArr);
-         }*/
     }
 
     static class Converter

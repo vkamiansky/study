@@ -58,6 +58,15 @@
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Expression.Blend.Sdk.WPF.1.0.1\lib\net45\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
+    <Reference Include="Property.Callbacks, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\PropertyFramework.3.0.9\lib\net45\Property.Callbacks.dll</HintPath>
+    </Reference>
+    <Reference Include="Property.Chains, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\PropertyFramework.3.0.9\lib\net45\Property.Chains.dll</HintPath>
+    </Reference>
+    <Reference Include="Property.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\PropertyFramework.3.0.9\lib\net45\Property.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -84,6 +93,9 @@
     </ApplicationDefinition>
     <Compile Include="action\NewFileDialogAction.cs" />
     <Compile Include="action\OpenHistogramAction.cs" />
+    <Compile Include="HistogramWindow.xaml.cs">
+      <DependentUpon>HistogramWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NewFileDialog.xaml.cs">
       <DependentUpon>NewFileDialog.xaml</DependentUpon>
     </Compile>
@@ -92,6 +104,10 @@
     <Compile Include="scalers\ScalerChooser.cs" />
     <Compile Include="scalers\StubScaler.cs" />
     <Page Include="EditorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="HistogramWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

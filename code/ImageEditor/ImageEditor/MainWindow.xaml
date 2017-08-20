@@ -86,7 +86,8 @@
                     <MenuItem Foreground="Black" Header="_Histogram">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
-                                <action:OpenHistogramAction />
+                                <action:OpenHistogramAction
+                                    HistogramImageSource="{Binding MainViewModel.Editor.Value.ImageSource}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </MenuItem>
