@@ -25,7 +25,7 @@ namespace ImageEditor.scalers
                     if (x1 < 0 || x1 >= w1 || y1 < 0 || y1 >= h1)
                         continue;
 
-                    if (x < 0 || x >= w2 - 1 || y < 0 || y >= h2 - 1)
+                    if (x < 0 || x >= w2 || y < 0 || y >= h2)
                         continue;
 
 
@@ -42,8 +42,6 @@ namespace ImageEditor.scalers
                 }
             }
             
-            // TODO: scale edges
-
             return dest;
         }
     }
