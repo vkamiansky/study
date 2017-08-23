@@ -10,20 +10,21 @@
         ResizeMode="CanResize"
         Background="{DynamicResource BackgroundBrush}"
         Title="HistogramWindow" Height="300" Width="300">
-    <Grid>
+    <Grid Name="Container">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30" />
         </Grid.RowDefinitions>
-        <control:ImageView HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="Canvas"
-                           Grid.Column="0" Grid.Row="0" Stretch="None"/>
 
-        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="1">
-            <RadioButton Margin="5,0" Foreground="White">All</RadioButton>
-            <RadioButton Margin="5,0" Foreground="White">Red</RadioButton>
-            <RadioButton Margin="5,0" Foreground="White">Green</RadioButton>
-            <RadioButton Margin="5,0" Foreground="White">Blue</RadioButton>
-            <RadioButton Margin="5,0" Foreground="White">GrayScale</RadioButton>
+        <control:ImageView HorizontalAlignment="Stretch" Grid.Column="0" Grid.Row="0"
+                           VerticalAlignment="Stretch" x:Name="Canvas" Stretch="None" />
+
+        <StackPanel Name="StackPanel" Orientation="Horizontal" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center">
+            <RadioButton Name="All" IsChecked="True" Checked="OnChecked" Margin="5,0" Foreground="White">All</RadioButton>
+            <RadioButton Name="Red" Margin="5,0" Checked="OnChecked" Foreground="White">Red</RadioButton>
+            <RadioButton Name="Green" Margin="5,0" Checked="OnChecked" Foreground="White">Green</RadioButton>
+            <RadioButton Name="Blue" Margin="5,0" Checked="OnChecked" Foreground="White">Blue</RadioButton>
+            <RadioButton Name="Grayscale" Margin="5,0" Checked="OnChecked" Foreground="White">GrayScale</RadioButton>
         </StackPanel>
     </Grid>
 </Window>

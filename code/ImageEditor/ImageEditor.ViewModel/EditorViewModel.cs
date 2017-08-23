@@ -7,6 +7,7 @@ using System.IO;
 using ImageEditor.Interface.ViewModel;
 using ImageEditor.Interface.ViewModel.model;
 using ImageEditor.ViewModel.model;
+using Property.Windows;
 
 namespace ImageEditor.ViewModel
 {
@@ -16,6 +17,7 @@ namespace ImageEditor.ViewModel
         private const int DefaultSize = 6;
 
         public IProperty<CanvasSource> ImageSource => _imageSource;
+        public IProperty<CanvasSource> DelayedImageSource => _delayedImageSource;
         public IProperty<List<ILayer>> Layers => _layers;
         public IInputProperty<string> ImagePath { get; }
         public IInputProperty<NewFileData> NewFile { get; }
@@ -28,6 +30,7 @@ namespace ImageEditor.ViewModel
         public IInputProperty<SolidColorBrush> ToolBrush { get; }
 
         private readonly ICallProperty<CanvasSource> _imageSource;
+        private readonly ICallProperty<CanvasSource> _delayedImageSource;
         private readonly ICallProperty<List<ILayer>> _layers;
 
         private Canvas _canvas;
@@ -73,6 +76,11 @@ namespace ImageEditor.ViewModel
 
             _imageSource = Reloadable<CanvasSource>.On().Each()
                 .Call(_ => _canvas.ToCanvasSource(_scale)).Create();
+
+            _delayedImageSource = Reloadable<CanvasSource>.On().Each().Delayed(new TimeSpan(0, 0, 0, 0, 300))
+                .Call(_ => ImageSource.Value).Create();
+
+            ImageSource.OnChanged(() => _delayedImageSource.Go());
 
             Shift = Reloadable<Tuple<double, double>>.On().Each().Input().Create();
 

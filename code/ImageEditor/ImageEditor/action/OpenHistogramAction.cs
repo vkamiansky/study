@@ -21,7 +21,10 @@ namespace ImageEditor.action
         protected override void Invoke(object parameter)
         {
             if (HistogramImageSource == null) return;
-            new HistogramWindow(HistogramImageSource).Show();
+            var histogramWindow = new HistogramWindow(HistogramImageSource);
+            histogramWindow.Show();
+            if (HistogramImageSource.Value == null) return;
+            histogramWindow.OnNewCanvasSource(HistogramImageSource.Value);
         }
     }
 }

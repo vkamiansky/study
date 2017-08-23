@@ -87,7 +87,7 @@
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
                                 <action:OpenHistogramAction
-                                    HistogramImageSource="{Binding MainViewModel.Editor.Value.ImageSource}" />
+                                    HistogramImageSource="{Binding MainViewModel.Editor.Value.DelayedImageSource}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </MenuItem>

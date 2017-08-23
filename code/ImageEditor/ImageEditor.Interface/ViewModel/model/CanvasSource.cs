@@ -1,15 +1,16 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace ImageEditor.Interface.ViewModel.model
 {
     public class CanvasSource
     {
-        public float[] Raw { get; private set; }
-        public int Width { get; private set; }
-        public int Height { get; private set; }
+        public readonly float[] Raw;
+        public readonly int Width;
+        public readonly int Height;
         public float Scale { get; private set; }
 
-        public CanvasSource(float[] raw, int width, int height, float scale)
+        public CanvasSource(float[] raw, int width, int height, float scale = 1f)
         {
             Raw = raw;
             Width = width;
@@ -17,18 +18,20 @@ namespace ImageEditor.Interface.ViewModel.model
             Scale = scale;
         }
 
-        public void ApplyScale(ImageScaler scaler, int maxWidth = 0, int maxHeight = 0)
+        public CanvasSource ApplyScale(ImageScaler scaler, int maxWidth = 0, int maxHeight = 0)
         {
             int newWidth = (int) (Width * Scale);
             int newHeight = (int) (Height * Scale);
-            Raw = scaler.Scale(Raw, Width, Height, newWidth, newHeight, xEnd: maxWidth, yEnd: maxHeight);
-            Width = newWidth;
-            Height = newHeight;
-            Scale = 1;
+            float[] raw = scaler.Scale(Raw, Width, Height, newWidth, newHeight, xEnd: maxWidth, yEnd: maxHeight);
+            return new CanvasSource(raw, newWidth, newHeight);
         }
 
-        public void ApplyBackground()
+        public CanvasSource ApplyBackground()
         {
+            float[] raw = new float[Raw.Length];
+
+            Array.Copy(Raw, raw, Raw.Length);
+            
             for (int y = 0; y < Height; y++)
             {
                 for (int x = 0; x < Width; x++)
@@ -40,12 +43,14 @@ namespace ImageEditor.Interface.ViewModel.model
 
                     float aa = Raw[index + 3];
                     var f = c * (1 - aa);
-                    Raw[index + 0] = Raw[index + 0] * aa + f;
-                    Raw[index + 1] = Raw[index + 1] * aa + f;
-                    Raw[index + 2] = Raw[index + 2] * aa + f;
-                    Raw[index + 3] = Constants.Opaque;
+                    raw[index + 0] = Raw[index + 0] * aa + f;
+                    raw[index + 1] = Raw[index + 1] * aa + f;
+                    raw[index + 2] = Raw[index + 2] * aa + f;
+                    raw[index + 3] = Constants.Opaque;
                 }
             }
+            
+            return new CanvasSource(raw, Width, Height, Scale);
         }
     }
 }

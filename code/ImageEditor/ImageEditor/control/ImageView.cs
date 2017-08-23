@@ -11,7 +11,6 @@ namespace ImageEditor.control
 {
     public class ImageView : System.Windows.Controls.Image
     {
-
         public CanvasSource CanvasSource
         {
             get => (CanvasSource) GetValue(CanvasSourceProperty);
@@ -24,6 +23,19 @@ namespace ImageEditor.control
                 new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure
                                                     | FrameworkPropertyMetadataOptions.AffectsRender, OnDataChanged,
                     null), null);
+        
+    public CanvasSource CleanCanvasSource
+        {
+            get => (CanvasSource) GetValue(CleanCanvasSourceProperty);
+
+            set => SetValue(CleanCanvasSourceProperty, value);
+        }
+
+        public static readonly DependencyProperty CleanCanvasSourceProperty
+            = DependencyProperty.Register("CleanCanvasSource", typeof(CanvasSource), typeof(ImageView),
+                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure
+                                                    | FrameworkPropertyMetadataOptions.AffectsRender, OnCleanDataChanged,
+                    null), null);
 
 
         private static void OnDataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -32,8 +44,17 @@ namespace ImageEditor.control
 
             CanvasSource newCanvasSource = (CanvasSource) e.NewValue;
 
-            newCanvasSource.ApplyScale(ScalerChooser.Instance.ChooseScaler(newCanvasSource.Scale));
-            newCanvasSource.ApplyBackground();
+            imageView.Source = newCanvasSource
+                .ApplyScale(ScalerChooser.Instance.ChooseScaler(newCanvasSource.Scale))
+                .ApplyBackground()
+                .ToBitmapSource();
+        }
+        
+        private static void OnCleanDataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ImageView imageView = (ImageView) d;
+
+            CanvasSource newCanvasSource = (CanvasSource) e.NewValue;
 
             imageView.Source = newCanvasSource.ToBitmapSource();
         }

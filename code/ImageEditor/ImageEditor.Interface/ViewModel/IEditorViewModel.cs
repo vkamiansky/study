@@ -10,6 +10,8 @@ namespace ImageEditor.Interface.ViewModel
     public interface IEditorViewModel
     {
         IProperty<CanvasSource> ImageSource { get; }
+        
+        IProperty<CanvasSource> DelayedImageSource { get; }
 
         IProperty<List<ILayer>> Layers { get; }
 
