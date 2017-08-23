@@ -29,8 +29,8 @@ namespace ImageEditor.scalers
                         continue;
 
 
-                    int destIndex = (y * w2 + x) * 4;
-                    int sourceIndex = (y1 * w1 + x1) * 4;
+                    int destIndex = (y * w2 + x) * Constants.ChannelsCount;
+                    int sourceIndex = (y1 * w1 + x1) * Constants.ChannelsCount;
 
                     if (destIndex + 3 >= destLength || destIndex < 0
                         || sourceIndex + 3 >= srcLength || sourceIndex < 0) continue;
@@ -41,6 +41,8 @@ namespace ImageEditor.scalers
                     }
                 }
             }
+            
+            // TODO: scale edges
 
             return dest;
         }

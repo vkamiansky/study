@@ -81,6 +81,35 @@ namespace ImageEditor.scalers
                     }
                 }
             }
+
+            //scale edges
+
+            if (w2 == xEnd)
+            {
+                for (int y = 0, x = w2; y < yEnd; y++)
+                {
+                    i0 = (y * w2 + (w2 - 1)) * 4;
+
+                    for (int i = i0; i < i0 + 4; i++)
+                    {
+                        dest[i] = dest[i - 4];
+                    }
+                }
+            }
+
+            if (h2 == yEnd)
+            {
+                for (int x = 0, y = h2 - 1; x < xEnd; x++)
+                {
+                    i0 = (y * w2 + x) * 4;
+
+                    for (int i = i0; i < i0 + 4; i++)
+                    {
+                        dest[i] = dest[i - w2*4];
+                    }
+                }
+            }
+
             return dest;
         }
     }
