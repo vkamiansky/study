@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows.Media;
 using static ImageEditor.Interface.ViewModel.model.Constants;
 
@@ -11,8 +12,9 @@ namespace ImageEditor.ViewModel.model
         public int Height { get; set; }
         public int Width { get; set; }
         public int Length { get; set; }
-
         public List<Layer> Layers { get; }
+
+        private float[] _lastRaw;
 
         public Canvas(int width, int height, float[] imgRaw, string name = "")
         {
@@ -31,15 +33,25 @@ namespace ImageEditor.ViewModel.model
 
         public float[] GetRaw()
         {
-            var result = new float[Length];
 
-            foreach (var layer in Layers)
+            var last = Layers.Last();
+            if (last.IsSelected && last.AfterDraw)
             {
-                if (!layer.IsSelected) continue;
-
-                layer.Compose(result, Width, Height);
+                 last.ComposeAftedDraw(_lastRaw, Width, Height);
             }
-            return result;
+            else
+            {
+                var result = new float[Length];
+                foreach (var layer in Layers)
+                {
+                    if (!layer.IsSelected) continue;
+
+                    layer.Compose(result, Width, Height);
+                }
+                _lastRaw = result;
+            }
+          
+            return _lastRaw;
         }
 
         public void OnLayersChanged(Action action)

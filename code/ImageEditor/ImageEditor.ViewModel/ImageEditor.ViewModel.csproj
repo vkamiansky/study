@@ -61,6 +61,8 @@
     <Compile Include="MainViewModel.cs" />
     <Compile Include="model\ArrayUtils.cs" />
     <Compile Include="model\Canvas.cs" />
+    <Compile Include="model\DelayedQueue.cs" />
+    <Compile Include="model\DrawData.cs" />
     <Compile Include="model\ImageConverter.cs" />
     <Compile Include="model\Layer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

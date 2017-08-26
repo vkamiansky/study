@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Documents;
 using ImageEditor.Interface.ViewModel.model;
@@ -11,10 +12,12 @@ namespace ImageEditor.ViewModel.model
 
         public double X { get; set; }
         public double Y { get; set; }
+        public bool AfterDraw { get; private set; }
         private bool _isSelected;
         private int _width;
         private int _height;
         private float _opacity = 1f;
+        private List<DrawData> _drawData = new List<DrawData>();
 
         public bool IsSelected
         {
@@ -90,7 +93,7 @@ namespace ImageEditor.ViewModel.model
 
         //ax, ay - start get data from "a" array from these indexes  
         //bx, by - start put data to "b" array from these indexes  
-        private void Compose(float[] a, int widthA, int heightA, float[] b, int widthB, int heightB,
+        public void Compose(float[] a, int widthA, int heightA, float[] b, int widthB, int heightB,
             int bX = 0, int bY = 0, int aX = 0, int aY = 0, float opacity = 1f)
         {
             if (bX < 0)
@@ -104,7 +107,7 @@ namespace ImageEditor.ViewModel.model
                 aY += -bY;
                 bY = 0;
             }
-
+            
             for (int y1 = aY, y2 = bY; y1 < heightA && y2 < heightB; y1++, y2++)
             {
                 for (int x1 = aX, x2 = bX; x1 < widthA && x2 < widthB; x1++, x2++)
@@ -138,6 +141,8 @@ namespace ImageEditor.ViewModel.model
             y -= size;
 
             Compose(brush, size * 2, size * 2, Raw, Width, Height, bX: x, bY: y);
+            AfterDraw = true;
+            _drawData.Add(new DrawData(brush, size, x, y));
         }
 
         public void Expand(int x, int y, int size, int maxWidth, int maxHeight)
@@ -219,6 +224,13 @@ namespace ImageEditor.ViewModel.model
             return x - size < 0 || y - size < 0
                    || Width < x + size && rightEdge < maxWidth
                    || Height < y + size && bottomEdge < maxHeight;
+        }
+
+        public void ComposeAftedDraw(float[] raw, int width, int height)
+        {
+            foreach (var drawData in _drawData)
+                drawData.Draw(this, raw, width, height);
+            _drawData.Clear();
         }
     }
 }

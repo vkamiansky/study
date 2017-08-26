@@ -8,6 +8,7 @@ using ImageEditor.Interface.ViewModel;
 using ImageEditor.Interface.ViewModel.model;
 using ImageEditor.ViewModel.model;
 using Property.Windows;
+using Color = System.Windows.Media.Color;
 
 namespace ImageEditor.ViewModel
 {
@@ -27,7 +28,7 @@ namespace ImageEditor.ViewModel
         public IInputProperty<ToolMenuItem> ToolMenu { get; }
         public IInputProperty<int> ToolSize { get; }
         public IInputProperty<float> ToolOpacity { get; }
-        public IInputProperty<SolidColorBrush> ToolBrush { get; }
+        public IInputProperty<Color> ToolColor { get; }
 
         private readonly ICallProperty<CanvasSource> _imageSource;
         private readonly ICallProperty<CanvasSource> _delayedImageSource;
@@ -84,9 +85,23 @@ namespace ImageEditor.ViewModel
 
             Shift = Reloadable<Tuple<double, double>>.On().Each().Input().Create();
 
-            ToolBrush = Reloadable<SolidColorBrush>.On().Each().Input().Create();
+            ToolColor = Reloadable<Color>.On().Each().Input().Create();
+            ToolColor.Input = Colors.Red;
+            DelayedQueue<Tuple<int, int>> drawQueue 
+                = new DelayedQueue<Tuple<int, int>>(20,
+                (queue) =>
+                {
+                    var tuples = queue.GetAll();
+                    // ReSharper disable once ForCanBeConvertedToForeach
+                    for (var i = 0; i < tuples.Length; i++)
+                    {
+                        var tuple = tuples[i];
+                        _canvas.Draw(tuple.Item1, tuple.Item2, ToolSize.Value, ToolOpacity.Value,
+                            ToolColor.Value);
+                    }
+                    _imageSource.Go();
+                });
 
-            ToolBrush.Input = new SolidColorBrush(Colors.Crimson);
 
             Shift.OnChanged(() =>
             {
@@ -96,19 +111,18 @@ namespace ImageEditor.ViewModel
                 {
                     case ToolMenuItem.Move:
                         _canvas.OnMoved(dx, dy);
+                        _imageSource.Go();
                         break;
 
                     case ToolMenuItem.Brush:
-                        _canvas.Draw((int) dx, (int) dy, ToolSize.Value, ToolOpacity.Value,
-                            ToolBrush.Value.Color);
+                        drawQueue.Enqueue(new Tuple<int, int>((int) dx, (int) dy));
                         break;
 
                     case ToolMenuItem.Erase:
                         _canvas.Erase((int) dx, (int) dy, ToolSize.Value, ToolOpacity.Value);
+                        _imageSource.Go();
                         break;
                 }
-
-                _imageSource.Go();
             });
 
             MouseWheelDelta = Reloadable<int>.On().Each().Input().Create();

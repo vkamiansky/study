@@ -25,7 +25,7 @@
     <Window.Resources>
 
         <DataTemplate x:Key="EditorView" DataType="viewModel:IEditorViewModel">
-            <local:Editor />
+            <local:Editor Color="{Binding ToolColor.Input, Mode=TwoWay}"/>
         </DataTemplate>
 
         <SolidColorBrush x:Key="BgBrush" Color="{DynamicResource MenuBackgroundColor}" />

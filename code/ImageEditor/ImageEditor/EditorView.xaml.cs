@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Threading;
 using ColorBox;
 
 namespace ImageEditor
@@ -15,6 +17,17 @@ namespace ImageEditor
     /// </summary>
     public partial class Editor : UserControl
     {
+        public Color Color
+        {
+            get => (Color) GetValue(ColorProperty);
+            set => SetValue(ColorProperty, value);
+        }
+
+        public static readonly DependencyProperty ColorProperty
+            = DependencyProperty.Register("Color", typeof(Color), typeof(Editor),
+                new PropertyMetadata(Colors.Red));
+
+
         public Editor()
         {
             InitializeComponent();
@@ -22,7 +35,14 @@ namespace ImageEditor
             ScaleTextBox.PreviewKeyDown += ScaleTextBox_PreviewKeyDown;
             var actualWidth = GridOne.ColumnDefinitions[0].ActualWidth;
             var actualHeight = GridOne.RowDefinitions[2].ActualHeight;
-            //GridOne.SizeChanged += OnSizeChanged;
+            ColorBox.ColorChanged += (sender, args) =>
+            {
+                Dispatcher.Invoke(
+                    DispatcherPriority.Normal,
+                    new Action(() => { Color = ((SolidColorBrush) ((ColorBox.ColorBox) sender).Brush).Color; })
+                );
+            };
+            
             MainGrid.SizeChanged += OnSizeChanged;
             Window mainWindow = Application.Current.MainWindow;
             mainWindow.PreviewKeyUp += OnKeyUpHandler;
@@ -48,7 +68,7 @@ namespace ImageEditor
             /*var size = GetElementPixelSize(MainGrid);
             Canvas.OnContainerSizeChanged((int) size.Width, (int) size.Height);*/
         }
-        
+
         private void OnKeyDownHandler(object sender, KeyEventArgs e)
         {
             if (e.SystemKey == Key.LeftAlt || e.SystemKey == Key.RightAlt)
@@ -56,7 +76,7 @@ namespace ImageEditor
                 AltPressed = true;
             }
         }
-        
+
         private void OnKeyUpHandler(object sender, KeyEventArgs e)
         {
             if (e.SystemKey == Key.LeftAlt || e.SystemKey == Key.RightAlt)
@@ -64,6 +84,5 @@ namespace ImageEditor
                 AltPressed = false;
             }
         }
-        
     }
 }

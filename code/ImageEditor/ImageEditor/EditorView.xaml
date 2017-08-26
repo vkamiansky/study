@@ -92,7 +92,7 @@
 
                 <Label FontSize="8" Foreground="White">Color:</Label>
 
-                <ncore:ColorBox x:Name="CB" Brush="{Binding ToolBrush.Input, Mode=TwoWay}" />
+                <ncore:ColorBox x:Name="ColorBox" Brush="Red" />
 
             </StackPanel>
         </Grid>

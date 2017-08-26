@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Media;
 using ImageEditor.Interface.ViewModel.model;
 using Property;
+using Color = System.Windows.Media.Color;
 
 namespace ImageEditor.Interface.ViewModel
 {
@@ -31,6 +30,6 @@ namespace ImageEditor.Interface.ViewModel
 
         IInputProperty<float> ToolOpacity { get; }
 
-        IInputProperty<SolidColorBrush> ToolBrush { get; }
+        IInputProperty<Color> ToolColor { get; }
     }
 }
