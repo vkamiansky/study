@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using ImageEditor.Interface.ViewModel;
 using ImageEditor.Interface.ViewModel.model;
 using static ImageEditor.Interface.ViewModel.model.Constants;
 

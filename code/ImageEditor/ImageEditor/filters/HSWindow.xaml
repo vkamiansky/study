@@ -1,0 +1,31 @@
+﻿<Window x:Class="ImageEditor.filters.HSWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Background="{DynamicResource BackgroundBrush}"
+        ResizeMode="NoResize"
+        Title="Hue/Saturation" Height="240" Width="300"
+        mc:Ignorable="d">
+    
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Column="0">
+            <Label Foreground="White">Hue:</Label>
+            <Slider ValueChanged="Brightness_OnValueChanged" Name="Hue" Minimum="-1000" Maximum="1000" />
+            <Label Foreground="White">Saturation:</Label>
+            <Slider Name="Saturation" ValueChanged="Brightness_OnValueChanged" Minimum="-1000" Maximum="1000" />            
+            <Label Foreground="White">Lightness:</Label>
+            <Slider Name="Lightness" ValueChanged="Brightness_OnValueChanged" Minimum="-1000" Maximum="1000" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Click="OnCancel" Width="60">Cancel</Button>
+            <Button Click="OnOk" Width="60" Margin="10,0,0,0">OK</Button>
+        </StackPanel>
+    </Grid>
+    
+</Window>

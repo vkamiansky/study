@@ -59,7 +59,6 @@
     <Compile Include="AppStateViewModel.cs" />
     <Compile Include="EditorViewModel.cs" />
     <Compile Include="MainViewModel.cs" />
-    <Compile Include="model\ArrayUtils.cs" />
     <Compile Include="model\Canvas.cs" />
     <Compile Include="model\DelayedQueue.cs" />
     <Compile Include="model\DrawData.cs" />

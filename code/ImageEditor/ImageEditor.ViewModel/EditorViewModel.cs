@@ -29,7 +29,7 @@ namespace ImageEditor.ViewModel
         public IInputProperty<int> ToolSize { get; }
         public IInputProperty<float> ToolOpacity { get; }
         public IInputProperty<Color> ToolColor { get; }
-
+        
         private readonly ICallProperty<CanvasSource> _imageSource;
         private readonly ICallProperty<CanvasSource> _delayedImageSource;
         private readonly ICallProperty<List<ILayer>> _layers;

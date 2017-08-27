@@ -25,7 +25,7 @@
     <Window.Resources>
 
         <DataTemplate x:Key="EditorView" DataType="viewModel:IEditorViewModel">
-            <local:Editor Color="{Binding ToolColor.Input, Mode=TwoWay}"/>
+            <local:Editor Color="{Binding ToolColor.Input, Mode=TwoWay}" />
         </DataTemplate>
 
         <SolidColorBrush x:Key="BgBrush" Color="{DynamicResource MenuBackgroundColor}" />
@@ -78,8 +78,60 @@
                 </MenuItem>
 
                 <MenuItem Header="Filter" Template="{DynamicResource MenuItemControlTemplate2}">
-                    <MenuItem Foreground="Black" Header="Brightness" />
-                    <MenuItem Foreground="Black" Header="Contrast" />
+                    <MenuItem Foreground="Black" Header="Brightness/Contrast">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <action:OpenFilterWindowAction
+                                    Filter="BrightnessContrast"
+                                    Layers="{Binding MainViewModel.Editor.Value.Layers.Value}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
+                    <MenuItem Foreground="Black" Header="Hue/Saturation">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <action:OpenFilterWindowAction
+                                    Filter="HueSaturation"
+                                    Layers="{Binding MainViewModel.Editor.Value.Layers.Value}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
+                    <MenuItem Foreground="Black" Header="Gaussian Blur">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <action:OpenFilterWindowAction
+                                    Filter="GaussianBlur"
+                                    Layers="{Binding MainViewModel.Editor.Value.Layers.Value}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
+                    <MenuItem Foreground="Black" Header="Box Blur">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <action:OpenFilterWindowAction
+                                    Filter="BoxBlur"
+                                    Layers="{Binding MainViewModel.Editor.Value.Layers.Value}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
+                    <MenuItem Foreground="Black" Header="Sharpen">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <action:OpenFilterWindowAction
+                                    Filter="Sharpen"
+                                    Layers="{Binding MainViewModel.Editor.Value.Layers.Value}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
+                    <MenuItem Foreground="Black" Header="Edge Detection">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <action:OpenFilterWindowAction
+                                    Filter="EdgeDetection"
+                                    Layers="{Binding MainViewModel.Editor.Value.Layers.Value}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
                 </MenuItem>
 
                 <MenuItem Header="Window" Template="{DynamicResource MenuItemControlTemplate2}">

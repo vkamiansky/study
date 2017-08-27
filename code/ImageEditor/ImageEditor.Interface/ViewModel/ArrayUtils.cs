@@ -1,4 +1,4 @@
-﻿namespace ImageEditor.ViewModel.model
+﻿namespace ImageEditor.Interface.ViewModel
 {
     public static class ArrayUtils
     {

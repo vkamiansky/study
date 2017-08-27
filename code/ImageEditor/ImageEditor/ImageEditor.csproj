@@ -92,7 +92,27 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="action\NewFileDialogAction.cs" />
+    <Compile Include="action\OpenFilterWindowAction.cs" />
     <Compile Include="action\OpenHistogramAction.cs" />
+    <Compile Include="filters\BBWindow.xaml.cs">
+      <DependentUpon>BBWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="filters\BCWindow.xaml.cs">
+      <DependentUpon>BCWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="filters\EDWindow.xaml.cs">
+      <DependentUpon>EDWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="filters\Filter.cs" />
+    <Compile Include="filters\GBWindow.xaml.cs">
+      <DependentUpon>GBWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="filters\HSWindow.xaml.cs">
+      <DependentUpon>HSWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="filters\SharpenWindow.xaml.cs">
+      <DependentUpon>SharpenWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="HistogramWindow.xaml.cs">
       <DependentUpon>HistogramWindow.xaml</DependentUpon>
     </Compile>
@@ -104,6 +124,30 @@
     <Compile Include="scalers\ScalerChooser.cs" />
     <Compile Include="scalers\StubScaler.cs" />
     <Page Include="EditorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="filters\BBWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="filters\BCWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="filters\EDWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="filters\GBWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="filters\HSWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="filters\SharpenWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -213,5 +257,6 @@
     <Resource Include="res\icons\move_icon.png" />
     <Resource Include="res\icons\brush_icon.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

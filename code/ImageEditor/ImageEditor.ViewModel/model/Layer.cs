@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Windows.Documents;
+using ImageEditor.Interface.ViewModel;
 using ImageEditor.Interface.ViewModel.model;
 
 namespace ImageEditor.ViewModel.model
@@ -17,7 +16,7 @@ namespace ImageEditor.ViewModel.model
         private int _width;
         private int _height;
         private float _opacity = 1f;
-        private List<DrawData> _drawData = new List<DrawData>();
+        private readonly List<DrawData> _drawData = new List<DrawData>();
 
         public bool IsSelected
         {
@@ -61,7 +60,15 @@ namespace ImageEditor.ViewModel.model
             }
         }
 
-        public float[] Raw { get; set; }
+        public float[] Raw
+        {
+            get => _raw;
+            set
+            {
+                _raw = value;
+                OnChanged?.Invoke();
+            }
+        }
 
         public Action OnChanged { get; set; }
 
@@ -107,7 +114,7 @@ namespace ImageEditor.ViewModel.model
                 aY += -bY;
                 bY = 0;
             }
-            
+
             for (int y1 = aY, y2 = bY; y1 < heightA && y2 < heightB; y1++, y2++)
             {
                 for (int x1 = aX, x2 = bX; x1 < widthA && x2 < widthB; x1++, x2++)
@@ -159,7 +166,7 @@ namespace ImageEditor.ViewModel.model
             t = x + size;
             if (t > _width)
             {
-                if (t > maxWidth ) t = maxWidth;
+                if (t > maxWidth) t = maxWidth;
                 right = t - _width;
             }
             t = y - size;
@@ -231,6 +238,41 @@ namespace ImageEditor.ViewModel.model
             foreach (var drawData in _drawData)
                 drawData.Draw(this, raw, width, height);
             _drawData.Clear();
+        }
+
+        private readonly LayerMemento _layerMemento = new LayerMemento();
+        private float[] _raw;
+
+        public void SaveToMemento()
+        {
+            _layerMemento.SaveState(this);
+        }
+
+        public void RestoreFromMemento()
+        {
+            _layerMemento.RestoreState(this);
+        }
+    }
+
+    public class LayerMemento
+    {
+        private int _width;
+        private int _height;
+        private float[] _raw;
+
+        public void SaveState(ILayer layer)
+        {
+            _width = layer.Width;
+            _height = layer.Height;
+            _raw = layer.Raw.CloneArray();
+        }
+
+        public void RestoreState(ILayer layer)
+        {
+            if (_raw == null) return;
+            layer.Width = _width;
+            layer.Height = _height;
+            layer.Raw = _raw.CloneArray();
         }
     }
 }
