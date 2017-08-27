@@ -4,6 +4,7 @@ using Property;
 using System.Windows.Media;
 using System.Drawing;
 using System.IO;
+using System.Timers;
 using ImageEditor.Interface.ViewModel;
 using ImageEditor.Interface.ViewModel.model;
 using ImageEditor.ViewModel.model;
@@ -29,7 +30,7 @@ namespace ImageEditor.ViewModel
         public IInputProperty<int> ToolSize { get; }
         public IInputProperty<float> ToolOpacity { get; }
         public IInputProperty<Color> ToolColor { get; }
-        
+
         private readonly ICallProperty<CanvasSource> _imageSource;
         private readonly ICallProperty<CanvasSource> _delayedImageSource;
         private readonly ICallProperty<List<ILayer>> _layers;
@@ -87,22 +88,25 @@ namespace ImageEditor.ViewModel
 
             ToolColor = Reloadable<Color>.On().Each().Input().Create();
             ToolColor.Input = Colors.Red;
-            DelayedQueue<Tuple<int, int>> drawQueue 
+            DelayedQueue<Tuple<int, int>> drawQueue
                 = new DelayedQueue<Tuple<int, int>>(20,
-                (queue) =>
-                {
-                    var tuples = queue.GetAll();
-                    // ReSharper disable once ForCanBeConvertedToForeach
-                    for (var i = 0; i < tuples.Length; i++)
+                    (queue) =>
                     {
-                        var tuple = tuples[i];
-                        _canvas.Draw(tuple.Item1, tuple.Item2, ToolSize.Value, ToolOpacity.Value,
-                            ToolColor.Value);
-                    }
-                    _imageSource.Go();
-                });
-
-
+                        var tuples = queue.GetAll();
+                        // ReSharper disable once ForCanBeConvertedToForeach
+                        for (var i = 0; i < tuples.Length; i++)
+                        {
+                            var tuple = tuples[i];
+                            _canvas.Draw(tuple.Item1, tuple.Item2, ToolSize.Value, ToolOpacity.Value,
+                                ToolColor.Value);
+                        }
+                        _imageSource.Go();
+                    });
+            
+            int lastX = -1;
+            int lastY = -1;
+            Timer timer = new Timer(200);
+            timer.Elapsed += (sender, args) => { lastX = lastY = -1; };
             Shift.OnChanged(() =>
             {
                 var dx = Shift.Value.Item1 * _canvas.Width;
@@ -115,7 +119,18 @@ namespace ImageEditor.ViewModel
                         break;
 
                     case ToolMenuItem.Brush:
-                        drawQueue.Enqueue(new Tuple<int, int>((int) dx, (int) dy));
+                        int x = (int) dx;
+                        int y = (int) dy;
+                        if (lastX == -1 || lastY == -1
+                            || Math.Abs(x - lastX) + Math.Abs(y - lastY) > ToolSize.Value * 0.5d)
+                        {
+                            timer.Stop();
+                            lastX = x;
+                            lastY = y;
+                            drawQueue.Enqueue(new Tuple<int, int>(x, y));
+                            timer.Start();
+                        }
+
                         break;
 
                     case ToolMenuItem.Erase:

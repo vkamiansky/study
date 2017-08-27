@@ -69,7 +69,7 @@ namespace ImageEditor.ViewModel.model
             selectedLayer.X += dx;
             selectedLayer.Y += dy;
 
-            Debug.WriteLine($"dx: {dx:F2} dy: {dy:F2}  X: {selectedLayer.X:F2} Y: {selectedLayer.Y:F3}");
+            //Debug.WriteLine($"dx: {dx:F2} dy: {dy:F2}  X: {selectedLayer.X:F2} Y: {selectedLayer.Y:F3}");
         }
 
         private Layer GetSelectedLayer()

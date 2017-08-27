@@ -238,6 +238,7 @@ namespace ImageEditor.ViewModel.model
             foreach (var drawData in _drawData)
                 drawData.Draw(this, raw, width, height);
             _drawData.Clear();
+            AfterDraw = false;
         }
 
         private readonly LayerMemento _layerMemento = new LayerMemento();

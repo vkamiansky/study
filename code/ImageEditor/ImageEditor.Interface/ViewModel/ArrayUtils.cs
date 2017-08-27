@@ -1,7 +1,12 @@
-﻿namespace ImageEditor.Interface.ViewModel
+﻿using System.Diagnostics;
+using System.Threading.Tasks;
+
+namespace ImageEditor.Interface.ViewModel
 {
     public static class ArrayUtils
     {
+       
+
         public static T[] CloneArray<T>(this T[] t)
         {
             T[] clone = new T[t.Length];
