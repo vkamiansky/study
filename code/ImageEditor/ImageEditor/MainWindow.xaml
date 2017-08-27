@@ -87,6 +87,7 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </MenuItem>
+                    
                     <MenuItem Foreground="Black" Header="Hue/Saturation">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
@@ -96,6 +97,27 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </MenuItem>
+                    
+                    <MenuItem Foreground="Black" Header="Black and White">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <action:OpenFilterWindowAction
+                                    Filter="BlackWhite"
+                                    Layers="{Binding MainViewModel.Editor.Value.Layers.Value}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
+                    
+                    <MenuItem Foreground="Black" Header="Threshold">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <action:OpenFilterWindowAction
+                                    Filter="Threshold"
+                                    Layers="{Binding MainViewModel.Editor.Value.Layers.Value}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
+                    
                     <MenuItem Foreground="Black" Header="Gaussian Blur">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
@@ -105,6 +127,7 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </MenuItem>
+                    
                     <MenuItem Foreground="Black" Header="Box Blur">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
@@ -114,6 +137,7 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </MenuItem>
+                    
                     <MenuItem Foreground="Black" Header="Sharpen">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">
@@ -123,6 +147,7 @@
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </MenuItem>
+                    
                     <MenuItem Foreground="Black" Header="Edge Detection">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="Click">

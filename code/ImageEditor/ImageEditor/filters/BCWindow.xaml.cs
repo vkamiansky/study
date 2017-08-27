@@ -1,16 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using ImageEditor.Interface.ViewModel;
 using ImageEditor.Interface.ViewModel.model;
 
 namespace ImageEditor.filters
@@ -42,16 +33,10 @@ namespace ImageEditor.filters
                 {
                     raw[j] = contrast * (raw[j] - 0.5f) + 0.5f;
                     raw[j] += brightness;
-                    FixValueIfNeed(ref raw[j]);
+                    ColorUtils.FixValueIfNeed(ref raw[j]);
                 }
             }
        }
-
-        private void FixValueIfNeed(ref float v)
-        {
-            if (v < 0) v = 0f;
-            if (v > 1) v = 1f;
-        }
 
         private void Update()
         {
@@ -65,11 +50,6 @@ namespace ImageEditor.filters
         }
 
         private void Brightness_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            Update();
-        }
-
-        private void Hsv_OnChecked(object sender, RoutedEventArgs e)
         {
             Update();
         }

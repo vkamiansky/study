@@ -5,6 +5,7 @@
         BrightnessContrast,
         HueSaturation,
         BlackWhite,
+        Threshold,
         GaussianBlur,
         BoxBlur,
         Sharpen,

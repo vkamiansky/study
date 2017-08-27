@@ -100,6 +100,9 @@
     <Compile Include="filters\BCWindow.xaml.cs">
       <DependentUpon>BCWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="filters\BWWindow.xaml.cs">
+      <DependentUpon>BWWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="filters\EDWindow.xaml.cs">
       <DependentUpon>EDWindow.xaml</DependentUpon>
     </Compile>
@@ -112,6 +115,9 @@
     </Compile>
     <Compile Include="filters\SharpenWindow.xaml.cs">
       <DependentUpon>SharpenWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="filters\TWindow.xaml.cs">
+      <DependentUpon>TWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="HistogramWindow.xaml.cs">
       <DependentUpon>HistogramWindow.xaml</DependentUpon>
@@ -135,6 +141,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="filters\BWWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="filters\EDWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -148,6 +158,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="filters\SharpenWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="filters\TWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

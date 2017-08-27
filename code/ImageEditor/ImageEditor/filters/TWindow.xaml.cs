@@ -1,47 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
-using ImageEditor.Interface.ViewModel;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using ImageEditor.Interface.ViewModel.model;
 
 namespace ImageEditor.filters
 {
     /// <summary>
-    /// Логика взаимодействия для HSWindow.xaml
+    /// Логика взаимодействия для TWindow.xaml
     /// </summary>
     // ReSharper disable once InconsistentNaming
-    public partial class HSWindow
+    public partial class TWindow : Window
     {
         private readonly List<ILayer> _selectedLayers;
 
-        public HSWindow(List<ILayer> selectedLayers, Action onClose)
+        public TWindow(List<ILayer> selectedLayers, Action onClose)
         {
             InitializeComponent();
             _selectedLayers = selectedLayers;
             _selectedLayers.ForEach(layer => layer.SaveToMemento());
             Closing += (sender, args) => onClose.Invoke();
+            Update();
         }
 
         private void ApplyFilter(float[] raw)
         {
-            float hue = (float) (Hue.Value / 1000f);
-            float saturation = (float) (Saturation.Value / 1000f);
-            float lightness = (float) (Lightness.Value / 1000f);
+            float threshold = (float) (Threshold.Value / 255f);
 
             for (var i = 0; i < raw.Length; i += 4)
             {
-                float h, s, l;
-                ColorUtils.RgbToHsl(raw[i], raw[i + 1], raw[i + 2], out h, out s, out l);
-
-                h += hue;
-                s += saturation;
-                l += lightness;
-
-                ColorUtils.FixValueIfNeed(ref h);
-                ColorUtils.FixValueIfNeed(ref s);
-                ColorUtils.FixValueIfNeed(ref l);
-
-                ColorUtils.Hsl2Rgb(h, s, l, out raw[i + 2], out raw[i + 1], out raw[i]);
+                float a = (raw[i] + raw[i + 1] + raw[i + 2]) / 3f;
+                raw[i] = raw[i + 1] = raw[i + 2] = a < threshold ? 0f : 1f;
             }
         }
 
@@ -55,7 +53,6 @@ namespace ImageEditor.filters
                 selectedLayer.OnChanged?.Invoke();
             }
         }
-
 
         private void Brightness_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {

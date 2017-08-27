@@ -116,5 +116,11 @@
         {
             return Max(Max(a, b), c);
         }
+        
+        public static void FixValueIfNeed(ref float v)
+        {
+            if (v < 0) v = 0f;
+            if (v > 1) v = 1f;
+        }
     }
 }

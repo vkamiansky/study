@@ -53,6 +53,14 @@ namespace ImageEditor.action
                     new HSWindow(selectedLayers,
                         () => { selectedLayers.ForEach(layer => layer.RestoreFromMemento()); }).Show();
                     break;
+                case Filter.BlackWhite:
+                    new BWWindow(selectedLayers,
+                        () => { selectedLayers.ForEach(layer => layer.RestoreFromMemento()); }).Show();
+                    break;
+                case Filter.Threshold:
+                    new TWindow(selectedLayers,
+                        () => { selectedLayers.ForEach(layer => layer.RestoreFromMemento()); }).Show();
+                    break;
             }
         }
     }

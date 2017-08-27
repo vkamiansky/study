@@ -1,0 +1,31 @@
+﻿<Window x:Class="ImageEditor.filters.BWWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Background="{DynamicResource BackgroundBrush}"
+        ResizeMode="NoResize"
+        Title="Black and White" Height="240" Width="300"
+        mc:Ignorable="d">
+    
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Column="0">
+            <Label Foreground="White">Reds:</Label>
+            <Slider ValueChanged="Brightness_OnValueChanged" Name="Reds" Minimum="-1000" Maximum="1000" />
+            <Label Foreground="White">Greens:</Label>
+            <Slider Name="Greens" ValueChanged="Brightness_OnValueChanged" Minimum="-1000" Maximum="1000" />
+            <Label Foreground="White">Blues:</Label>
+            <Slider Name="Blues" ValueChanged="Brightness_OnValueChanged" Minimum="-1000" Maximum="1000" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Click="OnCancel" Width="60">Cancel</Button>
+            <Button Click="OnOk" Width="60" Margin="10,0,0,0">OK</Button>
+        </StackPanel>
+    </Grid>
+    
+</Window>

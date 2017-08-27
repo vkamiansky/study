@@ -1,49 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
-using ImageEditor.Interface.ViewModel;
 using ImageEditor.Interface.ViewModel.model;
 
 namespace ImageEditor.filters
 {
     /// <summary>
-    /// Логика взаимодействия для HSWindow.xaml
+    /// Логика взаимодействия для BWWindow.xaml
     /// </summary>
     // ReSharper disable once InconsistentNaming
-    public partial class HSWindow
+    public partial class BWWindow
     {
         private readonly List<ILayer> _selectedLayers;
-
-        public HSWindow(List<ILayer> selectedLayers, Action onClose)
+        
+        public BWWindow(List<ILayer> selectedLayers, Action onClose)
         {
             InitializeComponent();
             _selectedLayers = selectedLayers;
             _selectedLayers.ForEach(layer => layer.SaveToMemento());
             Closing += (sender, args) => onClose.Invoke();
         }
-
+        
         private void ApplyFilter(float[] raw)
         {
-            float hue = (float) (Hue.Value / 1000f);
-            float saturation = (float) (Saturation.Value / 1000f);
-            float lightness = (float) (Lightness.Value / 1000f);
+            float reds = (float) (Reds.Value / 1000f);
+            float greens = (float) (Greens.Value / 1000f);
+            float blues = (float) (Blues.Value / 1000f);
 
             for (var i = 0; i < raw.Length; i += 4)
             {
-                float h, s, l;
-                ColorUtils.RgbToHsl(raw[i], raw[i + 1], raw[i + 2], out h, out s, out l);
-
-                h += hue;
-                s += saturation;
-                l += lightness;
-
-                ColorUtils.FixValueIfNeed(ref h);
-                ColorUtils.FixValueIfNeed(ref s);
-                ColorUtils.FixValueIfNeed(ref l);
-
-                ColorUtils.Hsl2Rgb(h, s, l, out raw[i + 2], out raw[i + 1], out raw[i]);
+                for (int j = i; j < i + 3; j++)
+                {
+                }
             }
         }
+
 
         private void Update()
         {
@@ -55,7 +46,6 @@ namespace ImageEditor.filters
                 selectedLayer.OnChanged?.Invoke();
             }
         }
-
 
         private void Brightness_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
