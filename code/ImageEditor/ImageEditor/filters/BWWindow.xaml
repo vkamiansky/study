@@ -15,11 +15,11 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Column="0">
             <Label Foreground="White">Reds:</Label>
-            <Slider ValueChanged="Brightness_OnValueChanged" Name="Reds" Minimum="-1000" Maximum="1000" />
+            <Slider ValueChanged="Brightness_OnValueChanged" Name="Reds" Minimum="0" Maximum="1000" Value="500" />
             <Label Foreground="White">Greens:</Label>
-            <Slider Name="Greens" ValueChanged="Brightness_OnValueChanged" Minimum="-1000" Maximum="1000" />
+            <Slider Name="Greens" ValueChanged="Brightness_OnValueChanged" Minimum="0" Maximum="1000" Value="500" />
             <Label Foreground="White">Blues:</Label>
-            <Slider Name="Blues" ValueChanged="Brightness_OnValueChanged" Minimum="-1000" Maximum="1000" />
+            <Slider Name="Blues" ValueChanged="Brightness_OnValueChanged" Minimum="0" Maximum="1000" Value="500" />
         </StackPanel>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">

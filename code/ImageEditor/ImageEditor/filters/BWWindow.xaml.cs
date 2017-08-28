@@ -12,15 +12,16 @@ namespace ImageEditor.filters
     public partial class BWWindow
     {
         private readonly List<ILayer> _selectedLayers;
-        
+
         public BWWindow(List<ILayer> selectedLayers, Action onClose)
         {
             InitializeComponent();
             _selectedLayers = selectedLayers;
             _selectedLayers.ForEach(layer => layer.SaveToMemento());
             Closing += (sender, args) => onClose.Invoke();
+            Update();
         }
-        
+
         private void ApplyFilter(float[] raw)
         {
             float reds = (float) (Reds.Value / 1000f);
@@ -29,9 +30,13 @@ namespace ImageEditor.filters
 
             for (var i = 0; i < raw.Length; i += 4)
             {
-                for (int j = i; j < i + 3; j++)
-                {
-                }
+                float red = raw[i + 2];
+                float green = raw[i + 1];
+                float blue = raw[i + 0];
+
+                bool c = red > reds || green > greens || blue > blues;
+
+                raw[i + 0] = raw[i + 1] = raw[i + 2] = c ? 0f : 1f;
             }
         }
 
