@@ -52,9 +52,7 @@ module Program =
 
         let input_github = Composite (ll (Value (Repository repoName)))
 
-        let reviewers = ["vk"; "vi"]
-
-        let expanded_github = ana [readPrs userName; pOpen; execute client; toIssueNumbers reviewers; toLabelNames] input_github
+        let expanded_github = ana [readPrs userName; pOpen; allPages; execute client;] input_github
 
         expanded_github |> toConsole
         Console.ReadKey |> ignore

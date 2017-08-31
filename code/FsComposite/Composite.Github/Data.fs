@@ -9,9 +9,23 @@ open Composite.Core.Processing
 open Composite.Common.DataTransformationHelper
 
 module Data =
+
+    type GitHubResponse =
+    | LabelsReadJson of IRestResponse
+    | LabelsAttachedJson of IRestResponse
+    | LabelDettachedJson of IRestResponse
+    | PrsReadJson of IRestResponse
+    | PrReadJson of IRestResponse
+    | PrFilesReadJson of IRestResponse
+    | PrCommentsReadJson of IRestResponse
+    | IssueCommentsReadJson of IRestResponse
+    | PrCommitsReadJson of IRestResponse
+    | Message of string
+    | Error of Exception
     
     type GitHubRequest =
     | RequestAllPages of GitHubRequest
+    | Req of IRestRequest
     | PrReadRequest of IRestRequest
     | PrsReadRequest of IRestRequest
     | PrFilesReadRequest of IRestRequest
@@ -22,20 +36,6 @@ module Data =
     | LabelsAttachRequest of IRestRequest
     | LabelDettachRequest of IRestRequest
     | RequestSetInBody of GitHubRequest * (string Set)
-
-    type GitHubResponse =
-    | ResultAllPages of LazyList<GitHubResponse>
-    | LabelsReadJson of string
-    | LabelsAttachedJson of string
-    | LabelDettachedJson of string
-    | PrsReadJson of string
-    | PrReadJson of string
-    | PrFilesReadJson of string
-    | PrCommentsReadJson of string
-    | IssueCommentsReadJson of string
-    | PrCommitsReadJson of string
-    | Message of string
-    | Error of Exception
 
     type GitHubObject =
     | Request of GitHubRequest

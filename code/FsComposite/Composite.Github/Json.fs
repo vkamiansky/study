@@ -16,24 +16,24 @@ module Json =
             then [IssueNumber(obj2.SelectToken("$.number")|> string)] |> LazyList.ofList
             else LazyList.empty
         match obj with
-        | Response (PrsReadJson o) -> JArray.Parse(o) |> getNumber
+        | Response (PrsReadJson o) -> JArray.Parse(o.Content) |> getNumber
         | _ -> ll obj
 
     let rec toLabelNames obj =
         match obj with
-        | Response (LabelsReadJson o) -> ll (Labels (JArray.Parse(o).SelectTokens("$..name") |> Seq.map (fun x -> x |> string) |> Set.ofSeq))
+        | Response (LabelsReadJson o) -> ll (Labels (JArray.Parse(o.Content).SelectTokens("$..name") |> Seq.map (fun x -> x |> string) |> Set.ofSeq))
         | _ -> ll obj
 
     /// ... use pr files json : turn it into file names ...
     let rec toFileNames obj =
         match obj with
-        | Response (PrFilesReadJson o) -> ll (PrFileNames (JArray.Parse(o).SelectTokens("$..filename") |> Seq.map (fun x -> x |> string) |> Set.ofSeq))
+        | Response (PrFilesReadJson o) -> ll (PrFileNames (JArray.Parse(o.Content).SelectTokens("$..filename") |> Seq.map (fun x -> x |> string) |> Set.ofSeq))
         | _ -> ll obj
 
     /// ... use pr json : turn it into file names ...
     let rec toPrMergeable obj =
         match obj with
-        | Response (PrReadJson o) -> ll (PrMergeable (JObject.Parse(o).SelectToken("$.mergeable").ToString().ToLowerInvariant()
+        | Response (PrReadJson o) -> ll (PrMergeable (JObject.Parse(o.Content).SelectToken("$.mergeable").ToString().ToLowerInvariant()
                                         |> function
                                             | "true" -> Some true
                                             | "false" -> Some false
@@ -44,14 +44,14 @@ module Json =
     let rec toPrIteration obj =
         match obj with
         | Response (PrCommentsReadJson o) -> 
-            ll (PrIteration (JArray.Parse(o).SelectTokens("$..original_commit_id") |> Seq.distinct |> Seq.length))
+            ll (PrIteration (JArray.Parse(o.Content).SelectTokens("$..original_commit_id") |> Seq.distinct |> Seq.length))
         | _ -> ll obj
 
     /// ... use commits json : turn it into last commit date ...
     let rec toLastCommitDate obj =
         match obj with
         | Response (PrCommitsReadJson o) -> 
-            ll (PrLastCommitDate (JArray.Parse(o).SelectToken("$[-1:].commit.committer.date")
+            ll (PrLastCommitDate (JArray.Parse(o.Content).SelectToken("$[-1:].commit.committer.date")
                                                  .ToObject<DateTime>()
                                                  .ToUniversalTime()))
         | _ -> ll obj
@@ -66,6 +66,6 @@ module Json =
                 comment.SelectToken("$.created_at").ToObject<DateTime>().ToUniversalTime()))
 
         match obj with
-        | Response (PrCommentsReadJson o) -> getLastLoginDate o 
-        | Response (IssueCommentsReadJson o) -> getLastLoginDate o
+        | Response (PrCommentsReadJson o) -> getLastLoginDate o.Content
+        | Response (IssueCommentsReadJson o) -> getLastLoginDate o.Content
         | _ -> ll obj
