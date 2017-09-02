@@ -23,7 +23,6 @@ module Data =
     //how to fold
 
     let find_and_transform_AB () =
-        
         let f1 = function
                  | A -> true 
                  | _ -> false
@@ -41,7 +40,6 @@ module Data =
         (([(f1, None); (f2, None)] |> LazyList.ofList), transform)
 
     let find_and_transform_BC () =
-        
         let f3 = function
                  | B -> Some B 
                  | _ -> None
