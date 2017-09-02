@@ -1,6 +1,7 @@
 ﻿namespace Composite.Test
 
 open System
+
 open Composite.Simple.Data
 open Composite.Core.Composite
 
@@ -19,6 +20,8 @@ module Program =
 
     [<EntryPoint>]
     let main argv =
+
+        let github_config = DataSourceConfigurationManager.Github.Config ()
 
         //let ccc = transform2TypesSmart whatWeSearch howToTransform whereWeSearch |> Array.ofSeq
 //
