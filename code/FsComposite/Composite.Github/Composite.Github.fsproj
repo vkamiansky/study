@@ -53,9 +53,9 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Data.fs" />
-    <Content Include="packages.config" />
     <Compile Include="Request.fs" />
     <Compile Include="Json.fs" />
+    <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ExtCore">
@@ -71,14 +71,12 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="RestSharp">
-      <HintPath>..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net46\RestSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Composite.Common\Composite.Common.fsproj">
       <Name>Composite.Common</Name>
       <Project>{c08f2b08-c186-40d3-999c-ec7338e0b803}</Project>

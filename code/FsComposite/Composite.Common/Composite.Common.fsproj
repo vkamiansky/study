@@ -52,8 +52,9 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Content Include="packages.config" />
     <Compile Include="DataTransformationHelper.fs" />
+    <Content Include="packages.config" />
+    <Compile Include="Http.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ExtCore">
@@ -65,7 +66,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="RestSharp">
-      <HintPath>..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net46\RestSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

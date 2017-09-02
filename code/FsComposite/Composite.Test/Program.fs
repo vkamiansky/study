@@ -44,15 +44,15 @@ module Program =
         // Testing on Github objects
         let userName = "v-ilin" // set this value to username of repository owner
 
-        let client = new RestClient("https://api.github.com")
-        client.Authenticator <- new HttpBasicAuthenticator(userName, (printfn "User password: "; Console.readPassword()))
+        let github_client = new RestClient(github_source_url)
+        github_client.Authenticator <- new HttpBasicAuthenticator(userName, (printfn "User password: "; Console.readPassword()))
 
         let repoName = "fsharp-tutorial" // repository name
         let issueNumber = "3" // issue id
 
-        let input_github = Composite (ll (Value (Repository repoName)))
+        let input_github = Composite ([Value (Repository repoName); Value (SearchSequance "let")] |> LazyList.ofList)
 
-        let expanded_github = ana [readPrs userName; pOpen; allPages; execute client;] input_github
+        let expanded_github = ana [searchCode; allPages; execute github_client] input_github
 
         expanded_github |> toConsole
         Console.ReadKey |> ignore

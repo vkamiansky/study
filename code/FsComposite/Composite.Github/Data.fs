@@ -11,21 +11,21 @@ open Composite.Common.DataTransformationHelper
 module Data =
 
     type GitHubResponse =
-    | LabelsReadJson of IRestResponse
-    | LabelsAttachedJson of IRestResponse
-    | LabelDettachedJson of IRestResponse
-    | PrsReadJson of IRestResponse
-    | PrReadJson of IRestResponse
-    | PrFilesReadJson of IRestResponse
-    | PrCommentsReadJson of IRestResponse
-    | IssueCommentsReadJson of IRestResponse
-    | PrCommitsReadJson of IRestResponse
+    | PrReadResponse of IRestResponse
+    | PrsReadResponse of IRestResponse
+    | PrFilesReadResponse of IRestResponse
+    | PrCommitsReadResponse of IRestResponse
+    | PrCommentsReadResponse of IRestResponse
+    | IssueCommentsReadResponse of IRestResponse
+    | LabelsReadResponse of IRestResponse
+    | LabelsAttachedResponse of IRestResponse
+    | LabelDettachedResponse of IRestResponse
+    | SearchCodeResponse of IRestResponse
     | Message of string
     | Error of Exception
-    
+
     type GitHubRequest =
     | RequestAllPages of GitHubRequest
-    | Req of IRestRequest
     | PrReadRequest of IRestRequest
     | PrsReadRequest of IRestRequest
     | PrFilesReadRequest of IRestRequest
@@ -35,6 +35,7 @@ module Data =
     | LabelsReadRequest of IRestRequest
     | LabelsAttachRequest of IRestRequest
     | LabelDettachRequest of IRestRequest
+    | SearchCodeRequest of IRestRequest
     | RequestSetInBody of GitHubRequest * (string Set)
 
     type GitHubObject =
@@ -48,3 +49,4 @@ module Data =
     | PrFileNames of string Set
     | PrLastCommitDate of DateTime
     | LastCommentLoginDate of string * DateTime
+    | SearchSequance of string
