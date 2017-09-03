@@ -61,6 +61,10 @@ namespace ImageEditor.action
                     new TWindow(selectedLayers,
                         () => { selectedLayers.ForEach(layer => layer.RestoreFromMemento()); }).Show();
                     break;
+                case Filter.GaussianBlur:
+                    new GBWindow(selectedLayers,
+                        () => { selectedLayers.ForEach(layer => layer.RestoreFromMemento()); }).Show();
+                    break;
             }
         }
     }

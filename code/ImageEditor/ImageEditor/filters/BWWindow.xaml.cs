@@ -40,7 +40,6 @@ namespace ImageEditor.filters
             }
         }
 
-
         private void Update()
         {
             if (_selectedLayers == null || _selectedLayers.Count == 0) return;
