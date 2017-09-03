@@ -2,7 +2,6 @@
 
 open System
 
-open Newtonsoft.Json
 open Newtonsoft.Json.Linq
 
 open Composite.Github.Data
@@ -60,7 +59,8 @@ module Json =
     let rec toLastCommentLoginDate obj =
         let getLastLoginDate o =
             let comment = JArray.Parse(o).SelectToken("$[-1:]")
-            if comment = null then ll (Response (Message "No comments on issue"))
+            if isNull comment
+            then ll EmptyOperationResult
             else ll (LastCommentLoginDate(
                         comment.SelectToken("$.user.login") |> string,
                         comment.SelectToken("$.created_at").ToObject<DateTime>().ToUniversalTime()))

@@ -3,13 +3,15 @@
 open RestSharp
 
 open Composite.Github.Data
-open Composite.Core.Composite
 open Composite.Common.DataTransformationHelper
 open Composite.Common.Http
 
 module Request =
 
     let github_source_url = "https://api.github.com"
+
+    exception MappingException of string
+    exception MissingRequestBodyException of string
 
     let searchCode obj =
         match obj with
@@ -108,38 +110,64 @@ module Request =
             | PrCommentsReadRequest x -> PrCommentsReadResponse (x |> getResponseMethod)
             | IssueCommentsReadRequest x -> IssueCommentsReadResponse (x |> getResponseMethod)
             | PrCommitsReadRequest x -> PrCommitsReadResponse (x |> getResponseMethod)
-            | SearchCodeRequest x -> SearchCodeResponse (x |> getResponseMethod)
+            | SearchCodeRequest x -> SearchCodeReadResponse (x |> getResponseMethod)
+            | x -> raise (MappingException (sprintf "The mapping between request type %s and appropriate Response is missing." (GetUnionCaseName x)))
 
         let addJsonBody body (req : IRestRequest) =
             req.RequestFormat <- DataFormat.Json
             req.AddBody(body)
-        let getResponseContent req =
+        let getResponse req =
             client.Execute(req)
 
         let rec executeWith getResponseMethod obj2 =
             try
                 match obj2 with
                 | Request (RequestSetInBody (o, s)) -> if s = Set.empty
-                                                        then Response (Message "Request was supposed to have a body. Execution cancelled.")
-                                                        else Request o |> executeWith (addJsonBody s >> getResponseMethod)
+                                                       then raise (MissingRequestBodyException "Request was supposed to have a body. Execution cancelled.")
+                                                       else Request o |> executeWith (addJsonBody s >> getResponseMethod)
                 | Request req -> Response (matchRequest getResponseMethod req)
+                | x -> invalidOp (sprintf "Only GithubObject.Request supports execution but here the type %s" (GetUnionCaseName x))
             with
             | o -> Response (Error o)
 
-        obj |> executeWith getResponseContent
+        obj |> executeWith getResponse
 
     let rec execute client obj =
         let try_get_next_request obj =
             match obj with
+            | PrReadResponse resp ->
+                match get_next_page_url github_source_url resp with
+                | Some url -> Some (PrReadRequest (create_next_page_rest_request url))
+                | None -> None
             | PrsReadResponse resp ->
                 match get_next_page_url github_source_url resp with
                 | Some url -> Some (PrsReadRequest (create_next_page_rest_request url))
                 | None -> None
-            | SearchCodeResponse resp ->
+            | PrFilesReadResponse resp ->
+                match get_next_page_url github_source_url resp with
+                | Some url -> Some (PrFilesReadRequest (create_next_page_rest_request url))
+                | None -> None    
+            | PrCommitsReadResponse resp ->
+                match get_next_page_url github_source_url resp with
+                | Some url -> Some (PrCommitsReadRequest (create_next_page_rest_request url))
+                | None -> None
+            | PrCommentsReadResponse resp ->
+                match get_next_page_url github_source_url resp with
+                | Some url -> Some (PrCommentsReadRequest (create_next_page_rest_request url))
+                | None -> None
+            | IssueCommentsReadResponse resp ->
+                match get_next_page_url github_source_url resp with
+                | Some url -> Some (IssueCommentsReadRequest (create_next_page_rest_request url))
+                | None -> None    
+            | LabelsReadResponse resp ->
+                match get_next_page_url github_source_url resp with
+                | Some url -> Some (LabelsReadRequest (create_next_page_rest_request url))
+                | None -> None
+            | SearchCodeReadResponse resp ->
                 match get_next_page_url github_source_url resp with
                 | Some url -> Some (SearchCodeRequest (create_next_page_rest_request url))
                 | None -> None
-            | Error err -> None
+            | _ -> None
 
         match obj with
         | Request (RequestAllPages req) ->
@@ -148,5 +176,6 @@ module Request =
             | Response x -> match try_get_next_request x with
                             | Some new_req -> ([response] |> LazyList.ofList) |> LazyList.append (execute client (Request (RequestAllPages new_req)))
                             | None -> [response] |> LazyList.ofList
+            | _ -> failwith "The result of the Request execution must be the Response."
         | Request x -> ll (execute_single client obj)
         | x -> ll x

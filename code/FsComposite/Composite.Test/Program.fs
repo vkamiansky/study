@@ -28,8 +28,7 @@ module Program =
         | Value x -> printf "%A " x
 
     [<EntryPoint>]
-    let main argv =
-        
+    let main argv =        
         // Testing on Simple objects
         let inputSimple = Composite ([Value A; Value B] |> LazyList.ofList)
         printfn "Input Simple seq: %A" (inputSimple |> toString)

@@ -4,10 +4,6 @@ open System
 
 open RestSharp
 
-open Composite.Core.Composite
-open Composite.Core.Processing
-open Composite.Common.DataTransformationHelper
-
 module Data =
 
     type GitHubResponse =
@@ -20,8 +16,7 @@ module Data =
     | LabelsReadResponse of IRestResponse
     | LabelsAttachedResponse of IRestResponse
     | LabelDettachedResponse of IRestResponse
-    | SearchCodeResponse of IRestResponse
-    | Message of string
+    | SearchCodeReadResponse of IRestResponse
     | Error of Exception
 
     type GitHubRequest =
@@ -50,3 +45,4 @@ module Data =
     | PrLastCommitDate of DateTime
     | LastCommentLoginDate of string * DateTime
     | SearchSequance of string
+    | EmptyOperationResult

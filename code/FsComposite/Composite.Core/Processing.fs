@@ -1,7 +1,5 @@
 ﻿namespace Composite.Core
 
-open Composite.Core.Composite
-
 module Processing =
 
     let update_acc check_funcs acc obj =
