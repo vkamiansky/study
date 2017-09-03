@@ -5,8 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ImageEditor.filters"
         mc:Ignorable="d"
-        Title="SharpenWindow" Height="300" Width="300">
-    <Grid>
-        
+        Background="{DynamicResource BackgroundBrush}"
+        ResizeMode="NoResize"
+        Title="Sharpen Blur" Height="150" Width="300">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Column="0">
+            <Label Foreground="White" Name="RadLabel">Radius: </Label>
+            <Slider ValueChanged="Radius_OnValueChanged" Name="Radius" Minimum="1" Maximum="60" Value="5" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Click="OnCancel" Width="60">Cancel</Button>
+            <Button Click="OnOk" Width="60" Margin="10,0,0,0">OK</Button>
+        </StackPanel>
     </Grid>
 </Window>

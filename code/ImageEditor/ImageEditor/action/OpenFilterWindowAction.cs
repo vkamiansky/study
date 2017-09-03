@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -43,27 +44,36 @@ namespace ImageEditor.action
 
             selectedLayers.ForEach(layer => layer.SaveToMemento());
 
+            void OnCloseAction()
+            {
+                selectedLayers.ForEach(layer => layer.RestoreFromMemento());
+            }
+
             switch (Filter)
             {
                 case Filter.BrightnessContrast:
-                    new BCWindow(selectedLayers,
-                        () => { selectedLayers.ForEach(layer => layer.RestoreFromMemento()); }).Show();
+                    new BCWindow(selectedLayers, OnCloseAction).Show();
                     break;
                 case Filter.HueSaturation:
-                    new HSWindow(selectedLayers,
-                        () => { selectedLayers.ForEach(layer => layer.RestoreFromMemento()); }).Show();
+                    new HSWindow(selectedLayers, OnCloseAction).Show();
                     break;
                 case Filter.BlackWhite:
-                    new BWWindow(selectedLayers,
-                        () => { selectedLayers.ForEach(layer => layer.RestoreFromMemento()); }).Show();
+                    new BWWindow(selectedLayers, OnCloseAction).Show();
                     break;
                 case Filter.Threshold:
-                    new TWindow(selectedLayers,
-                        () => { selectedLayers.ForEach(layer => layer.RestoreFromMemento()); }).Show();
+                    new TWindow(selectedLayers, OnCloseAction).Show();
                     break;
                 case Filter.GaussianBlur:
-                    new GBWindow(selectedLayers,
-                        () => { selectedLayers.ForEach(layer => layer.RestoreFromMemento()); }).Show();
+                    new GBWindow(selectedLayers, OnCloseAction).Show();
+                    break;
+                case Filter.BoxBlur:
+                    new BBWindow(selectedLayers, OnCloseAction).Show();
+                    break;
+                case Filter.Sharpen:
+                    new SharpenWindow(selectedLayers, OnCloseAction).Show();
+                    break;
+                case Filter.EdgeDetection:
+                    new EDWindow().Show();
                     break;
             }
         }

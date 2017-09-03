@@ -1,4 +1,6 @@
-﻿namespace ImageEditor.Interface.ViewModel
+﻿using System;
+
+namespace ImageEditor.Interface.ViewModel
 {
     public class ColorUtils
     {
@@ -49,7 +51,7 @@
             r = l;
             g = l;
             b = l;
-            
+
             float v = (l <= 0.5f) ? (l * (1.0f + s)) : (l + s - l * s);
             if (v > 0)
             {
@@ -116,11 +118,78 @@
         {
             return Max(Max(a, b), c);
         }
-        
+
         public static void FixValueIfNeed(ref float v)
         {
             if (v < 0) v = 0f;
             if (v > 1) v = 1f;
+        }
+
+        public static void KernelProcess(float[] src, int w, int h, float[] kernel, float mult = 1f)
+        {
+            float[] dest = src.CloneArray();
+
+            int side = (int) Math.Sqrt(kernel.Length);
+            
+            if (side % 2 == 0 || side < 3 || side > 100) throw new Exception("Illegal argument exc.");
+
+            if (mult != 1f)
+            {
+                for (var i = 0; i < kernel.Length; i++)
+                {
+                    kernel[i] *= mult;
+                }
+            }
+
+            int d = 1, ds = 3;
+
+            while (ds != side)
+            {
+                d++;
+                ds += 2;
+            }
+
+            for (int i = 0; i < h; i++)
+            {
+                for (int j = 0; j < w; j++)
+                {
+                    float r = 0f;
+                    float g = 0f;
+                    float b = 0f;
+                    float a = 0f;
+
+                    int ii = 0;
+                    for (float iy = i - d; iy <= i + d; iy++, ii++)
+                    {
+                        int id = 0;
+                        for (float ix = j - d; ix <= j + d; ix++, id++)
+                        {
+                            float x = Min(w - 1, Max(0, ix));
+                            float y = Min(h - 1, Max(0, iy));
+                            int si = ((int) (y * w + x)) * 4;
+                            float p = kernel[ii * side + id];
+                            b += src[si] * p;
+                            g += src[si + 1] * p;
+                            r += src[si + 2] * p;
+                            a += src[si + 3] * p;
+                        }
+                    }
+                    int di = (i * w + j) * 4;
+                    
+                    FixValueIfNeed(ref b);
+                    FixValueIfNeed(ref g);
+                    FixValueIfNeed(ref r);
+                    FixValueIfNeed(ref a);
+                    
+                    dest[di] = b;
+                    dest[di + 1] = g;
+                    dest[di + 2] = r;
+                    dest[di + 3] = a;
+                    
+                }
+            }
+
+            dest.CopyTo(src, 0);
         }
     }
 }
