@@ -156,7 +156,7 @@ namespace ImageEditor.Interface.ViewModel
                     float r = 0f;
                     float g = 0f;
                     float b = 0f;
-                    float a = 0f;
+                    //float a = 0f;
 
                     int ii = 0;
                     for (float iy = i - d; iy <= i + d; iy++, ii++)
@@ -171,7 +171,7 @@ namespace ImageEditor.Interface.ViewModel
                             b += src[si] * p;
                             g += src[si + 1] * p;
                             r += src[si + 2] * p;
-                            a += src[si + 3] * p;
+                            //a += src[si + 3] * p;
                         }
                     }
                     int di = (i * w + j) * 4;
@@ -179,12 +179,12 @@ namespace ImageEditor.Interface.ViewModel
                     FixValueIfNeed(ref b);
                     FixValueIfNeed(ref g);
                     FixValueIfNeed(ref r);
-                    FixValueIfNeed(ref a);
+                    //FixValueIfNeed(ref a);
                     
                     dest[di] = b;
                     dest[di + 1] = g;
                     dest[di + 2] = r;
-                    dest[di + 3] = a;
+                    //dest[di + 3] = a;
                     
                 }
             }

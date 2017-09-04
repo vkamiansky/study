@@ -73,7 +73,7 @@ namespace ImageEditor.action
                     new SharpenWindow(selectedLayers, OnCloseAction).Show();
                     break;
                 case Filter.EdgeDetection:
-                    new EDWindow().Show();
+                    new EDWindow(selectedLayers, OnCloseAction).Show();
                     break;
             }
         }

@@ -53,7 +53,21 @@ namespace ImageEditor.filters
 
         private void Sharpen(float[] src, int w, int h, float rad)
         {
-            ColorUtils.KernelProcess(src, w, h, _sharpenKernel);
+            var kernel = _sharpenKernel.CloneArray();
+            var m = rad / 1000f;
+            var f = m / 4f;
+            if (m > 0)
+            {
+                kernel[4] += m;
+            }
+            else
+            {
+                kernel[1] += f;
+                kernel[3] += f;
+                kernel[5] += f;
+                kernel[7] += f;
+            }
+            ColorUtils.KernelProcess(src, w, h, kernel);
         }
 
         private void Radius_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
