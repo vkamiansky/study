@@ -11,7 +11,7 @@
           <Enabled>True</Enabled>
         </LiteralNamesMustBePascalCase>
         <NonPublicValuesCamelCase>
-          <Enabled>True</Enabled>
+          <Enabled>False</Enabled>
         </NonPublicValuesCamelCase>
         <ParameterMustBeCamelCase>
           <Enabled>False</Enabled>

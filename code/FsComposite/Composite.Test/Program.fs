@@ -28,17 +28,17 @@ module Program =
         | Value x -> printf "%A " x
 
     [<EntryPoint>]
-    let main argv =        
+    let main argv =
         // Testing on Simple objects
-        let inputSimple = Composite ([Value A; Value B] |> LazyList.ofList)
-        printfn "Input Simple seq: %A" (inputSimple |> toString)
+//        let inputSimple = Composite ([Value A; Value B] |> LazyList.ofList)
+//        printfn "Input Simple seq: %A" (inputSimple |> toString)
         
-        let expanded_simple = ana [v expandSimple] inputSimple
-        printfn "Expanded Simple seq: %A" (expanded_simple |> toString)
-        expanded_simple |> toConsole
+//        let expanded_simple = ana [v expandSimple] inputSimple
+//        printfn "Expanded Simple seq: %A" (expanded_simple |> toString)
+//        expanded_simple |> toConsole
 
-        let collapseScn = [find_and_transform_BC ()]
-        let transformed = cata collapseScn (expanded_simple |> flat)
+//        let collapseScn = [find_and_transform_BC ()]
+//        let transformed = cata collapseScn (expanded_simple |> flat)
 
         // Testing on Github objects
         let userName = "v-ilin" // set this value to username of repository owner

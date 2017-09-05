@@ -42,7 +42,7 @@ module Request =
         | IssueNumber o -> ll (Request (LabelsAttachRequest(new RestRequest(sprintf "/repos/%s/issues/%s/labels" repoName o, Method.POST))))
         | _ -> ll obj
        
-    /// ... use issue number : turn it into a request to dettach labels for it ...
+    /// ... use issue number : turn it into a request to detach labels for it ...
     let dettachLabel repoName label obj =
         match obj with
         | IssueNumber o -> ll (Request (LabelDettachRequest(new RestRequest(sprintf "/repos/%s/issues/%s/labels/%s" repoName o label, Method.DELETE))))
@@ -75,7 +75,7 @@ module Request =
     /// ... use request: add labels to attach labels request body ...
     let pAttachLabels labels obj =
         match obj with
-        | LabelsAttachRequest o -> ll (Request (RequestSetInBody(obj, labels)))
+        | LabelsAttachRequest _ -> ll (Request (RequestSetInBody(obj, labels)))
         | RequestSetInBody(LabelsAttachRequest o, s) -> ll (Request (RequestSetInBody(LabelsAttachRequest o, s |> Set.union labels)))
         | _ -> ll (Request obj)
 
@@ -146,7 +146,7 @@ module Request =
             | PrFilesReadResponse resp ->
                 match get_next_page_url github_source_url resp with
                 | Some url -> Some (PrFilesReadRequest (create_next_page_rest_request url))
-                | None -> None    
+                | None -> None
             | PrCommitsReadResponse resp ->
                 match get_next_page_url github_source_url resp with
                 | Some url -> Some (PrCommitsReadRequest (create_next_page_rest_request url))
@@ -158,7 +158,7 @@ module Request =
             | IssueCommentsReadResponse resp ->
                 match get_next_page_url github_source_url resp with
                 | Some url -> Some (IssueCommentsReadRequest (create_next_page_rest_request url))
-                | None -> None    
+                | None -> None
             | LabelsReadResponse resp ->
                 match get_next_page_url github_source_url resp with
                 | Some url -> Some (LabelsReadRequest (create_next_page_rest_request url))
@@ -177,5 +177,5 @@ module Request =
                             | Some new_req -> ([response] |> LazyList.ofList) |> LazyList.append (execute client (Request (RequestAllPages new_req)))
                             | None -> [response] |> LazyList.ofList
             | _ -> failwith "The result of the Request execution must be the Response."
-        | Request x -> ll (execute_single client obj)
+        | Request _ -> ll (execute_single client obj)
         | x -> ll x
