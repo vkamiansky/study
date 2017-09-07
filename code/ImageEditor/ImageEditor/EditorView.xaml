@@ -20,9 +20,9 @@
             <SolidColorBrush x:Key="TextBoxBgBrush" Color="{DynamicResource TextBoxBg}" />
             <Image x:Key="close" Source="res/close_icon.png" />
             <DataTemplate x:Key="ItemTemplate">
-                <Grid Height="80">
+                <Grid Height="80" Width="70px">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -194,7 +194,7 @@
                                              Image="{Binding ElementName=Canvas}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
-            
+
             <Rectangle Grid.Row="0" Fill="{StaticResource DividerBrush}" Height="1"/>
 
             <control:ImageView HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="Canvas"
@@ -216,18 +216,25 @@
         <Grid Grid.Row="1" Grid.Column="2" Margin="0,0,0,0" Background="{StaticResource BgBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="auTo" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="1" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <ListBox Grid.Row="1" x:Name="ListBox" ItemTemplate="{StaticResource ItemTemplate}"
-                     ItemsSource="{Binding Layers.Value}"
-                     IsSynchronizedWithCurrentItem="True" Background="{StaticResource BgBrush}" />
+            <Rectangle Grid.Row="0" Fill="{StaticResource DividerBrush}" Height="1" />
 
-            <Rectangle Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0" Fill="{StaticResource DividerBrush}" Height="1" />
+            <ListBox Grid.Row="1" Grid.ColumnSpan="2" HorizontalContentAlignment="Stretch" 
+                     x:Name="ListBox" ItemTemplate="{StaticResource ItemTemplate}"
+                     ItemsSource="{Binding Layers.Value}"
+                     IsSynchronizedWithCurrentItem="True" Background="{StaticResource BgBrush}" 
+                     BorderBrush="#00ABADB3">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="IsEnabled" Value="False"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
         </Grid>
 
     </Grid>
