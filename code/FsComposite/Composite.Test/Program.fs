@@ -8,7 +8,6 @@ open RestSharp.Authenticators
 open FSharpSnippets
 open Composite.Core.Composite
 open Composite.Core.Processing
-open Composite.Simple.Data
 open Composite.Github.Data
 open Composite.Github.Request
 open Composite.Github.Json

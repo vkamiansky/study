@@ -13,7 +13,8 @@ module Data =
     // how to expand
     let expandSimple obj =
         match obj with
-        | A -> ll B
+        | A -> [B; C; A] |> LazyList.ofList
+        | B -> [C; D; B] |> LazyList.ofList
         | x -> ll x
 
     // how to fold
