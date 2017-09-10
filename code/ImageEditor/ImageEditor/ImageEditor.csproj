@@ -267,6 +267,10 @@
     <Content Include="jake.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Page Include="res\ListItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Resource Include="res\icons\eraser_icon.png" />
     <Resource Include="res\icons\select_icon.png" />
     <Resource Include="res\icons\move_icon.png" />
