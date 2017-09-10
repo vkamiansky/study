@@ -30,6 +30,7 @@ namespace ImageEditor.ViewModel
         public IInputProperty<int> ToolSize { get; }
         public IInputProperty<float> ToolOpacity { get; }
         public IInputProperty<Color> ToolColor { get; }
+        public IInputProperty<Tuple<LayerAction, ILayer>> LayerActionProperty { get; }
 
         private readonly ICallProperty<CanvasSource> _imageSource;
         private readonly ICallProperty<CanvasSource> _delayedImageSource;
@@ -102,7 +103,29 @@ namespace ImageEditor.ViewModel
                         }
                         _imageSource.Go();
                     });
-            
+
+            LayerActionProperty = Reloadable<Tuple<LayerAction, ILayer>>.On().Each().Input().Create();
+
+            LayerActionProperty.OnChanged(() =>
+            {
+                var prop = LayerActionProperty.Value.Item1;
+                var layer = LayerActionProperty.Value.Item2;
+                switch (prop)
+                {
+                        case LayerAction.AddLayer:
+                            _canvas.AddLayer();
+                            break;
+                        case LayerAction.RemoveLayer:
+                            _canvas.RemoveLayer(layer);
+                            break;
+                        case LayerAction.DuplicateLayer:
+                            _canvas.DuplicateLayer(layer);
+                            break;
+                }
+                _layers.Go();
+                _imageSource.Go();
+            });
+
             int lastX = -1;
             int lastY = -1;
             Timer timer = new Timer(200);

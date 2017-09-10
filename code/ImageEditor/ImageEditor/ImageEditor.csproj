@@ -91,9 +91,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="action\LayerTriggerAction.cs" />
     <Compile Include="action\NewFileDialogAction.cs" />
     <Compile Include="action\OpenFilterWindowAction.cs" />
     <Compile Include="action\OpenHistogramAction.cs" />
+    <Compile Include="action\RemoveLayerAction.cs" />
     <Compile Include="filters\BBWindow.xaml.cs">
       <DependentUpon>BBWindow.xaml</DependentUpon>
     </Compile>
@@ -181,7 +183,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="action\ChooseColorAction.cs" />
     <Compile Include="action\CloseFormAction.cs" />
     <Compile Include="action\MouseClickAction.cs" />
     <Compile Include="action\MouseDownAction.cs" />

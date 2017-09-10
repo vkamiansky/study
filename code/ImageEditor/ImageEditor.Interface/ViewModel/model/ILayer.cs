@@ -6,6 +6,7 @@ namespace ImageEditor.Interface.ViewModel.model
     {
         string Name { get; set; }
         bool IsSelected { get; set; }
+        bool IsVisible { get; set; }
         float Opacity { get; set; }
         Action OnChanged { get; set; }
         int Width { get; set; }

@@ -9,13 +9,14 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Threading;
 using ColorBox;
+using ImageEditor.Interface.ViewModel.model;
 
 namespace ImageEditor
 {
     /// <summary>
     /// Логика взаимодействия для Editor.xaml
     /// </summary>
-    public partial class Editor : UserControl
+    public partial class Editor
     {
         public Color Color
         {
@@ -42,11 +43,22 @@ namespace ImageEditor
                     new Action(() => { Color = ((SolidColorBrush) ((ColorBox.ColorBox) sender).Brush).Color; })
                 );
             };
-            
+
             MainGrid.SizeChanged += OnSizeChanged;
             Window mainWindow = Application.Current.MainWindow;
             mainWindow.PreviewKeyUp += OnKeyUpHandler;
             mainWindow.PreviewKeyDown += OnKeyDownHandler;
+            ListBox.SelectionChanged += (sender, args) =>
+            {
+                var allItems = ListBox.ItemsSource;
+                var selectedItems = ListBox.SelectedItems;
+                foreach (var item in allItems)
+                {
+                    var layer = item as ILayer;
+                    if (layer == null) continue;
+                    layer.IsSelected = selectedItems.Contains(item);
+                }
+            };
         }
 
         public Boolean AltPressed { get; private set; }

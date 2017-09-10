@@ -12,18 +12,19 @@ namespace ImageEditor.ViewModel.model
         public double X { get; set; }
         public double Y { get; set; }
         public bool AfterDraw { get; private set; }
-        private bool _isSelected;
         private int _width;
         private int _height;
         private float _opacity = 1f;
         private readonly List<DrawData> _drawData = new List<DrawData>();
 
-        public bool IsSelected
+        public bool IsSelected { get; set; } = true;
+
+        public bool IsVisible
         {
-            get => _isSelected;
+            get => _isVisible;
             set
             {
-                _isSelected = value;
+                _isVisible = value;
                 OnChanged?.Invoke();
             }
         }
@@ -72,7 +73,7 @@ namespace ImageEditor.ViewModel.model
 
         public Action OnChanged { get; set; }
 
-        public Layer(int x, int y, int width, int height)
+        public Layer(double x, double y, int width, int height)
         {
             X = x;
             Y = y;
@@ -82,7 +83,7 @@ namespace ImageEditor.ViewModel.model
             Raw = new float[width * height * Constants.ChannelsCount];
         }
 
-        public Layer(int x, int y, int width, int height, float[] raw)
+        public Layer(double x, double y, int width, int height, float[] raw)
         {
             X = x;
             Y = y;
@@ -243,6 +244,7 @@ namespace ImageEditor.ViewModel.model
 
         private readonly LayerMemento _layerMemento = new LayerMemento();
         private float[] _raw;
+        private bool _isVisible = true;
 
         public void SaveToMemento()
         {
@@ -252,6 +254,17 @@ namespace ImageEditor.ViewModel.model
         public void RestoreFromMemento()
         {
             _layerMemento.RestoreState(this);
+        }
+
+        public Layer Clone()
+        {
+            return new Layer(X, Y, _width, _height, _raw)
+            {
+                Name = Name + "_copy",
+                OnChanged = OnChanged,
+                Opacity = Opacity,
+                IsSelected = false
+            };
         }
     }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Media;
+using ImageEditor.Interface.ViewModel.model;
 using static ImageEditor.Interface.ViewModel.model.Constants;
 
 namespace ImageEditor.ViewModel.model
@@ -25,7 +26,6 @@ namespace ImageEditor.ViewModel.model
             Layers = new List<Layer>();
             var layer = new Layer(0, 0, width, height, imgRaw)
             {
-                IsSelected = true,
                 Name = name
             };
             Layers.Add(layer);
@@ -33,29 +33,31 @@ namespace ImageEditor.ViewModel.model
 
         public float[] GetRaw()
         {
-
             var last = Layers.Last();
-            if (last.IsSelected && last.AfterDraw)
+            if (last.IsVisible && last.AfterDraw)
             {
-                 last.ComposeAftedDraw(_lastRaw, Width, Height);
+                last.ComposeAftedDraw(_lastRaw, Width, Height);
             }
             else
             {
                 var result = new float[Length];
                 foreach (var layer in Layers)
                 {
-                    if (!layer.IsSelected) continue;
+                    if (!layer.IsVisible) continue;
 
                     layer.Compose(result, Width, Height);
                 }
                 _lastRaw = result;
             }
-          
+
             return _lastRaw;
         }
 
+        private Action _changeTrigger;
+
         public void OnLayersChanged(Action action)
         {
+            _changeTrigger = action;
             foreach (var layer in Layers)
             {
                 layer.OnChanged = action;
@@ -64,29 +66,30 @@ namespace ImageEditor.ViewModel.model
 
         public void OnMoved(double dx, double dy)
         {
-            var selectedLayer = GetSelectedLayer();
-            if (selectedLayer == null) return;
-            selectedLayer.X += dx;
-            selectedLayer.Y += dy;
-
-            //Debug.WriteLine($"dx: {dx:F2} dy: {dy:F2}  X: {selectedLayer.X:F2} Y: {selectedLayer.Y:F3}");
+            var selectedLayers = GetSelectedLayers();
+            selectedLayers?.ForEach(layer =>
+            {
+                layer.X += dx;
+                layer.Y += dy;
+            });
         }
 
-        private Layer GetSelectedLayer()
+        private List<Layer> GetSelectedLayers()
         {
-            foreach (var layer in Layers)
+            List<Layer> selectedLayers = new List<Layer>();
+            Layers.ForEach(layer =>
             {
-                if (layer.IsSelected)
-                    return layer;
-            }
-
-            return null;
+                if (layer.IsSelected) selectedLayers.Add(layer);
+            });
+            return selectedLayers;
         }
 
         public void Draw(int x, int y, int size, float opacity, Color color)
         {
-            var selectedLayer = GetSelectedLayer();
-            if (selectedLayer == null) return;
+            var selectedLayers = GetSelectedLayers();
+            if (selectedLayers == null || selectedLayers.Count > 1) return;
+
+            var selectedLayer = selectedLayers[0];
 
             float[] brush = CreateBrush(size, opacity, color);
 
@@ -94,7 +97,7 @@ namespace ImageEditor.ViewModel.model
             {
                 selectedLayer.Expand(x, y, size, Width, Height);
             }
-            
+
             selectedLayer.Draw(x, y, brush, size);
         }
 
@@ -143,8 +146,10 @@ namespace ImageEditor.ViewModel.model
 
         public void Erase(int x, int y, int size, float opacity)
         {
-            var selectedLayer = GetSelectedLayer();
-            if (selectedLayer == null) return;
+            var selectedLayers = GetSelectedLayers();
+            if (selectedLayers == null || selectedLayers.Count > 1) return;
+
+            var selectedLayer = selectedLayers[0];
 
             //x = (int) (x / Scale + 0.5);
             //y = (int) (y / Scale + 0.5);
@@ -178,6 +183,30 @@ namespace ImageEditor.ViewModel.model
                         selectedLayer.Raw[index + 3] *= d / size * opacity + 0.001f;
                     }
                 }
+            }
+        }
+
+        public void AddLayer()
+        {
+            Layers.Add(new Layer(0, 0, Width, Height) {Name = "New_layer", Opacity = 1f, IsSelected = false, OnChanged = _changeTrigger});
+        }
+
+        public void RemoveLayer(ILayer iLayer)
+        {
+            var layer1 = iLayer as Layer;
+            if (layer1 != null)
+            {
+                Layer layer = layer1;
+                Layers.Remove(layer);
+            }
+        }
+
+        public void DuplicateLayer(ILayer iLayer)
+        {
+            var layer1 = iLayer as Layer;
+            if (layer1 != null)
+            {
+                Layers.Add(layer1.Clone());
             }
         }
     }

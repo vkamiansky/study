@@ -5,8 +5,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:action="clr-namespace:ImageEditor.action"
-             xmlns:ncore="http://schemas.ncore.com/wpf/xaml/colorbox" 
-             xmlns:control="clr-namespace:ImageEditor.control" 
+             xmlns:ncore="http://schemas.ncore.com/wpf/xaml/colorbox"
+             xmlns:control="clr-namespace:ImageEditor.control"
              xmlns:imageEditor="clr-namespace:ImageEditor"
              mc:Ignorable="d">
 
@@ -20,21 +20,26 @@
             <SolidColorBrush x:Key="TextBoxBgBrush" Color="{DynamicResource TextBoxBg}" />
             <Image x:Key="close" Source="res/close_icon.png" />
             <DataTemplate x:Key="ItemTemplate">
-                <Grid Height="80">
+                <Grid Margin="0,10,0,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="30" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="40" />
                         <RowDefinition Height="20" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="11" />
                     </Grid.RowDefinitions>
 
-                    <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding IsSelected}"
-                              HorizontalAlignment="Center" />
-                    <TextBox Grid.Column="1" Grid.Row="0" Height="15" Text="{Binding Name}" />
+                    <CheckBox Grid.Column="0" Grid.Row="0" IsChecked="{Binding IsVisible}" Height="15" Width="15"
+                              Margin="10,0,0,0" />
+                    <TextBox Grid.Column="1" Grid.Row="0" Height="15" Text="{Binding Name}"
+                             Background="{StaticResource BgBrush}"
+                             Foreground="#FFDDDDE2" BorderThickness="0" Margin="5,0,10,0" />
                     <Slider Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Minimum="0" Maximum="1"
-                            TickFrequency="0.01" Value="{Binding Opacity}" />
+                            TickFrequency="0.01" Value="{Binding Opacity}" Margin="10,10" />
+                    <Rectangle Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="2" Fill="{StaticResource DividerBrush}"
+                               Height="1" Margin="0,10,0,0" />
                 </Grid>
             </DataTemplate>
         </ResourceDictionary>
@@ -49,7 +54,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="30" />
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="160" />
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Row="0" Grid.Column="0" Background="{StaticResource BgBrush}" />
@@ -175,7 +180,7 @@
 
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseWheel">
-                    <action:MouseWheelAction Delta="{Binding MouseWheelDelta.Input, Mode=TwoWay}" 
+                    <action:MouseWheelAction Delta="{Binding MouseWheelDelta.Input, Mode=TwoWay}"
                                              IsAltPressed="{Binding AltPressed, PresentationTraceSources.TraceLevel=High,
                                              RelativeSource={RelativeSource Mode=FindAncestor, 
                                                  AncestorType=imageEditor:Editor}}" />
@@ -194,11 +199,11 @@
                                              Image="{Binding ElementName=Canvas}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
-            
-            <Rectangle Grid.Row="0" Fill="{StaticResource DividerBrush}" Height="1"/>
+
+            <Rectangle Grid.Row="0" Fill="{StaticResource DividerBrush}" Height="1" />
 
             <control:ImageView HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="Canvas"
-                   Grid.Column="0" Grid.Row="1" CanvasSource="{Binding ImageSource.Value}" Stretch="None"/>
+                               Grid.Column="0" Grid.Row="1" CanvasSource="{Binding ImageSource.Value}" Stretch="None" />
 
             <Grid Grid.Row="2" Background="{StaticResource BgBrush}">
                 <Grid.ColumnDefinitions>
@@ -215,19 +220,83 @@
 
         <Grid Grid.Row="1" Grid.Column="2" Margin="0,0,0,0" Background="{StaticResource BgBrush}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="auTo" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="1" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="20" />
             </Grid.RowDefinitions>
+            
+            <Rectangle Fill="{StaticResource DividerBrush}" Height="1" />
 
-            <ListBox Grid.Row="1" x:Name="ListBox" ItemTemplate="{StaticResource ItemTemplate}"
+            <ListBox Grid.Row="1" Grid.Column="0" x:Name="ListBox" ItemTemplate="{StaticResource ItemTemplate}"
                      ItemsSource="{Binding Layers.Value}"
-                     IsSynchronizedWithCurrentItem="True" Background="{StaticResource BgBrush}" />
+                     IsSynchronizedWithCurrentItem="True" Background="{StaticResource BgBrush}"
+                     BorderThickness="0" HorizontalContentAlignment="Stretch" SelectionMode="Multiple">
+                <ListBox.Resources>
+                    <Style TargetType="ListBoxItem">
+                        <Style.Resources>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                            <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
+                                             Color="Transparent" />
+                        </Style.Resources>
+                    </Style>
+                </ListBox.Resources>
+                <!--<ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="IsSelected"
+                                Value="{Binding Content.IsSelected, Mode=TwoWay, RelativeSource={RelativeSource Self}}" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <ContentPresenter />
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>-->
+            </ListBox>
 
-            <Rectangle Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0" Fill="{StaticResource DividerBrush}" Height="1" />
+            <Menu Grid.Row="2" Grid.Column="0" Name="MainMenu" Foreground="White" Style="{DynamicResource MenuStyle}"
+                  Margin="0,0,0,0">
+                <MenuItem Header="Layer…" Template="{DynamicResource MenuItemControlTemplate2}">
+                    <MenuItem Header="Add" Foreground="Black">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <action:LayerTriggerAction
+                                    OutputTuple="{Binding LayerActionProperty.Input, Mode=TwoWay}"
+                                    Layers="{Binding Layers.Value}"
+                                    ActionType="AddLayer"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
+
+                    <MenuItem Header="Remove" Foreground="Black">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <action:LayerTriggerAction
+                                    OutputTuple="{Binding LayerActionProperty.Input, Mode=TwoWay}"
+                                    Layers="{Binding Layers.Value}"
+                                    ActionType="RemoveLayer"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
+
+                    <MenuItem Header="Duplicate" Foreground="Black">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <action:LayerTriggerAction
+                                    OutputTuple="{Binding LayerActionProperty.Input, Mode=TwoWay}"
+                                    ActionType="DuplicateLayer"
+                                    Layers="{Binding Layers.Value}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
+                </MenuItem>
+            </Menu>
         </Grid>
 
     </Grid>

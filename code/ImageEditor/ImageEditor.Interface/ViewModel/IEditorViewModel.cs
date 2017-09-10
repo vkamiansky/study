@@ -31,5 +31,7 @@ namespace ImageEditor.Interface.ViewModel
         IInputProperty<float> ToolOpacity { get; }
 
         IInputProperty<Color> ToolColor { get; }
+
+        IInputProperty<Tuple<LayerAction, ILayer>> LayerActionProperty { get; }
     }
 }
