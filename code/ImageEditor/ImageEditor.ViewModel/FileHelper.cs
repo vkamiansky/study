@@ -31,7 +31,7 @@ namespace ImageEditor.ViewModel
         {
             var filePath = canvas.FilePath;
             if (string.IsNullOrEmpty(filePath)) return;
-            var ext = Path.GetFileName(filePath)?.Split('.')[1];
+            var ext = Path.GetFileName(filePath).Split('.')[1];
 
             if (ext.ToLower().Equals("ief"))
             {
@@ -123,7 +123,7 @@ namespace ImageEditor.ViewModel
             
             if (ext.ToLower().Equals("ief"))
             {
-                return DeserializeCanvasFromFile(filePath);;
+                return DeserializeCanvasFromFile(filePath);
             }
 
             return new Bitmap(filePath).ToCanvas(filePath);
