@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows.Media;
 using ImageEditor.Interface.ViewModel.model;
@@ -13,22 +14,33 @@ namespace ImageEditor.ViewModel.model
         public int Height { get; set; }
         public int Width { get; set; }
         public int Length { get; set; }
+        public string FilePath { get; set; }
         public List<Layer> Layers { get; }
 
         private float[] _lastRaw;
 
-        public Canvas(int width, int height, float[] imgRaw, string name = "")
+        public Canvas(int width, int height, float[] imgRaw, string path = "")
         {
             Height = height;
             Width = width;
             Length = Height * Width * ChannelsCount;
-
             Layers = new List<Layer>();
+
+            //FilePath = path;
+            
             var layer = new Layer(0, 0, width, height, imgRaw)
             {
-                Name = name
+                Name = path.Length == 0 ? "New layer" : Path.GetFileName(path)?.Split('.')[0]
             };
             Layers.Add(layer);
+        }
+        
+        public Canvas(int width, int height)
+        {
+            Height = height;
+            Width = width;
+            Length = Height * Width * ChannelsCount;
+            Layers = new List<Layer>();
         }
 
         public float[] GetRaw()
@@ -189,6 +201,11 @@ namespace ImageEditor.ViewModel.model
         public void AddLayer()
         {
             Layers.Add(new Layer(0, 0, Width, Height) {Name = "New_layer", Opacity = 1f, IsSelected = false, OnChanged = _changeTrigger});
+        }
+
+        public void AddLayer(Layer layer)
+        {
+            Layers.Add(layer);
         }
 
         public void RemoveLayer(ILayer iLayer)

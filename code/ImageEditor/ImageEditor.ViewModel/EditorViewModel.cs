@@ -31,6 +31,7 @@ namespace ImageEditor.ViewModel
         public IInputProperty<float> ToolOpacity { get; }
         public IInputProperty<Color> ToolColor { get; }
         public IInputProperty<Tuple<LayerAction, ILayer>> LayerActionProperty { get; }
+        public IInputProperty<SaveAction> SaveActionProperty { get; }
 
         private readonly ICallProperty<CanvasSource> _imageSource;
         private readonly ICallProperty<CanvasSource> _delayedImageSource;
@@ -112,15 +113,15 @@ namespace ImageEditor.ViewModel
                 var layer = LayerActionProperty.Value.Item2;
                 switch (prop)
                 {
-                        case LayerAction.AddLayer:
-                            _canvas.AddLayer();
-                            break;
-                        case LayerAction.RemoveLayer:
-                            _canvas.RemoveLayer(layer);
-                            break;
-                        case LayerAction.DuplicateLayer:
-                            _canvas.DuplicateLayer(layer);
-                            break;
+                    case LayerAction.AddLayer:
+                        _canvas.AddLayer();
+                        break;
+                    case LayerAction.RemoveLayer:
+                        _canvas.RemoveLayer(layer);
+                        break;
+                    case LayerAction.DuplicateLayer:
+                        _canvas.DuplicateLayer(layer);
+                        break;
                 }
                 _layers.Go();
                 _imageSource.Go();
@@ -180,11 +181,7 @@ namespace ImageEditor.ViewModel
             });
 
             ImagePath = Reloadable<string>.On().Each().Input().Create();
-            ImagePath.OnChanged(() =>
-            {
-                var fileName = Path.GetFileName(ImagePath.Value)?.Split('.')[0];
-                InitCanvas(new Bitmap(ImagePath.Value).ToCanvas(fileName));
-            });
+            ImagePath.OnChanged(() => InitCanvas(FileHelper.ReadCanvasFromFile(ImagePath.Value)));
 
             NewFile = Reloadable<NewFileData>.On().Each().Input().Create();
             NewFile.OnChanged(() => { InitCanvas(NewFile.Input.ToCanvas()); });
@@ -199,6 +196,34 @@ namespace ImageEditor.ViewModel
 
             ToolSize.Input = DefaultSize;
             ToolOpacity.Input = DefaultOpacity;
+
+            SaveActionProperty = Reloadable<SaveAction>.On().Each().Input().Create();
+            SaveActionProperty.OnChanged(() =>
+            {
+                if (SaveActionProperty.Value == SaveAction.SaveFile)
+                {
+                    if (string.IsNullOrEmpty(_canvas.FilePath))
+                    {
+                        var filePath = FileHelper.ChooseFile();
+                        if (string.IsNullOrEmpty(filePath))
+                        {
+                            return;
+                        }
+                        _canvas.FilePath = filePath;
+                    }
+                    FileHelper.SaveCanvasToFile(_canvas);
+                }
+                else
+                {
+                    var filePath = FileHelper.ChooseFile();
+                    if (string.IsNullOrEmpty(filePath))
+                    {
+                        return;
+                    }
+                    _canvas.FilePath = filePath;
+                    FileHelper.SaveCanvasToFile(_canvas);
+                }
+            });
         }
 
         private void InitCanvas(Canvas canvas)

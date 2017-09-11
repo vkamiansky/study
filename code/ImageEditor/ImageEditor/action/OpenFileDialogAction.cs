@@ -23,8 +23,10 @@ namespace ImageEditor.action
 
         protected override void Invoke(object parameter)
         {
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
+            OpenFileDialog dialog = new OpenFileDialog
+            {
+                Filter = "Supported files (*.jpg, *.jpeg, *.png, *.ief) | *.jpg; *.jpeg; *.png; *.ief"
+            };
             if (dialog.ShowDialog() == true)
             {
                 FilePath = dialog.FileName;

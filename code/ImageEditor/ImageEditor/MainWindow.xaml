@@ -65,8 +65,22 @@
                     </MenuItem>
                     <Separator />
                     <MenuItem Foreground="Black" Header="_Close" />
-                    <MenuItem Foreground="Black" Header="_Save" />
-                    <MenuItem Foreground="Black" Header="_Save As…" />
+                    <MenuItem Foreground="Black" Header="_Save" >
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <action:SaveFileAction SaveAction="SaveFile" 
+                                                       SaveActionOutput="{Binding MainViewModel.Editor.Value.SaveActionProperty.Input, Mode=TwoWay}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
+                    <MenuItem Foreground="Black" Header="_Save As…">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <action:SaveFileAction SaveAction="SaveFileAs" 
+                                                       SaveActionOutput="{Binding MainViewModel.Editor.Value.SaveActionProperty.Input, Mode=TwoWay}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </MenuItem>
                     <Separator />
                     <MenuItem Foreground="Black" Header="_Exit">
                         <i:Interaction.Triggers>

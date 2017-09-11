@@ -1,20 +1,23 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using ImageEditor.Interface.ViewModel;
 using ImageEditor.Interface.ViewModel.model;
 using static ImageEditor.Interface.ViewModel.model.Constants;
+using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
 namespace ImageEditor.ViewModel.model
 {
     public static class ImageConverter
     {
-        public static Canvas ToCanvas(this Bitmap bitmap, string fileName)
+        public static Canvas ToCanvas(this Bitmap bitmap, string filePath)
         {
-            return new Canvas(bitmap.Width, bitmap.Height, bitmap.ToRaw(), fileName);
+            return new Canvas(bitmap.Width, bitmap.Height, bitmap.ToRaw(), filePath);
         }
 
-        public static CanvasSource ToCanvasSource(this Canvas canvas, float scale)
+        public static CanvasSource ToCanvasSource(this Canvas canvas, float scale = 1f)
         {
             return new CanvasSource(canvas.GetRaw().CloneArray(), canvas.Width, canvas.Height, scale);
         }
@@ -60,6 +63,52 @@ namespace ImageEditor.ViewModel.model
                 raw[i] = byteRaw[i] * ColorNormalizeRatio;
             }
             return raw;
+        }
+        
+        public static Bitmap ToBitmap(this Canvas canvas)
+        {
+            var canvasSource = canvas.ToCanvasSource();
+            
+            Bitmap bitmap = new Bitmap(canvasSource.Width, canvasSource.Height, PixelFormat.Format32bppArgb);
+
+            BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, canvasSource.Width, canvasSource.Height),
+                ImageLockMode.ReadWrite, bitmap.PixelFormat);
+
+            Marshal.Copy(canvasSource.Raw.ToByteArray(), 0, bitmapData.Scan0, canvasSource.Raw.Length);
+
+            var bitmapSource = BitmapSource.Create(
+                bitmapData.Width, bitmapData.Height, bitmap.HorizontalResolution, bitmap.VerticalResolution,
+                PixelFormats.Bgra32, null,
+                bitmapData.Scan0, bitmapData.Stride * bitmapData.Height, bitmapData.Stride);
+
+            bitmap.UnlockBits(bitmapData);
+            return bitmap;
+        }
+
+        public static byte[] ToByteArray(this float[] raw)
+        {
+            int resultLength = raw.Length;
+            byte[] byteRaw = new byte[resultLength];
+
+            for (int i = 0; i < resultLength; i++)
+            {
+                byteRaw[i] = (byte) (raw[i] * ColorDenormalizeRatio);
+            }
+
+            return byteRaw;
+        }
+        
+        public static float[] ToFloatArray(this byte[] raw)
+        {
+            int resultLength = raw.Length;
+            float[] floatRaw = new float[resultLength];
+
+            for (int i = 0; i < resultLength; i++)
+            {
+                floatRaw[i] = raw[i] * ColorNormalizeRatio;
+            }
+
+            return floatRaw;
         }
     }
 }

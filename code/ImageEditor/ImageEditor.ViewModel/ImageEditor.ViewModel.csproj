@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="AppStateViewModel.cs" />
     <Compile Include="EditorViewModel.cs" />
+    <Compile Include="FileHelper.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="model\Canvas.cs" />
     <Compile Include="model\DelayedQueue.cs" />

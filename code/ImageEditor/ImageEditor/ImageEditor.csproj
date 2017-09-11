@@ -95,6 +95,7 @@
     <Compile Include="action\NewFileDialogAction.cs" />
     <Compile Include="action\OpenFilterWindowAction.cs" />
     <Compile Include="action\OpenHistogramAction.cs" />
+    <Compile Include="action\SaveFileAction.cs" />
     <Compile Include="filters\BBWindow.xaml.cs">
       <DependentUpon>BBWindow.xaml</DependentUpon>
     </Compile>
