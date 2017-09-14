@@ -1,7 +1,10 @@
 ﻿namespace Composite.Test
 
 open System
+open System.Collections.Generic
+open System.Linq.Expressions
 
+open Moq
 open Xunit
 open RestSharp
 
@@ -12,6 +15,18 @@ open Composite.Github.Data
 open Composite.Github.Request
 
 module Tests =
+    
+    type Moq.Mock<'T> when 'T : not struct with
+      /// Specifies a setup on the mocked type for a call to a function
+      member mock.SetupFunc<'TResult>(expression:Expression<Func<'T,'TResult>>) =
+        mock.Setup<'TResult>(expression)
+      /// Specifies a setup on the mocked type for a call to a void method
+      member mock.SetupAction(expression:Expression<Action<'T>>) =
+        mock.Setup(expression)
+      /// Specifies a setup on the mocked type for a call to a property setter
+      member mock.SetupSetAction<'TProperty>(setupExpression:Action<'T>)
+        : Moq.Language.Flow.ISetupSetter<'T,'TProperty> = 
+        mock.SetupSet<'TProperty>(setupExpression)
 
     type Simple =
         | A
@@ -43,25 +58,48 @@ module Tests =
        
         let get_simple_seq rule = seq {1 .. 5} |> LazyList.ofSeq
                                                |> LazyList.map rule
+        let rule = function
+                   | 1 -> Value A
+                   | 2 -> Value B
+                   | _ -> Assert.True (false); Value C
 
-        let source_external = seq {1 .. 5} |> LazyList.ofSeq
-                                           |> LazyList.map (function
-                                                            | 1 -> Value A
-                                                            | 2 -> Value B
-                                                            | _ -> Assert.True (false); Value C)
         // how to expand
         let expandSimple obj =
             match obj with
-            | A -> get_simple_seq (function
-                                   | 1 -> A
-                                   | 2 -> B
-                                   | _ -> Assert.True (false); C) |> LazyList.take 2
-            | B -> get_simple_seq (function
-                                   | 1 -> C
-                                   | 2 -> D
-                                   | _ -> Assert.True (false); C) |> LazyList.take 2
+            | A -> [C; D] |> LazyList.ofList
+            | B -> [A; C] |> LazyList.ofList
 
-        let unfold = ana [expandSimple] (Composite source_external) |> function
+        let unfold = ana [expandSimple] (Composite (get_simple_seq rule)) |> function
                                                               | Composite x -> x |> LazyList.take 2 |> List.ofSeq
                                                               | _ -> Assert.True (false); []
+        Assert.Equal(true, true)
+
+    [<Fact>]
+    let ``github all pages``() =
+        let request1 = new RestRequest("1") :> IRestRequest
+        let request2 = new RestRequest("2") :> IRestRequest
+        let request3 = new RestRequest("3") :> IRestRequest
+
+        let input_github = Composite ([Value (Request (SearchCodeRequest request1))] |> LazyList.ofList)
+
+        let response1 = new RestResponse(Content = "First content"):> IRestResponse
+        response1.Headers.Add(new Parameter(Name = "Link", Value = "<2>; rel=\"next\""))
+
+        let response2 = new RestResponse(Content = "Second content") :> IRestResponse
+        response2.Headers.Add(new Parameter(Name = "Link", Value = "<3>; rel=\"next\""))
+
+        let response3 = new RestResponse(Content = "Third content") :> IRestResponse
+        response3.Headers.Add(new Parameter(Name = "Link", Value = "<4>; rel=\"next\""))
+
+        let mock_github_client = new Mock<IRestClient>()
+        mock_github_client.SetupFunc(fun req -> req.Execute(It.IsAny()))
+                          .Returns(fun (x:IRestRequest) ->
+                                       match x.Resource with
+                                       | "2" -> <@ response2 @>
+                                       | "3" -> <@ response3 @>
+                                       | _ -> <@ Assert.True (false); response3 @>) |> ignore
+
+        let expanded_github = ana [allPages; execute mock_github_client.Object] input_github |> function
+                                                                                             | Composite x -> x |> LazyList.take 3 |> List.ofSeq
+                                                                                             | _ -> Assert.True (false); []
         Assert.Equal(true, true)

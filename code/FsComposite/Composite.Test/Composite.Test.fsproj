@@ -63,6 +63,7 @@
     <Compile Include="Console.fs" />
     <Compile Include="Tests.fs" />
     <Compile Include="Program.fs" />
+    <None Include="Moq.FSharp.Usage.fsx" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Castle.Core">
@@ -75,6 +76,10 @@
     </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.7.99\lib\net45\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Moq.FSharp.Extensions">
+      <HintPath>..\packages\Moq.FSharp.Extensions.0.2\lib\net40\Moq.FSharp.Extensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="mscorlib" />

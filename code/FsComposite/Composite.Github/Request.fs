@@ -98,7 +98,7 @@ module Request =
         | _ -> ll obj
 
     /// ... use request : turn it into json using REST [client]...
-    let execute_single (client : RestClient) obj =
+    let execute_single (client : IRestClient) obj =
         let matchRequest getResponseMethod obj =
             match obj with
             | PrReadRequest x -> PrReadResponse (x |> getResponseMethod)
