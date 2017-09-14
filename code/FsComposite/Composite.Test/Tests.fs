@@ -47,7 +47,7 @@ module Tests =
 
         let transform =
             function
-            | [Some b; Some c] -> [D]
+            | [Some B; Some C] -> [D]
             | [None; Some C] -> [D]
             | _ -> []
 
@@ -68,6 +68,7 @@ module Tests =
             match obj with
             | A -> [C; D] |> LazyList.ofList
             | B -> [A; C] |> LazyList.ofList
+            | _ -> ll obj
 
         let unfold = ana [expandSimple] (Composite (get_simple_seq rule)) |> function
                                                               | Composite x -> x |> LazyList.take 2 |> List.ofSeq
@@ -75,31 +76,30 @@ module Tests =
         Assert.Equal(true, true)
 
     [<Fact>]
-    let ``github all pages``() =
-        let request1 = new RestRequest("1") :> IRestRequest
-        let request2 = new RestRequest("2") :> IRestRequest
-        let request3 = new RestRequest("3") :> IRestRequest
+    let ``github all pages should take specific count of pages``() =
+        let request1 = new RestRequest("/1") :> IRestRequest
+
+        let response1 = new RestResponse(Content = "First content"):> IRestResponse
+        response1.Headers.Add(new Parameter(Name = "Link", Value = "<https://api.github.com/2>; rel=\"next\""))
+
+        let response2 = new RestResponse(Content = "Second content") :> IRestResponse
+        response2.Headers.Add(new Parameter(Name = "Link", Value = "<https://api.github.com/3>; rel=\"next\""))
+
+        let response3 = new RestResponse(Content = "Third content") :> IRestResponse
+        response3.Headers.Add(new Parameter(Name = "Link", Value = "<https://api.github.com/4>; rel=\"next\""))
+
+        let mock_github_client = new Mock<IRestClient>()
+        mock_github_client.SetupFunc(fun (req: IRestClient) -> req.Execute(It.IsAny()))
+                          .Returns(fun (x:IRestRequest) ->
+                                       match x.Resource with
+                                       | "/1" -> response1
+                                       | "/2" -> response2
+                                       | "/3" -> response3
+                                       | _ -> Assert.True (false); response3) |> ignore
 
         let input_github = Composite ([Value (Request (SearchCodeRequest request1))] |> LazyList.ofList)
 
-        let response1 = new RestResponse(Content = "First content"):> IRestResponse
-        response1.Headers.Add(new Parameter(Name = "Link", Value = "<2>; rel=\"next\""))
-
-        let response2 = new RestResponse(Content = "Second content") :> IRestResponse
-        response2.Headers.Add(new Parameter(Name = "Link", Value = "<3>; rel=\"next\""))
-
-        let response3 = new RestResponse(Content = "Third content") :> IRestResponse
-        response3.Headers.Add(new Parameter(Name = "Link", Value = "<4>; rel=\"next\""))
-
-        let mock_github_client = new Mock<IRestClient>()
-        mock_github_client.SetupFunc(fun req -> req.Execute(It.IsAny()))
-                          .Returns(fun (x:IRestRequest) ->
-                                       match x.Resource with
-                                       | "2" -> <@ response2 @>
-                                       | "3" -> <@ response3 @>
-                                       | _ -> <@ Assert.True (false); response3 @>) |> ignore
-
         let expanded_github = ana [allPages; execute mock_github_client.Object] input_github |> function
-                                                                                             | Composite x -> x |> LazyList.take 3 |> List.ofSeq
+                                                                                             | Composite x -> x |> LazyList.take 1 |> List.ofSeq
                                                                                              | _ -> Assert.True (false); []
         Assert.Equal(true, true)
