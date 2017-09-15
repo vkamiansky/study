@@ -1,5 +1,7 @@
 ﻿namespace Composite.Simple
 
+open System
+
 open Composite.Core.Composite
 open Composite.Core.Processing
 
@@ -9,24 +11,47 @@ module Data =
         | A
         | B
         | C
+        | D
 
     //how to expand
 
-    let expand obj =
+    let expandSimple obj =
         match obj with
-        | A -> l B
-        | x -> l x
+        | A -> ll B
+        | x -> ll x
 
     //how to fold
 
-    let transformAB obj =
-        let f1 = function | A -> true | _ -> false
-        let f2 = function | B -> true | _ -> false
-        let f = function | (Some a, Some b) -> l C | (None, Some b) -> l C | _ -> LazyList.empty
-        find_2_and_transform f1 f2 f obj
+    let find_and_transform_AB () =
+        let f1 = function
+                 | A -> true 
+                 | _ -> false
 
-    let transformABStrict obj =
-        let f1 = function | A -> true | _ -> false
-        let f2 = function | B -> true | _ -> false
-        let f = fun (a, b) -> C
-        find_2_and_transform_strict f1 f2 f obj
+        let f2 = function
+                 | B -> true 
+                 | _ -> false
+
+        let transform =
+            function
+            | [Some a; Some b] -> ll C
+            | [None; Some b] -> ll C
+            | _ -> LazyList.empty
+
+        (([(f1, None); (f2, None)] |> LazyList.ofList), transform)
+
+    let find_and_transform_BC () =
+        let f3 = function
+                 | B -> Some B 
+                 | _ -> None
+
+        let f4 = function
+                 | C -> Some C 
+                 | _ -> None
+
+        let transform =
+            function
+            | [Some b; Some c] -> [D]
+            | [None; Some C] -> [D]
+            | _ -> []
+
+        ([f3; f4], transform)

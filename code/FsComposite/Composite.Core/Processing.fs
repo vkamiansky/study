@@ -3,23 +3,35 @@
 open Composite.Core.Composite
 
 module Processing =
-    
-    let rec fold_2 acc f_update_acc lst =
-        match acc with
-        |(None, _) | (_, None) -> match lst with
-                                    | Nil -> acc
-                                    | Cons(h, tail) -> fold_2 (f_update_acc h acc) f_update_acc tail
-        | _ -> acc
 
-    let find_2_and_transform f_is_1 f_is_2 f_transform lst =
-        let f h t =
-            match f_is_1 h, f_is_2 h, t with
-            | _, true, (a, None) -> (a, Some h)
-            | true, _, (None, b) -> (Some h, b)
-            | _ -> t
-        match fold_2 (None, None) f lst with
-        | x -> f_transform x
+    let update_acc check_funcs acc obj =
+        let mapping f acc = 
+            match f, acc with
+            | f, None -> f obj
+            | _, res -> res
 
-    let find_2_and_transform_strict f_is_1 f_is_2 f_transform lst =
-        let f_transform_strict = function | (Some x1, Some x2) -> l(f_transform (x1, x2)) | _ ->  LazyList.empty
-        find_2_and_transform f_is_1 f_is_2 f_transform_strict lst
+        List.map2 mapping check_funcs acc
+
+    let update_results frames obj =
+        let pre_results = frames
+                          |> List.map (function
+                                       | (check_funcs, transform, acc) ->
+                                            (let acc_new = update_acc check_funcs acc obj
+                                             match transform acc_new with
+                                             | [] -> (Some (check_funcs, transform, acc_new), [])
+                                             | r -> (None, r)))
+
+        pre_results |> List.choose (function | (f, _) -> f),
+        pre_results |> List.collect (function | (_, r) -> r) |> LazyList.ofList
+
+    let cata scn lst =
+        let frames_init = scn |> List.map (function |(check_funcs, transform) -> (check_funcs, transform, check_funcs |> List.map (fun _ -> None)))
+        let rec get_results frames objs =
+            match frames, objs with
+            | [], _ -> LazyList.empty
+            | _, Nil -> LazyList.empty
+            | f, Cons(head, tail) -> match update_results f head with
+                                     |(frames_new, results_new) -> results_new
+                                                                   |> LazyList.append (get_results frames_new tail)
+
+        get_results frames_init lst
