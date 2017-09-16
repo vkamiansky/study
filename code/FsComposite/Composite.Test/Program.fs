@@ -2,8 +2,9 @@
 
 open System
 
-open Composite.Simple.Data
 open Composite.Core.Composite
+open Composite.Core.Processing
+open Composite.Simple.Data
 
 module Program =
 
@@ -22,14 +23,15 @@ module Program =
     let main argv =
 
         let github_config = DataSourceConfigurationManager.Github.Config ()
+        let inputSimple = Composite ([Value C; Value D] |> LazyList.ofList)
+        printfn "Input seq: %A" (inputSimple |> toString)
+        
+        let expanded = ana [v expandSimple] inputSimple
+        printfn "Expanded seq: %A" (expanded |> toString)
 
-        //let ccc = transform2TypesSmart whatWeSearch howToTransform whereWeSearch |> Array.ofSeq
-//
-        let expanded = ana [ v expand ] (Composite ([Value A; Value A]|> LazyList.ofList))
 
-        expanded |> toConsole
-
-        let folded = cata [ transformABStrict; transformABStrict ] expanded
+        let collapseScn = [find_and_transform_BC ()]
+        let transformed = cata collapseScn (expanded |> flat)
 
         Console.ReadKey |> ignore
         
