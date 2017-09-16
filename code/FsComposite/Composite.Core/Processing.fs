@@ -3,10 +3,12 @@
 module Processing =
 
     let update_acc check_funcs acc obj =
-        List.zip check_funcs acc
-            |> List.map (function
-                         | (f, None) -> f obj
-                         | (_, res) -> res)
+        let mapping f acc = 
+            match f, acc with
+            | f, None -> f obj
+            | _, res -> res
+
+        List.map2 mapping check_funcs acc
 
     let update_results frames obj =
         let pre_results = frames

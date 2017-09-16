@@ -51,6 +51,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ColorBox, Version=1.1.0.0, Culture=neutral, PublicKeyToken=f971124b2576acfc">
+      <HintPath>..\packages\colorBox\ColorBox.dll</HintPath>
+    </Reference>
     <Reference Include="ColorBox, Version=1.1.0.0, Culture=neutral, PublicKeyToken=f971124b2576acfc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ColorBox.dll</HintPath>

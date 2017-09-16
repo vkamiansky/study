@@ -175,7 +175,7 @@
             <Rectangle Grid.Row="0" Fill="{StaticResource DividerBrush}" Height="1" Margin="0,0,0,9.4" Grid.RowSpan="2" />
 
             <!-- Width="200" Height="200" -->
-            <Image Width="200" Height="200" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="Canvas"
+            <Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="Canvas"
                    Grid.Column="0" Grid.Row="1" Source="{Binding ImageSource.Value}" Stretch="None"
                    Margin="0,0.2,0,0.6" Grid.RowSpan="2">
                 <i:Interaction.Triggers>
