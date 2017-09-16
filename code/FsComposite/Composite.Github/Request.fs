@@ -133,38 +133,39 @@ module Request =
         obj |> executeWith getResponse
 
     let rec execute client obj =
+        let get_github_next_page_url = get_next_page_url github_source_url
         let try_get_next_request obj =
             match obj with
             | PrReadResponse resp ->
-                match get_next_page_url github_source_url resp with
+                match get_github_next_page_url resp with
                 | Some url -> Some (PrReadRequest (create_next_page_rest_request url))
                 | None -> None
             | PrsReadResponse resp ->
-                match get_next_page_url github_source_url resp with
+                match get_github_next_page_url resp with
                 | Some url -> Some (PrsReadRequest (create_next_page_rest_request url))
                 | None -> None
             | PrFilesReadResponse resp ->
-                match get_next_page_url github_source_url resp with
+                match get_github_next_page_url resp with
                 | Some url -> Some (PrFilesReadRequest (create_next_page_rest_request url))
                 | None -> None
             | PrCommitsReadResponse resp ->
-                match get_next_page_url github_source_url resp with
+                match get_github_next_page_url resp with
                 | Some url -> Some (PrCommitsReadRequest (create_next_page_rest_request url))
                 | None -> None
             | PrCommentsReadResponse resp ->
-                match get_next_page_url github_source_url resp with
+                match get_github_next_page_url resp with
                 | Some url -> Some (PrCommentsReadRequest (create_next_page_rest_request url))
                 | None -> None
             | IssueCommentsReadResponse resp ->
-                match get_next_page_url github_source_url resp with
+                match get_github_next_page_url resp with
                 | Some url -> Some (IssueCommentsReadRequest (create_next_page_rest_request url))
                 | None -> None
             | LabelsReadResponse resp ->
-                match get_next_page_url github_source_url resp with
+                match get_github_next_page_url resp with
                 | Some url -> Some (LabelsReadRequest (create_next_page_rest_request url))
                 | None -> None
             | SearchCodeReadResponse resp ->
-                match get_next_page_url github_source_url resp with
+                match get_github_next_page_url resp with
                 | Some url -> Some (SearchCodeRequest (create_next_page_rest_request url))
                 | None -> None
             | _ -> None
