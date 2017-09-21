@@ -170,13 +170,15 @@ module Request =
                 | None -> None
             | _ -> None
 
-        match obj with
-        | Request (RequestAllPages req) ->
+        seq {
+         match obj with
+         | Request (RequestAllPages req) ->
             let response = execute_single client (Request req)
             match response with
             | Response x -> match try_get_next_request x with
-                            | Some new_req -> ([response] |> LazyList.ofList) |> LazyList.append (execute client (Request (RequestAllPages new_req)))
-                            | None -> [response] |> LazyList.ofList
+                            | Some new_req -> yield response
+                                              yield! execute client (Request (RequestAllPages new_req))
+                            | None -> yield response
             | _ -> failwith "The result of the Request execution must be the Response."
-        | Request _ -> ll (execute_single client obj)
-        | x -> ll x
+         | Request _ -> yield (execute_single client obj)
+         | x -> yield x } |> LazyList.ofSeq

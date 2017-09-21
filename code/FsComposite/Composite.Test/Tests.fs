@@ -100,6 +100,6 @@ module Tests =
         let input_github = Composite ([Value (Request (SearchCodeRequest request1))] |> LazyList.ofList)
 
         let expanded_github = ana [allPages; execute mock_github_client.Object] input_github |> function
-                                                                                             | Composite x -> x |> LazyList.take 2 |> List.ofSeq
+                                                                                             | Composite (Cons(Composite x, tail)) -> x |> LazyList.take 3 |> List.ofSeq
                                                                                              | _ -> Assert.True (false); []
         Assert.Equal(true, true)
