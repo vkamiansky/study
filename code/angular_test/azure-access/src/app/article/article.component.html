@@ -1,0 +1,10 @@
+<div class='card card-block' appHoverShow>
+  <div>
+   <div class="col-xs-10">
+   </div>
+   <button type="button" class="btn btn-secondary" (click)='deleteArticle()'>x</button>
+  </div>
+  <ng-content select='.heading'></ng-content>
+  <ng-content select='.summary'></ng-content>
+  <ng-content select='.text'></ng-content>
+</div>

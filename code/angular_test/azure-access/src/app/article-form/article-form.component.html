@@ -1,0 +1,13 @@
+<div class="card card-block" appFormBackground>
+  <h4 class="card-title">Create Article</h4>
+  <div class="form-group">
+    <input type="text" class="form-control" placeholder="Enter the heading" #heading>
+  </div>
+  <div class="form-group">
+    <input type="text" class="form-control" placeholder="Enter the summary" #summary>
+  </div>
+  <div class="form-group">
+    <input type="text" class="form-control" placeholder="Enter the text" #text>
+  </div>
+  <button type="button" class="btn btn-primary" (click)='createArticle(heading.value, summary.value, text.value)'>Create</button>
+</div>
