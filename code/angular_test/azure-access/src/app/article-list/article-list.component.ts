@@ -31,13 +31,17 @@ export class ArticleListComponent implements OnInit {
       ];
   }
   
-  addArticle(article) {
+  addArticle(article: Article) {
+    if(-1 == article.id)
+    { 
+      article.id = 1 + this.articles.reduce((a, x) => x.id > a ? x.id: a, -1);
+    }
     this.articles.unshift(article);
   }
 
-  deleteArticle(article){
+  deleteArticle(article: Article){
     let index = this.articles.findIndex((o) => o.id == article.id);
-    if(index)
+    if(-1 != index)
     {
       this.articles.splice(index, 1);
     }
