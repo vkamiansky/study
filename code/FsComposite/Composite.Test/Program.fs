@@ -28,28 +28,12 @@ module Program =
 
     [<EntryPoint>]
     let main argv =
-        // Testing on Simple objects
-//        let inputSimple = Composite ([Value A; Value B] |> LazyList.ofList)
-//        printfn "Input Simple seq: %A" (inputSimple |> toString)
-        
-//        let expanded_simple = ana [v expandSimple] inputSimple
-//        printfn "Expanded Simple seq: %A" (expanded_simple |> toString)
-//        expanded_simple |> toConsole
-
-//        let collapseScn = [find_and_transform_BC ()]
-//        let transformed = cata collapseScn (expanded_simple |> flat)
-
-        // Testing on Github objects
-        let userName = "v-ilin" // set this value to username of repository owner
-
+        let github_config = DataSourceConfigurationManager.Github.Config ()
         let github_client = new RestClient(github_source_url)
-        github_client.Authenticator <- new HttpBasicAuthenticator(userName, (printfn "User password: "; Console.readPassword()))
+        github_client.Authenticator <- new HttpBasicAuthenticator(github_config.Username, github_config.Password)
 
-        let repoName = "fsharp-tutorial" // repository name
-        let issueNumber = "3" // issue id
-
-        let input_github = Composite ([Value (Repository repoName); Value (SearchSequance "let")] |> LazyList.ofList)
-
+        let input_github = Composite ([Value (Repository github_config.Repository); Value (SearchSequance "let")] |> LazyList.ofList)
+        
         let expanded_github = ana [searchCode; allPages; execute github_client] input_github
 
         expanded_github |> toConsole
