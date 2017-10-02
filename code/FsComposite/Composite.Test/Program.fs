@@ -22,11 +22,13 @@ module Program =
     [<EntryPoint>]
     let main argv =
 
+        let github_config = DataSourceConfigurationManager.Github.Config ()
         let inputSimple = Composite ([Value C; Value D] |> LazyList.ofList)
         printfn "Input seq: %A" (inputSimple |> toString)
         
         let expanded = ana [v expandSimple] inputSimple
         printfn "Expanded seq: %A" (expanded |> toString)
+
 
         let collapseScn = [find_and_transform_BC ()]
         let transformed = cata collapseScn (expanded |> flat)
