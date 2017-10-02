@@ -2,9 +2,16 @@
 
 open System
 
+open RestSharp
+open RestSharp.Authenticators
+
+open FSharpSnippets
 open Composite.Core.Composite
 open Composite.Core.Processing
-open Composite.Simple.Data
+open Composite.Github.Data
+open Composite.Github.Request
+open Composite.Github.Json
+open Composite.Common.DataTransformationHelper
 
 module Program =
 
@@ -21,18 +28,15 @@ module Program =
 
     [<EntryPoint>]
     let main argv =
-
         let github_config = DataSourceConfigurationManager.Github.Config ()
-        let inputSimple = Composite ([Value C; Value D] |> LazyList.ofList)
-        printfn "Input seq: %A" (inputSimple |> toString)
+        let github_client = new RestClient(github_source_url)
+        github_client.Authenticator <- new HttpBasicAuthenticator(github_config.Username, github_config.Password)
+
+        let input_github = Composite ([Value (Repository github_config.Repository); Value (SearchSequance "let")] |> LazyList.ofList)
         
-        let expanded = ana [v expandSimple] inputSimple
-        printfn "Expanded seq: %A" (expanded |> toString)
+        let expanded_github = ana [searchCode; allPages; execute github_client] input_github
 
-
-        let collapseScn = [find_and_transform_BC ()]
-        let transformed = cata collapseScn (expanded |> flat)
-
+        expanded_github |> toConsole
         Console.ReadKey |> ignore
         
         0 // return an integer exit code

@@ -1,4 +1,4 @@
-﻿namespace FsComposite.Simple.AssemblyInfo
+﻿namespace Composite.Common.AssemblyInfo
 
 open System.Reflection
 open System.Runtime.CompilerServices
@@ -7,11 +7,11 @@ open System.Runtime.InteropServices
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[<assembly: AssemblyTitle("FsComposite.Simple")>]
+[<assembly: AssemblyTitle("Composite.Common")>]
 [<assembly: AssemblyDescription("")>]
 [<assembly: AssemblyConfiguration("")>]
 [<assembly: AssemblyCompany("")>]
-[<assembly: AssemblyProduct("FsComposite.Simple")>]
+[<assembly: AssemblyProduct("Composite.Common")>]
 [<assembly: AssemblyCopyright("Copyright ©  2017")>]
 [<assembly: AssemblyTrademark("")>]
 [<assembly: AssemblyCulture("")>]
@@ -22,7 +22,7 @@ open System.Runtime.InteropServices
 [<assembly: ComVisible(false)>]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[<assembly: Guid("d8aad155-ff6f-4957-82f7-dad5db8a606a")>]
+[<assembly: Guid("c08f2b08-c186-40d3-999c-ec7338e0b803")>]
 
 // Version information for an assembly consists of the following four values:
 // 

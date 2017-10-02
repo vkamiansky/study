@@ -5,14 +5,14 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>d8aad155-ff6f-4957-82f7-dad5db8a606a</ProjectGuid>
+    <ProjectGuid>b8c4a42a-605c-4d1f-86bf-226838caaba0</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>FsComposite.Simple</RootNamespace>
-    <AssemblyName>Composite.Simple</AssemblyName>
+    <RootNamespace>Composite.Github</RootNamespace>
+    <AssemblyName>Composite.Github</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <TargetFSharpCoreVersion>4.4.1.0</TargetFSharpCoreVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Name>Composite.Simple</Name>
+    <Name>Composite.Github</Name>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -23,7 +23,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
-    <DocumentationFile>bin\Debug\FsComposite.Simple.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Composite.Github.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,7 +32,7 @@
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
-    <DocumentationFile>bin\Release\FsComposite.Simple.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Composite.Github.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
@@ -53,21 +53,35 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Data.fs" />
+    <Compile Include="Request.fs" />
+    <Compile Include="Json.fs" />
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ExtCore">
       <HintPath>..\packages\ExtCore.0.8.46\lib\net45\ExtCore.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net46\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\Composite.Common\Composite.Common.fsproj">
+      <Name>Composite.Common</Name>
+      <Project>{c08f2b08-c186-40d3-999c-ec7338e0b803}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\Composite.Core\Composite.Core.fsproj">
       <Name>Composite.Core</Name>
       <Project>{8163fd00-6eaa-48b8-93a5-ce10f35da2db}</Project>

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FSharpLintSettings xmlns="https://github.com/fsprojects/FSharpLint/blob/master/ConfigurationSchema.xsd">
+  <IgnoreFiles Update="Overwrite"><![CDATA[assemblyinfo.*]]></IgnoreFiles>
+  <Analysers>
+    <NameConventions>
+      <Rules>
+        <IdentifiersMustNotContainUnderscores>
+          <Enabled>False</Enabled>
+        </IdentifiersMustNotContainUnderscores>
+        <LiteralNamesMustBePascalCase>
+          <Enabled>True</Enabled>
+        </LiteralNamesMustBePascalCase>
+        <NonPublicValuesCamelCase>
+          <Enabled>False</Enabled>
+        </NonPublicValuesCamelCase>
+        <ParameterMustBeCamelCase>
+          <Enabled>False</Enabled>
+        </ParameterMustBeCamelCase>
+      </Rules>
+    </NameConventions>
+    <Typography>
+      <Rules>
+        <TrailingWhitespaceOnLine>
+          <Enabled>True</Enabled>
+          <IgnoreBlankLines>True</IgnoreBlankLines>
+          <NumberOfSpacesAllowed>1</NumberOfSpacesAllowed>
+          <OneSpaceAllowedAfterOperator>True</OneSpaceAllowedAfterOperator>
+        </TrailingWhitespaceOnLine>
+      </Rules>
+    </Typography>
+  </Analysers>
+</FSharpLintSettings>
