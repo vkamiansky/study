@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
+import * as _ from 'underscore'
+import 'msal'
+
 import {
   Article
 } from '../article';
@@ -39,7 +42,7 @@ export class ArticleListComponent implements OnInit {
     this.articles.unshift(article);
   }
 
-  deleteArticle(article: Article){
+  deleteArticle(article: Article) {
     let index = this.articles.findIndex((o) => o.id == article.id);
     if(-1 != index)
     {
