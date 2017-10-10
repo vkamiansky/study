@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-
 import { Article } from './article';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable()
 export class ArticleService {
 
-  constructor() { }
+  private articles: Article[];
+  articlesObservable: Observable<Article[]>;
 
-  getArticles() : Promise<Article[]> {
-    return Promise.resolve([
+  constructor() {
+    this.articles = [
       {
         showDetailed: true,
         id: 1,
@@ -23,7 +24,26 @@ export class ArticleService {
         summary: "It's good to have page parts as components potentially reusable",
         text: "If you think of a typical webpage we can normally break it down into a set of logical components each with its own view, for example most webpages can be broken up into a header, footer and perhaps a sidebar."
       }
-      ]);
+      ];  
   }
 
+  getArticles() : Observable<Article[]> {
+    return Observable.fromPromise(Promise.resolve(this.articles));
+  }
+
+  addArticle(article: Article){
+    if(-1 == article.id)
+    { 
+      article.id = 1 + this.articles.reduce((a, x) => x.id > a ? x.id: a, -1);
+    }
+    this.articles.unshift(article);
+  }
+
+  deleteArticle(article: Article){
+    let index = this.articles.findIndex((o) => o.id == article.id);
+    if(-1 != index)
+    {
+      this.articles.splice(index, 1);
+    }
+  }
 }

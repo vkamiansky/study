@@ -8,6 +8,8 @@ import { ArticleFormComponent } from './article-form/article-form.component';
 import { FormBackgroundDirective } from './form-background.directive';
 import { HoverShowDirective } from './hover-show.directive';
 
+import { ArticleService } from './article.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +22,7 @@ import { HoverShowDirective } from './hover-show.directive';
   imports: [
     BrowserModule
   ],
-  providers: [],
+  providers: [ArticleService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

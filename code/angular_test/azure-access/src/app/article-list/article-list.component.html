@@ -1,8 +1,6 @@
 <app-article-form (articleCreated)="addArticle($event)"></app-article-form>
-<template ngFor let-a [ngForOf]='articles'>
-  <app-article [article]='a' (articleDeleted)="deleteArticle($event)">
-    <h4 class="card-title heading">{{a.heading}}</h4>
-    <p class='card-text summary'>{{a.summary}}</p>
-    <p class='card-text text' [style.display]="'none'">{{a.text}}</p>
-  </app-article>
-</template>
+<app-article *ngFor="let a of (articles | async)" [article]='a' (articleDeleted)="deleteArticle($event)">
+  <h4 class="card-title heading">{{a.heading}}</h4>
+  <p class='card-text summary'>{{a.summary}}</p>
+  <p class='card-text text' [style.display]="'none'">{{a.text}}</p>
+</app-article>
