@@ -6,7 +6,6 @@ import { Observable, Subject } from 'rxjs';
 export class ArticleService {
 
   private articles: Article[];
-  articlesObservable: Observable<Article[]>;
 
   constructor() {
     this.articles = [
@@ -27,23 +26,28 @@ export class ArticleService {
       ];  
   }
 
-  getArticles() : Observable<Article[]> {
-    return Observable.fromPromise(Promise.resolve(this.articles));
+  getArticles() : Promise<Article[]> {
+    return Promise.resolve(this.articles);
   }
 
-  addArticle(article: Article){
-    if(-1 == article.id)
-    { 
-      article.id = 1 + this.articles.reduce((a, x) => x.id > a ? x.id: a, -1);
-    }
-    this.articles.unshift(article);
+  addArticle(article: Article) : Promise<any> {
+    return new Promise((resolve, reject) => {
+      if(-1 == article.id)
+      {
+        article.id = 1 + this.articles.reduce((a, x) => x.id > a ? x.id: a, -1);
+      }
+      this.articles.unshift(article);
+      resolve();
+    });
   }
 
-  deleteArticle(article: Article){
-    let index = this.articles.findIndex((o) => o.id == article.id);
-    if(-1 != index)
-    {
-      this.articles.splice(index, 1);
-    }
+  deleteArticle(article: Article) : Promise<any> {
+    return new Promise((resolve, reject) => {
+      let index = this.articles.findIndex((o) => o.id == article.id);
+      if(-1 != index)
+      {
+        this.articles.splice(index, 1);
+      }
+    });
   }
 }

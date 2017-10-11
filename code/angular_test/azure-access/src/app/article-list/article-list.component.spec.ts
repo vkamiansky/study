@@ -1,6 +1,6 @@
 import { async, inject, fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { ArticleListComponent } from './article-list.component';
 import { ArticleComponent } from '../article/article.component';
@@ -15,8 +15,8 @@ export class MockArticleService {
 
   constructor() { }
 
-  getArticles() : Observable<Article[]> {
-    return Observable.fromPromise(Promise.resolve([
+  getArticles() : Promise<Article[]> {
+    return Promise.resolve([
       {
         showDetailed: true,
         id: 1,
@@ -31,7 +31,7 @@ export class MockArticleService {
         summary: "B2",
         text: "C2"
       }
-      ]));
+      ]);
   }
 }
 
