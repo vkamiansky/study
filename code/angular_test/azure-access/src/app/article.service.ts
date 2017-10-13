@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Article } from './article';
-import { Observable, Subject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class ArticleService {
 
-  private articles: Article[];
+  private _articles: Article[];
+  articles: BehaviorSubject<Article[]>;
 
   constructor() {
-    this.articles = [
+    this._articles = [
       {
         showDetailed: true,
         id: 1,
@@ -23,31 +24,36 @@ export class ArticleService {
         summary: "It's good to have page parts as components potentially reusable",
         text: "If you think of a typical webpage we can normally break it down into a set of logical components each with its own view, for example most webpages can be broken up into a header, footer and perhaps a sidebar."
       }
-      ];  
+      ];
+      this.articles = new BehaviorSubject<Article[]>([]);
   }
 
-  getArticles() : Promise<Article[]> {
-    return Promise.resolve(this.articles);
+  updateArticles() : Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.articles.next(this._articles);
+      resolve();
+    })
   }
 
   addArticle(article: Article) : Promise<any> {
     return new Promise((resolve, reject) => {
       if(-1 == article.id)
       {
-        article.id = 1 + this.articles.reduce((a, x) => x.id > a ? x.id: a, -1);
+        article.id = 1 + this._articles.reduce((a, x) => x.id > a ? x.id: a, -1);
       }
-      this.articles.unshift(article);
+      this._articles.unshift(article);
       resolve();
     });
   }
 
   deleteArticle(article: Article) : Promise<any> {
     return new Promise((resolve, reject) => {
-      let index = this.articles.findIndex((o) => o.id == article.id);
+      let index = this._articles.findIndex((o) => o.id == article.id);
       if(-1 != index)
       {
-        this.articles.splice(index, 1);
+        this._articles.splice(index, 1);
       }
+      resolve();
     });
   }
 }

@@ -1,6 +1,6 @@
 import { async, inject, fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 import { ArticleListComponent } from './article-list.component';
 import { ArticleComponent } from '../article/article.component';
@@ -13,32 +13,63 @@ import { ArticleService } from '../article.service';
 @Injectable()
 export class MockArticleService {
 
-  constructor() { }
+  private _articles: Article[];  
+  articles: BehaviorSubject<Article[]>;
 
-  getArticles() : Promise<Article[]> {
-    return Promise.resolve([
+  constructor() {
+    this._articles = [
       {
         showDetailed: true,
         id: 1,
-        heading: "A1",
+        heading: "Initialized",
         summary: "B1",
         text: "C1"
-      },
-      {
-        showDetailed: true,
-        id: 2,
-        heading: "A2",
-        summary: "B2",
-        text: "C2"
       }
-      ]);
+      ];
+    this.articles = new BehaviorSubject<Article[]>([]);
+  }
+
+  addArticle(article: Article) : Promise<any> {
+    return new Promise((resolve, reject) => {
+      this._articles = [
+        {
+          showDetailed: true,
+          id: 1,
+          heading: "Added",
+          summary: "B1",
+          text: "C1"
+        }
+        ];
+      resolve();
+    });
+  }
+
+  deleteArticle(article: Article) : Promise<any> {
+    return new Promise((resolve, reject) => {
+      this._articles = [
+        {
+          showDetailed: true,
+          id: 1,
+          heading: "Deleted",
+          summary: "B1",
+          text: "C1"
+        }
+        ];
+      resolve();
+    });
+  }
+
+  updateArticles() : Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.articles.next(this._articles);
+      resolve();
+    });
   }
 }
 
 describe('ArticleListComponent', () => {
   let component: ArticleListComponent;
   let fixture: ComponentFixture<ArticleListComponent>;
-  let mockService = new MockArticleService();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -50,7 +81,7 @@ describe('ArticleListComponent', () => {
         HoverShowDirective
         ],
       providers: [
-          {provide: ArticleService, useValue: mockService},
+          {provide: ArticleService, useClass: MockArticleService},
       ],
     })
     .compileComponents();
@@ -66,7 +97,26 @@ describe('ArticleListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should be right', () => {
-    component.articles.subscribe(x => expect(x[0].heading).toEqual('A1'));
+  it('should be initialized correctly', (done) => {
+    component.articles.subscribe(x => {
+      expect(x[0].heading).toEqual('Initialized');
+      done();
+    });
+  });
+
+  it('should work right on addition', (done) => {
+    component.addArticle(null).then(() =>
+    component.articles.subscribe(x => {
+      expect(x[0].heading).toEqual('Added');
+      done();
+    }));
+  });
+
+  it('should work right on deletion', (done) => {
+    component.deleteArticle(null).then(() =>
+    component.articles.subscribe(x => {
+      expect(x[0].heading).toEqual('Deleted');
+      done();
+    }));
   });
 });
