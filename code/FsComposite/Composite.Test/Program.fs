@@ -23,7 +23,7 @@ module Program =
 
     let rec toConsole obj =
         match obj with
-        | Composite x -> printf "%s" "("; LazyList.iter toConsole x |> ignore; printf "%s" ")";
+        | Composite x -> printf "%s" "("; Seq.iter toConsole x |> ignore; printf "%s" ")";
         | Value x -> printf "%A " x
 
     [<EntryPoint>]
@@ -32,7 +32,7 @@ module Program =
         let github_client = new RestClient(github_source_url)
         github_client.Authenticator <- new HttpBasicAuthenticator(github_config.Username, github_config.Password)
 
-        let input_github = Composite ([Value (Repository github_config.Repository); Value (SearchSequance "let")] |> LazyList.ofList)
+        let input_github = Composite [Value (Repository github_config.Repository); Value (SearchSequance "let")]
         
         let expanded_github = ana [searchCode; allPages; execute github_client] input_github
 

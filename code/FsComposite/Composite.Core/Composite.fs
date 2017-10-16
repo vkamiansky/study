@@ -6,34 +6,28 @@ module Composite =
 
     type 'a Composite =
     | Value of 'a
-    | Composite of LazyList<Composite<'a>>
-
-    exception FatalError of string
+    | Composite of seq<Composite<'a>>
 
     let toComposite obj =
-        match obj with
-        | Nil -> raise(FatalError "Empty data sequence will not lead to a meaningful Composite instance.")
-        | Cons(x, Nil) -> Value x
-        | x -> Composite(LazyList.map Value x)
-
-    let toForest obj =
-        match obj with
-        | Composite x -> x
-        | x -> ll x
-    
-    let rec flat o =
-        match o with
-        | Composite x -> LazyList.collect flat x
-        | Value x -> ll x
+        match Seq.tryHead obj with
+        | None -> failwith "Empty data sequence will not lead to a meaningful Composite instance."
+        | Some x -> let obj2 = Seq.tail obj
+                    match Seq.tryHead obj2 with
+                    | None -> Value x
+                    | Some y -> Composite(seq {
+                                              yield Value x
+                                              yield Value y
+                                              yield! Seq.map Value (Seq.tail obj2)
+                                           })
 
     let rec ana scn obj =
         match scn with
         | [] -> obj
         | f :: scn_tail -> match obj with
                            | Value x -> ana scn_tail (toComposite(f x))
-                           | Composite x -> Composite(LazyList.map (ana scn) x)
-    let v f obj =
-        match f obj with
-        | Nil -> raise(FatalError "Empty data sequence is an invalid binding result.")
-        | Cons(x, Nil) -> if x = obj then ll x else [obj; x] |> LazyList.ofList
-        | x -> LazyList.cons obj x
+                           | Composite x -> Composite(Seq.map (ana scn) x)
+//    let v f obj =
+//        match f obj with
+//        | Nil -> failwith "Empty data sequence is an invalid binding result."
+//        | Cons(x, Nil) -> if x = obj then ll x else [obj; x] |> LazyList.ofList
+//        | x -> LazyList.cons obj x

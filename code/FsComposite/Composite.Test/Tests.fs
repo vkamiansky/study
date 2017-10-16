@@ -56,8 +56,7 @@ module Tests =
     [<Fact>]
     let ``ana should lazy unfold``() =
        
-        let get_simple_seq rule = seq {1 .. 5} |> LazyList.ofSeq
-                                               |> LazyList.map rule
+        let get_simple_seq rule = seq {1 .. 5}|> Seq.map rule
         let rule = function
                    | 1 -> Value A
                    | 2 -> Value B
@@ -66,13 +65,17 @@ module Tests =
         // how to expand
         let expandSimple obj =
             match obj with
-            | A -> [C; D] |> LazyList.ofList
-            | B -> [A; C] |> LazyList.ofList
+            | A -> seq { yield C
+                         yield D
+                    }
+            | B -> seq { yield A
+                         yield C
+                    }
             | _ -> ll obj
 
         let unfold = ana [expandSimple] (Composite (get_simple_seq rule)) |> function
-                                                              | Composite x -> x |> LazyList.take 2 |> List.ofSeq
-                                                              | _ -> Assert.True (false); []
+                                                                             | Composite x -> x |> Seq.take 2 |> List.ofSeq
+                                                                             | _ -> Assert.True (false); []
         Assert.Equal(true, true)
 
     [<Fact>]
@@ -97,9 +100,11 @@ module Tests =
                                        | "/3" -> response3
                                        | _ -> Assert.True (false); response3) |> ignore
 
-        let input_github = Composite ([Value (Request (SearchCodeRequest request1))] |> LazyList.ofList)
+        let input_github = Composite ([Value (Request (SearchCodeRequest request1))])
 
         let expanded_github = ana [allPages; execute mock_github_client.Object] input_github |> function
-                                                                                             | Composite (Cons(Composite x, tail)) -> x |> LazyList.take 3 |> List.ofSeq
-                                                                                             | _ -> Assert.True (false); []
-        Assert.Equal(true, true)
+                                                                                                | Composite x -> match x |> Seq.head with
+                                                                                                                 | Composite x -> x |> Seq.take 3
+                                                                                                                 | _ -> Assert.True (false); Seq.empty
+                                                                                                | _ -> Assert.True (false); Seq.empty
+        Assert.Equal(3, (expanded_github |> Array.ofSeq).Length)

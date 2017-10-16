@@ -20,16 +20,22 @@ module Processing =
                                              | r -> (None, r)))
 
         pre_results |> List.choose (function | (f, _) -> f),
-        pre_results |> List.collect (function | (_, r) -> r) |> LazyList.ofList
+        pre_results |> Seq.collect (function | (_, r) -> r)
 
     let cata scn lst =
-        let frames_init = scn |> List.map (function |(check_funcs, transform) -> (check_funcs, transform, check_funcs |> List.map (fun _ -> None)))
+        let frames_init = scn |> List.map (function 
+                                           | (check_funcs, transform) -> (check_funcs, transform, check_funcs
+                                                                                                  |> List.map (fun _ -> None)))
         let rec get_results frames objs =
             match frames, objs with
-            | [], _ -> LazyList.empty
-            | _, Nil -> LazyList.empty
-            | f, Cons(head, tail) -> match update_results f head with
-                                     |(frames_new, results_new) -> results_new
-                                                                   |> LazyList.append (get_results frames_new tail)
+            | [], _ -> Seq.empty
+            | f, x ->
+              seq {
+               match Seq.tryHead x with
+               | None -> yield! Seq.empty
+               | Some head -> match update_results f (Seq.head x) with
+                              | (frames_new, results_new) -> yield! results_new
+                                                             yield! get_results frames_new (Seq.tail x)
+              }
 
         get_results frames_init lst

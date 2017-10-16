@@ -15,7 +15,7 @@ module Request =
 
     let searchCode obj =
         match obj with
-        | SearchSequance o -> ll (Request (SearchCodeRequest (RestRequest(sprintf "/search/code?q=%s" o))))
+        | SearchSequance o -> seq { yield (Request (SearchCodeRequest (RestRequest(sprintf "/search/code?q=%s" o)))) }
         | _ -> ll obj
 
     /// ... use pr issue number : turn it into a request to read labels for it ...
@@ -181,4 +181,5 @@ module Request =
                             | None -> yield response
             | _ -> failwith "The result of the Request execution must be the Response."
          | Request _ -> yield (execute_single client obj)
-         | x -> yield x } |> LazyList.ofSeq
+         | x -> yield x 
+        }

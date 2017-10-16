@@ -12,8 +12,8 @@ module Json =
     let rec toIssueNumbers reviewers obj =
         let getNumber (obj2 : JToken) =
             if reviewers |> List.contains (obj2.SelectToken("$.assignee.login") |> string)
-            then [IssueNumber(obj2.SelectToken("$.number")|> string)] |> LazyList.ofList
-            else LazyList.empty
+            then ll (IssueNumber(obj2.SelectToken("$.number")|> string))
+            else Seq.empty
         match obj with
         | Response (PrsReadResponse o) -> JArray.Parse(o.Content) |> getNumber
         | _ -> ll obj
