@@ -1,0 +1,14 @@
+source https://www.nuget.org/api/v2
+
+framework: >= netstandard2.0
+nuget FAKE
+nuget FSharp.Core
+nuget FSharp.NET.Sdk
+
+nuget Castle.Core
+nuget ExtCore
+nuget Moq
+nuget Moq.FSharp.Extensions
+nuget RestSharp
+nuget System.ValueTuple
+nuget xunit
