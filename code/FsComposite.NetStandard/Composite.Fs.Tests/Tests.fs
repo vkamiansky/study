@@ -49,9 +49,9 @@ module Tests =
         ([f3; f4], transform)
 
     [<Fact>]
-    let ``ana should lazy unfold``() =
+    let ana_should_lazy_unfold () =
        
-        let get_simple_seq rule = seq {1 .. 5}|> Seq.map rule
+        let get_simple_seq rule = seq {1 .. 5} |> Seq.map rule
         let rule = function
                    | 1 -> Value A
                    | 2 -> Value B
@@ -72,3 +72,23 @@ module Tests =
                                                                              | Composite x -> x |> Seq.take 2 |> List.ofSeq
                                                                              | _ -> Assert.True (false); []
         Assert.Equal(true, true)
+
+    [<Fact>]
+    let simple_ana_test () =
+        
+        let initialSeq = seq { yield Value A
+                               yield Value B
+                             }
+
+        let expandRule obj =
+            match obj with
+            | A -> seq { yield B }
+            | B -> seq { yield A }
+            | _ -> Seq.empty
+
+        let initial = Composite initialSeq
+        let scn = [expandRule]
+
+        let result = ana scn initial
+        
+        Assert.True true

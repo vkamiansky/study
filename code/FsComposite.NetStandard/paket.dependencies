@@ -12,3 +12,5 @@ nuget Moq.FSharp.Extensions
 nuget RestSharp
 nuget System.ValueTuple
 nuget xunit
+nuget dotnet-xunit
+nuget Microsoft.NET.Test.Sdk

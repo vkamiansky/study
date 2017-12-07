@@ -1,2 +1,4 @@
 xunit
+dotnet-xunit
+Microsoft.NET.Test.Sdk
 fsharp.core
