@@ -1,27 +1,28 @@
-<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
+  
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <RuntimeFrameworkVersion>2.0.3</RuntimeFrameworkVersion>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Composite\Composite.fsproj" />
+  </ItemGroup>
+  
   <ItemGroup>
     <Compile Include="Tests.fs" />
   </ItemGroup>
+  
   <ItemGroup>
     <PackageReference Include="Castle.Core" Version="4.2.1" />
-    <PackageReference Include="ExtCore" Version="0.8.46" />
+    <ProjectReference Include="..\paket-files\jindraivanek\ExtCore\ExtCore.netcore\ExtCore.netcore.fsproj" />
     <PackageReference Include="Moq" Version="4.7.145" />
     <PackageReference Include="Moq.FSharp.Extensions" Version="0.2" />
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />
-    
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
-    <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Composite.Core\Composite.Core.fsproj" />
-    <ProjectReference Include="..\Composite.Common\Composite.Common.fsproj" />
-  </ItemGroup>
+
   <Import Project="..\.paket\Paket.Restore.targets" />
+
 </Project>

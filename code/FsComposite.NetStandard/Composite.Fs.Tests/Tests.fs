@@ -6,8 +6,8 @@ open System.Linq.Expressions
 open Moq
 open Xunit
 
-open Composite.Common.DataTransformationHelper
-open Composite.Core.Composite
+open Composite.DataTypes
+open Composite.Transforms
 
 module Tests =
     
@@ -28,7 +28,7 @@ module Tests =
         | B
         | C
         | D
-
+    
     // how to fold
     let find_and_transform_BC () =
         
@@ -55,9 +55,8 @@ module Tests =
         let rule = function
                    | 1 -> Value A
                    | 2 -> Value B
-                   | _ -> Assert.True (false); Value C
+                   | _ -> Assert.True false; Value C
 
-        // how to expand
         let expandSimple obj =
             match obj with
             | A -> seq { yield C
@@ -66,7 +65,7 @@ module Tests =
             | B -> seq { yield A
                          yield C
                     }
-            | _ -> ll obj
+            | _ -> seq { yield obj }
 
         let unfold = ana [expandSimple] (Composite (get_simple_seq rule)) |> function
                                                                              | Composite x -> x |> Seq.take 2 |> List.ofSeq
@@ -74,16 +73,23 @@ module Tests =
         Assert.Equal(true, true)
 
     [<Fact>]
-    let simple_ana_test () =
+    let ana_test () =
         
         let initialSeq = seq { yield Value A
                                yield Value B
                              }
 
+        let resultSeq1 = seq { yield A
+                               yield B 
+                               yield C }
+
+        let resultSeq2 = seq { yield A
+                               yield A }
+
         let expandRule obj =
             match obj with
-            | A -> seq { yield B }
-            | B -> seq { yield A }
+            | A -> resultSeq1   
+            | B -> resultSeq2
             | _ -> Seq.empty
 
         let initial = Composite initialSeq
@@ -91,4 +97,12 @@ module Tests =
 
         let result = ana scn initial
         
-        Assert.True true
+        let toSimpleSeq simpleSeq = simpleSeq |> Seq.map Value
+
+        let expectedSeq = seq { yield Composite (toSimpleSeq resultSeq1)
+                                yield Composite (toSimpleSeq resultSeq2) }
+
+        match result with
+        | Composite x -> Assert.Equal<Composite<Simple>>(x, expectedSeq)
+        | _ -> Assert.True false
+        

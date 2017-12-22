@@ -6,11 +6,10 @@ nuget FSharp.Core
 nuget FSharp.NET.Sdk
 
 nuget Castle.Core
-nuget ExtCore
+github jindraivanek/ExtCore:netcore
 nuget Moq
 nuget Moq.FSharp.Extensions
 nuget RestSharp
 nuget System.ValueTuple
 nuget xunit
-nuget dotnet-xunit
 nuget Microsoft.NET.Test.Sdk

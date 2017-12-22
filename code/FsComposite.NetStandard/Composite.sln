@@ -2,14 +2,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Composite.Core", "Composite.Core\Composite.Core.fsproj", "{6EC62221-646B-4E50-AAE5-380A687EE17A}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Composite", "Composite\Composite.fsproj", "{6EC62221-646B-4E50-AAE5-380A687EE17A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Composite.Cs.Tests", "Composite.Cs.Tests\Composite.Cs.Tests.csproj", "{22E0DCA3-E07C-45E7-840A-F86AAF6B607A}"
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Composite.Fs.Tests", "Composite.Fs.Tests\Composite.Fs.Tests.fsproj", "{2455BD2A-6DFC-47A5-8AE4-C01F58D16AE5}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Composite.Common", "Composite.Common\Composite.Common.fsproj", "{49188EB3-433E-487D-9A57-7E8761E287AB}"
-EndProject
+
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
