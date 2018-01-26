@@ -21,11 +21,11 @@ module C =
     let Composite (obj: IEnumerable<'a>) =
         Composite (obj |> Seq.map Composite.Value)
 
-    type FindTransformPair(findFuctions, transformFunction) =
+    type FindTransformPair<'a>(findFuctions, transformFunction) =
 
         member this.SearchFuctions: IEnumerable<Func<'a, 'b>> when 'b:null = findFuctions
 
-        member this.TransformFunction: Func<IEnumerable<'b>, 'c> when 'b:null = transformFunction
+        member this.TransformFunction: Func<IEnumerable<'b>, IEnumerable<'c>> when 'b:null = transformFunction
 
     let NullableFuncToOption (func : ('a -> Nullable<_>)) funcInput = 
         let result = func funcInput
@@ -33,13 +33,18 @@ module C =
         then Some result.Value
         else None
 
-    let Cata (scn: IEnumerable<FindTransformPair>)
+    let Cata (scn: IEnumerable<FindTransformPair<'a>>)
              (lst: IEnumerable<'a>) =
-        cata 
-        // let input = scn |> List.ofSeq
-        //                 |> List.map (fun p -> (p.SearchFuctions |> List.ofSeq
-        //                                                         |> List.map (fun x -> NullableFuncToOption (x.Invoke)), p.TransformFunction))
-        // cata input lst
-        true
 
+        let fs_sf (sf: IEnumerable<Func<'a, 'b>> when 'b:null) =
+            sf |> List.ofSeq |> List.map (fun x -> (fun a -> match x.Invoke(a) with
+                                                             | null -> None
+                                                             | y -> Some y ))
+
+        let fs_tf (tf: Func<IEnumerable<'b>, IEnumerable<'c>> when 'b:null) =
+           fun (b: 'b option list) -> tf.Invoke(b |> Seq.ofList 
+                                                  |> Seq.map(function | Some x -> x | None -> null) )|> List.ofSeq
+
+        
+        cata (scn |> List.ofSeq |> List.map (fun x -> fs_sf x.SearchFuctions, fs_tf x.TransformFunction)) lst
         
