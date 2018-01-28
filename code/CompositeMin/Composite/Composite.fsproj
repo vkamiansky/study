@@ -10,4 +10,12 @@
     <Compile Include="C.fs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Composite.Cs.Interfaces\Composite.Cs.Interfaces.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="4.3.2" />
+  </ItemGroup>
+
 </Project>

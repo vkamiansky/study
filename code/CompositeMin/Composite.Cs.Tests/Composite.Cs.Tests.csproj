@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Composite.Cs.Interfaces\Composite.Cs.Interfaces.csproj" />
     <ProjectReference Include="..\Composite\Composite.fsproj" />
   </ItemGroup>
 

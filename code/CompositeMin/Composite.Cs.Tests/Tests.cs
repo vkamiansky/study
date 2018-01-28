@@ -1,43 +1,42 @@
 using System;
+using System.Collections.Generic;
 
 using Xunit;
 
 using Composite;
+using Composite.Cs.Interfaces;
 
-namespace Composite.Cs.Tests {
-
-    public class Tests {
-
-        private class Simple {
-            public string Name { get; set; }
+namespace Composite.Cs.Tests
+{
+    public class Tests
+    {
+        private class Simple
+        {
+            public int Number { get; set; }
         }
 
         [Fact]
-        public void Test1 () {
-            const string Alice = "Alice";
-            const string Bob = "Bob";
-
+        public void Test1()
+        {
             var scn = new Func<Simple, Simple[]>[] {
-                    (x) => {
-                        if (x.Name.Equals (Alice, StringComparison.InvariantCulture)) {
-                            return new [] { new Simple { Name = "First", }, new Simple { Name = "Second", }, };
-                        }
-                        return new Simple[0];
-                    },
-                    (x) => {
-                        if (x.Name.Equals (Bob, StringComparison.InvariantCulture)) {
-                            return new [] { new Simple { Name = "Third", }, new Simple { Name = "Fourth", }, };
-                        }
-                        return new Simple[0];
-                    },
+
+                x => x.Number == 1
+                        ? new[] { new Simple { Number = 3, }, new Simple { Number = 4, }, }
+                        : new[] { x, },
+
+                x => x.Number == 3
+                        ? new[] { new Simple { Number = 5, }, new Simple { Number = 6, }, }
+                        : new[] { x, },
                 };
 
-            var obj = C.Composite (new [] {
-                new Simple { Name = Alice, },
-                new Simple { Name = Bob, },
+            var obj = C.Composite(new[] {
+                new Simple { Number = 1, },
+                new Simple { Number = 2, },
             });
 
-            var result = C.Ana (scn, obj);
+            var result = C.Ana(scn, obj);
+
+            Assert.Equal(true, true);
         }
     }
 }

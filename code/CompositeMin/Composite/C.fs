@@ -8,7 +8,19 @@ open FSharp.Core
 open DataTypes
 open Transforms
 
+open Composite.Cs.Interfaces;
+
 module C =
+    
+    //let CompositeToIEnumerable obj =
+        
+    //    let rec convert (composite: 'a Composite) =
+    //        match composite with
+    //        | Value x -> CompositeValue<'a, 'b seq>(x) :> CompositeCs<'a, 'b seq>
+    //        | Composite x -> CompositeComposite<'a, 'b seq>(x |> Seq.map convert) :> CompositeCs<'a, 'b seq>
+
+    //    convert obj
+
     let Ana (scn: IEnumerable<Func<'a, 'b>>) (obj: 'a Composite ) =
 
         let scenario = scn |> List.ofSeq

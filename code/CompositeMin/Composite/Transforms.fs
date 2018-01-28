@@ -13,7 +13,7 @@ module Transforms =
                     | Some y -> Composite(seq {
                                               yield Value x
                                               yield Value y
-                                              yield! Seq.map Value (Seq.tail obj2)
+                                              yield! (Seq.tail obj2) |> Seq.map Value
                                            })
 
     let rec ana scn obj =
@@ -21,7 +21,7 @@ module Transforms =
         | [] -> obj
         | f :: scn_tail -> match obj with
                            | Value x -> ana scn_tail (toComposite(f x))
-                           | Composite x -> Composite(Seq.map (ana scn) x)
+                           | Composite x -> Composite(x |> Seq.map (ana scn))
                            
 //    let v f obj =
 //        match f obj with
