@@ -6,27 +6,29 @@ using Xunit;
 
 using Composite;
 
+using SimpleComposite = Composite.DataTypes.Composite<Composite.Cs.Tests.Tests.Simple>.Composite;
+
 namespace Composite.Cs.Tests {
 
     public class Tests {
 
-        private class Simple {
+        public class Simple {
             public string Name { get; set; }
         }
 
         [Fact]
-        public void Test1 () {
+        public void UnfoldTest () {
             const string Alice = "Alice";
             const string Bob = "Bob";
 
             var scn = new Func<Simple, Simple[]>[] {
-                    (x) => {
+                    x => {
                         if (x.Name.Equals (Alice, StringComparison.InvariantCulture)) {
                             return new [] { new Simple { Name = "First", }, new Simple { Name = "Second", }, };
                         }
                         return new[]{x};
                     },
-                    (x) => {
+                    x => {
                         if (x.Name.Equals ("First", StringComparison.InvariantCulture)) {
                             return new [] { new Simple { Name = "Third", }, new Simple { Name = "Fourth", }, };
                         }
@@ -43,12 +45,16 @@ namespace Composite.Cs.Tests {
 
             Assert.True(result.IsComposite);
 
-            var compositeResult = (DataTypes.Composite<Simple>.Composite)result;
-            var resultArray = compositeResult.Item.ToArray();
+            if (result is SimpleComposite compositeResult) {
+                var resultArray = compositeResult.Item.ToArray();
 
-            Assert.True(resultArray.Length == 2);
-            Assert.True(resultArray[0].IsComposite);
-            Assert.True(resultArray[1].IsValue);
+                Assert.True(resultArray.Length == 2);
+                Assert.True(resultArray[0].IsComposite);
+                Assert.True(resultArray[1].IsValue);
+            }
+            else {
+                Assert.True(false);
+            }
         }
     }
 }
