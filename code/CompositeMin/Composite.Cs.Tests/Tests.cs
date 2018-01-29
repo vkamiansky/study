@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using Xunit;
 
@@ -22,13 +24,13 @@ namespace Composite.Cs.Tests {
                         if (x.Name.Equals (Alice, StringComparison.InvariantCulture)) {
                             return new [] { new Simple { Name = "First", }, new Simple { Name = "Second", }, };
                         }
-                        return new Simple[0];
+                        return new[]{x};
                     },
                     (x) => {
-                        if (x.Name.Equals (Bob, StringComparison.InvariantCulture)) {
+                        if (x.Name.Equals ("First", StringComparison.InvariantCulture)) {
                             return new [] { new Simple { Name = "Third", }, new Simple { Name = "Fourth", }, };
                         }
-                        return new Simple[0];
+                        return new[]{x};
                     },
                 };
 
@@ -38,6 +40,15 @@ namespace Composite.Cs.Tests {
             });
 
             var result = C.Ana (scn, obj);
+
+            Assert.True(result.IsComposite);
+
+            var compositeResult = (DataTypes.Composite<Simple>.Composite)result;
+            var resultArray = compositeResult.Item.ToArray();
+
+            Assert.True(resultArray.Length == 2);
+            Assert.True(resultArray[0].IsComposite);
+            Assert.True(resultArray[1].IsValue);
         }
     }
 }
