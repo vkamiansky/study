@@ -1,10 +1,23 @@
 
-# Учёба
+# Список литературы:
 
-* [Типы и функции](https://github.com/vkamiansky/study/wiki/%D0%A2%D0%B8%D0%BF%D1%8B-%D0%B8-%D1%84%D1%83%D0%BD%D0%BA%D1%86%D0%B8%D0%B8)
-
-* [MVVM](https://github.com/vkamiansky/study/wiki/MVVM)
-
-* [Code Acceptance](https://github.com/vkamiansky/study/wiki/%D0%9F%D1%80%D0%B8%D1%91%D0%BC%D0%BA%D0%B0-%D0%BA%D0%BE%D0%B4%D0%B0-(Code-Acceptance))
-
-Все статьи в [Wiki](https://github.com/vkamiansky/study/wiki) проекта.
+- Введение в архитектуру ПО [An Introduction to Software Architecture by David Garlan & Mary Shaw](https://www.cs.cmu.edu/afs/cs/project/able/ftp/intro_softarch/intro_softarch.pdf)
+- Архитектурные схемы в формате 4+1 [Architectural Blueprints—The “4+1” View Model of Software Architecture by Philippe Kruchten](https://www.cs.ubc.ca/~gregor/teaching/papers/4+1view-architecture.pdf)
+- Масштабируемость на уровне структур, генерирующих программные решения см. [The Art of Scalability: Scalable Web Architecture, Processes, and Organizations for the Modern Enterprise by Martin L. Abbott & Michael T. Fisher](http://theartofscalability.com)
+- Паттерны архитектуры: микросервисные архитектуры с примерами на Java. см. [Microservices Patterns by Chris Richardson](https://www.manning.com/books/microservices-patterns), см. также сайт Криса Ричардсона, посвящённый [паттернам микросервисной архитектуры](https://microservices.io/patterns/microservices).
+- Статья Нила Форда "отстой или круто" о тезисе и антитезисе в IT [Suck/rock dichotomy by Neal Ford](http://nealford.com/memeagora/2009/08/05/suck-rock-dichotomy.html)
+- Антипаттерн "большой ком грязи" в изложении Брайана Фута и Джозефа Йодера [Big Ball of Mud by Brian Foote & Joseph Yoder](http://www.laputan.org/mud/)
+- Цикл хайпа по версии фирмы Gartner [статья в Википедии](https://en.wikipedia.org/wiki/Hype_cycle)
+- [Обратный ход Конвея](https://www.thoughtworks.com/radar/techniques/inverse-conway-maneuver) (см. эффект Мелвина Конвея [статья в Википедии](https://en.wikipedia.org/wiki/Conway%27s_law)) 
+- Continious Delivery [site](https://continuousdelivery.com) by Jez Humble
+- [State of DevOps Report](https://puppet.com/resources/whitepaper/state-of-devops-report) from puppet.com
+- Управление переходными процессами см. [Managing Transitions by William Bridges](https://wmbridges.com/books/)
+- Принципы ООП проектирования в изложении Роберта Мартина см. [The Principles of OOD by Robert C. Martin](http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod)
+- Наработки института программной инженерии при университете Карнеги-Меллон в области DevOps см. [Shane Ficorilli of Software Engineering Institute | Carnegie Mellon University on Complete DevOps Pipeline](https://www.youtube.com/watch?v=Hoctep7hvzg) + [GitHub страница DevOps инфраструктуры Microcosm, построенной на свободных технологиях](https://github.com/sls-all/devops-microcosm)
+- Книги в [списке Джордана Петерсона](https://jordanbpeterson.com/great-books/). Рекомендуются к прочтению для понимания западного мировоззрения.
+- Эпистемология по Пиаже [в аннотации со ссылками на источники](https://www.instructionaldesign.org/theories/genetic-epistemology/)
+- Как разработать API? Статья от Дженнифер Риггинс + подтверждение тезиса о направлении разработки. [How To Design Great APIs With API-First Design by Jennifer Riggins](https://www.programmableweb.com/news/how-to-design-great-apis-api-first-design-and-raml/how-to/2015/07/10)
+- Семантическое версионирование см. [спецификацию](https://semver.org) стандарта
+- OpenAPI стандарт для RESTful API см. [спецификацию](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md) стандарта
+- Идеология REST API в исполнении Роя Филдинга см. [Why REST API's must be hypertext-driven by Roy T. Fielding](http://roy.gbiv.com/untangled/2008/rest-apis-must-be-hypertext-driven)
+- Стадии внедрения REST по Леонарду Ричардсону см. [Richardson Maturity Model by Martin Fowler](https://martinfowler.com/articles/richardsonMaturityModel.html)
