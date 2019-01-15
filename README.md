@@ -1,6 +1,7 @@
 
 # Список литературы:
 
+- Паттерн Presentation Model от Мартина Фаулера - прообраз MVVM см. [Presentation Model by Martin Fowler](https://martinfowler.com/eaaDev/PresentationModel.html)
 - Введение в архитектуру ПО [An Introduction to Software Architecture by David Garlan & Mary Shaw](https://www.cs.cmu.edu/afs/cs/project/able/ftp/intro_softarch/intro_softarch.pdf)
 - Архитектурные схемы в формате 4+1 [Architectural Blueprints—The “4+1” View Model of Software Architecture by Philippe Kruchten](https://www.cs.ubc.ca/~gregor/teaching/papers/4+1view-architecture.pdf)
 - Масштабируемость на уровне структур, генерирующих программные решения см. [The Art of Scalability: Scalable Web Architecture, Processes, and Organizations for the Modern Enterprise by Martin L. Abbott & Michael T. Fisher](http://theartofscalability.com)
