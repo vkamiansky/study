@@ -1,6 +1,7 @@
 
 # Список литературы:
 
+- Основопологающая работа Роя Томаса Филдинга по стилям архитектуры и созданию архитектур программного обеспечения, основанного на использовании сетей см. [Architectural Styles and the Design of Network-based Software Architectures by Roy Thomas Fielding](https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm)
 - Базовые понятия теории множеств: отношения и функции из конспекта лекций Барбары Парти см. [Basic Concepts of Set Theory, Functions and Relations adopted from Partee lecture notes](http://people.umass.edu/partee/NZ_2006/Set%20Theory%20Basics.pdf)
 - Введение в теорию множеств от профессора Уильяма Вайса см. [An Introduction to Set Theory by Professor William A. R. Weiss](http://www.math.toronto.edu/weiss/set_theory.pdf)
 - Паттерн Presentation Model от Мартина Фаулера - прообраз MVVM см. [Presentation Model by Martin Fowler](https://martinfowler.com/eaaDev/PresentationModel.html)
