@@ -24,3 +24,4 @@
 - OpenAPI стандарт для RESTful API см. [спецификацию](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md) стандарта
 - Идеология REST API в исполнении Роя Филдинга см. [Why REST API's must be hypertext-driven by Roy T. Fielding](http://roy.gbiv.com/untangled/2008/rest-apis-must-be-hypertext-driven)
 - Стадии внедрения REST по Леонарду Ричардсону см. [Richardson Maturity Model by Martin Fowler](https://martinfowler.com/articles/richardsonMaturityModel.html)
+- Мина Аюб об использовании Graph QL в качестве бэкенда для фронтенда см. [Backend-For-Frontend using GraphQL under Microservices by Mina Ayoub](https://medium.com/tech-tajawal/backend-for-frontend-using-graphql-under-microservices-5b63bbfcd7d9)
